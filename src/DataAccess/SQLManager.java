@@ -4,12 +4,20 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import Exceptions.BauteilAnzahlZuKleinException;
+import Exceptions.BauteilBereitsVorhandenException;
+import Exceptions.BauteilNichtImWarenkorbException;
+import Exceptions.KategorieBereitsVorhandenException;
 import Exceptions.NutzernameVorhandenException;
 import Exceptions.PersonNichtInDBException;
 
 import java.util.Date;
 import Logic.*;
 
+/**
+ * @author Nico Rychlik
+ *
+ */
 public class SQLManager {
 	
 	private static SQLManager instance;
@@ -51,7 +59,7 @@ public class SQLManager {
 		Statement stmt = c.createStatement();
 		ResultSet rs = stmt.executeQuery("SELECT * FROM Person WHERE nutzername = '"+nutzername+"';");
 		if(!rs.next()) {
-			String sql ="INSERT INTO Person (Vorname, Nachname, strasse, hausnr, PLZ, email, zuerst_erstellt, zuletzt_geaendert, nutzername, passwort, rolle) VALUES ('"+vname+"','"+nname+"','"+strasse+"','"+hausnummer+"','"+PLZ+"','"+email+"', "+(new Date().getTime()/1000)+", "+(new Date().getTime()/1000)+",'"+nutzername+"','"+passwort+"','"+rolle+"');";
+			String sql ="INSERT INTO Person (Vorname, Nachname, strasse, hausnr, PLZ, email, zuerst_erstellt, zuletzt_geaendert, nutzername, passwort, rolle, bauteilschulden) VALUES ('"+vname+"','"+nname+"','"+strasse+"','"+hausnummer+"','"+PLZ+"','"+email+"', "+(new Date().getTime()/1000)+", "+(new Date().getTime()/1000)+",'"+nutzername+"','"+passwort+"','"+rolle+"', 0);";
 			stmt.executeUpdate(sql);
 		}
 		else throw new NutzernameVorhandenException();
@@ -110,16 +118,16 @@ public class SQLManager {
 	
 	/**
 	 * @author Nico Rychlik
-	 * @param ID
+	 * @param id
 	 * @param attribut
 	 * @param newData
 	 * @throws SQLException
 	 */
-	public void modifyPerson(int ID, String attribut, String newData) throws SQLException{
+	public void modifyPerson(int id, String attribut, String newData) throws SQLException{
 		Statement stmt = c.createStatement();
-		String sql = "UPDATE Person SET "+attribut+" = "+newData+" WHERE PERSON_ID="+ID+";";
+		String sql = "UPDATE Person SET "+attribut+" = "+newData+" WHERE PERSON_ID="+id+";";
 		stmt.executeUpdate(sql);
-		String sql2 = "UPDATE Person SET zuletzt_geaendert = "+(new Date().getTime()/1000)+" WHERE PERSON_ID="+ID+";";
+		String sql2 = "UPDATE Person SET zuletzt_geaendert = "+(new Date().getTime()/1000)+" WHERE PERSON_ID="+id+";";
 		stmt.executeUpdate(sql2);
 		stmt.close();	
 	}
@@ -190,7 +198,181 @@ public class SQLManager {
 		else throw new PersonNichtInDBException();
 	}
 	
+	/**
+	 * @author Nico Rychlik
+	 * @param name
+	 * @throws SQLException
+	 * @throws KategorieBereitsVorhandenException
+	 */
+	public void addKategorie (String name) throws SQLException, KategorieBereitsVorhandenException {
+		Statement stmt = c.createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT * FROM Kategorie WHERE name = '"+name+"';");
+		if(!rs.next()) {
+			String sql ="INSERT INTO Kategorie (name) VALUES ('"+name+"');";
+			stmt.executeUpdate(sql);
+		}
+		else throw new KategorieBereitsVorhandenException();
+		stmt.close();		
+		rs.close();
+	}
 	
+	/**
+	 * @author Nico Rychlik
+	 * @return returns List of all Kategories
+	 * @throws SQLException
+	 */
+	public List<Kategorie> getAllKategorien() throws SQLException {
+		List<Kategorie> result = new ArrayList<Kategorie>();
+		Statement stmt = c.createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT * FROM Kategorie;");
+		while(rs.next()) {
+			result.add(new Kategorie (rs.getInt("KATEGORIE_ID"),rs.getString("name")));
+		}
+		stmt.close();		
+		rs.close();
+		return result;
+	}
+	
+	/**
+	 * @author Nico Rychlik
+	 * @param id
+	 * @throws SQLException
+	 */
+	public void deleteKategorie(int id) throws SQLException {
+		Statement stmt = c.createStatement();
+		String sql ="DELETE FROM Kategorie WHERE KATEGORIE_ID="+id+";";
+		stmt.executeUpdate(sql);
+		stmt.close();	
+	}
+	
+	/**
+	 * @author Nico Rychlik
+	 * @param id
+	 * @param name
+	 * @throws SQLException
+	 * @throws KategorieBereitsVorhandenException
+	 */
+	public void renameKategorie (int id, String name) throws SQLException, KategorieBereitsVorhandenException {
+		Statement stmt = c.createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT * FROM Kategorie WHERE name = '"+name+"';");
+		if(!rs.next()) {
+			String sql = "UPDATE Kategorie SET name = "+name+" WHERE KATEGORIE_ID="+id+";";
+			stmt.executeUpdate(sql);
+		}
+		stmt.close();	
+	}
+	
+	/**
+	 * @author Nico Rychlik
+	 * @param name
+	 * @param link
+	 * @param preis
+	 * @param gelagert
+	 * @param geplant
+	 * @param bestellt
+	 * @param ort
+	 * @param id
+	 * @throws SQLException
+	 * @throws BauteilBereitsVorhandenException
+	 */
+	public void createBauteil (String name, String link, double preis, int gelagert, int geplant, int bestellt, String ort, int kategorie) throws SQLException, BauteilBereitsVorhandenException {
+		Statement stmt = c.createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT * FROM Kategorie WHERE name = '"+name+"';");
+		if(!rs.next()) {
+			String sql ="INSERT INTO Bauteil (name, link, preis, gelagert, geplant, bestellt, ort, KATEGORIE_ID) VALUES ('"+name+"', '"+link+"', '"+preis+"', '"+gelagert+"', '"+geplant+"', '"+bestellt+"', '"+ort+"', "+kategorie+");";
+			stmt.executeUpdate(sql);
+		}
+		else throw new BauteilBereitsVorhandenException();
+		stmt.close();		
+		rs.close();
+	}
+	
+	/**
+	 * @author Nico Rychlik
+	 * @param id
+	 * @param attribut
+	 * @param newData
+	 * @throws SQLException
+	 */
+	public void modifyBauteil(int id, String attribut, String newData) throws SQLException{
+		Statement stmt = c.createStatement();
+		String sql = "UPDATE Bauteil SET "+attribut+" = "+newData+" WHERE BAUTEIL_ID = "+id+";";
+		stmt.executeUpdate(sql);
+		stmt.close();	
+	}
+	
+	/**
+	 * @author Nico Rychlik
+	 * @param id
+	 * @param anzahl
+	 * @param person
+	 * @throws SQLException
+	 * @throws BauteilNichtImWarenkorbException 
+	 */
+	
+	// TODO: Noch können 10 Bauteile zurückgegeben werden obwohl der nutzer nur 4 hat.
+	public void addBauteil(int id, int anzahl, int person) throws SQLException, BauteilNichtImWarenkorbException {
+		Statement stmt = c.createStatement();
+		String sql = "UPDATE Bauteil SET gelagert = gelagert + "+anzahl+" WHERE BAUTEIL_ID = "+id+";";
+		stmt.executeUpdate(sql);
+		sql ="SELECT * FROM Bauteilwarenkorb WHERE PERSON_ID = "+person+" AND BAUTEIL_ID = "+id+";";
+		ResultSet rs = stmt.executeQuery(sql);
+		if(!rs.next()) {
+			throw new BauteilNichtImWarenkorbException();
+		}
+		else {
+			if(rs.getInt("anzahl")!=0) {
+				sql="UPDATE Bauteilwarenkorb SET anzahl= anzahl - "+Integer.toString(anzahl)+" WHERE PERSON_ID = '"+person+"' AND BAUTEIL_ID = '"+id+"';";
+				stmt.executeUpdate(sql);
+				double preis;
+				double anz=anzahl;
+				sql="SELECT preis FROM Bauteil WHERE BAUTEIL_ID ="+id+";";
+				preis = stmt.executeQuery(sql).getDouble(1);
+				sql="UPDATE Person SET bauteilschulden = bauteilschulden - "+(preis*anz)+";";
+				stmt.executeUpdate(sql);
+			}
+			else throw new BauteilNichtImWarenkorbException();
+		}
+		rs.close();
+		stmt.close();	
+	}
+	
+	/**
+	 * @author Nico Rychlik
+	 * @param id
+	 * @param anzahl
+	 * @param person
+	 * @throws SQLException
+	 * @throws BauteilAnzahlZuKleinException
+	 */
+	public void removeBauteil(int id, int anzahl, int person) throws SQLException, BauteilAnzahlZuKleinException {
+		Statement stmt = c.createStatement();
+		String sql = "SELECT gelagert FROM Bauteil WHERE BAUTEIL_ID = "+id+";";
+		ResultSet rs = stmt.executeQuery(sql);
+		if(rs.getInt(1)>=anzahl) {
+			sql = "UPDATE Bauteil SET gelagert = gelagert - "+anzahl+" WHERE BAUTEIL_ID = "+id+";";
+			stmt.executeUpdate(sql);
+			sql="SELECT * FROM Bauteilwarenkorb WHERE BAUTEIL_ID="+id+" AND PERSON_ID = "+person+";";
+			ResultSet rs2 = stmt.executeQuery(sql);
+			if(!rs2.next()) {
+				sql="INSERT INTO Bauteilwarenkorb (PERSON_ID, BAUTEIL_ID, anzahl) VALUES ("+person+", "+id+", "+anzahl+");";
+				stmt.executeUpdate(sql);
+			}
+			else {
+				sql="UPDATE Bauteilwarenkorb SET anzahl = anzahl + "+anzahl+" WHERE BAUTEIL_ID="+id+" AND PERSON_ID = "+person+";";
+			}
+			rs2.close();
+			double preis;
+			double anz=anzahl;
+			sql="SELECT preis FROM Bauteil WHERE BAUTEIL_ID ="+id+";";
+			preis = stmt.executeQuery(sql).getDouble(1);
+			sql="UPDATE Person SET bauteilschulden = bauteilschulden + "+(preis*anz)+";";
+			stmt.executeUpdate(sql);
+		}
+		else throw new BauteilAnzahlZuKleinException(rs.getInt(1));
+		rs.close();
+		stmt.close();	
+	}
 	
 	public void createAuftrag(String titel, String art, double prog_kosten, double reele_kosten, List <Person> persons) throws SQLException{
 		Statement stmt = c.createStatement();
