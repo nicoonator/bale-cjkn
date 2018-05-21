@@ -109,12 +109,7 @@ public class SQLManager {
 		stmt.executeUpdate(sql);
 		stmt.close();	
 	}
-<<<<<<< HEAD
-	
-	
-		
-		
-=======
+
 	
 	/**
 	 * @author Nico Rychlik
@@ -376,7 +371,7 @@ public class SQLManager {
 	
 	public void createAuftrag(String titel, String art, double prog_kosten, double reele_kosten, List <Person> persons) throws SQLException{
 		Statement stmt = c.createStatement();
-		String sql ="INSERT INTO Auftrag (titel, art, prog_kosten, reele_kosten,personen) VALUES ('"+titel+"','"+art+"','"+prog_kosten+"','"+reele_kosten+"','"+ List <Person> persons+"');";
+		String sql ="INSERT INTO Auftrag (titel, art, prog_kosten, reele_kosten,personen) VALUES ('"+titel+"','"+art+"','"+prog_kosten+"','"+reele_kosten+"','"+ List<Person> persons+"');";
 		stmt.executeUpdate(sql);
 		stmt.close();	
 	}
@@ -409,4 +404,4 @@ public class SQLManager {
 		stmt.close();	
 	}
 }
->>>>>>> branch 'master' of https://github.com/nicoonator/elab-cjkn.git
+
