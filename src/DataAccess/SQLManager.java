@@ -42,4 +42,20 @@ public class SQLManager {
 		stmt.executeUpdate(sql);
 		stmt.close();	
 	}
-}
+	public void createAuftrag(String titel, String art, double prog_kosten, double reele_kosten, List <Person> persons) throws SQLException{
+		Statement stmt = c.createStatement();
+		String sql ="INSERT INTO Auftrag (titel, art, prog_kosten, reele_kosten,personen) VALUES ('"+titel+"','"+art+"','"+prog_kosten+"','"+reele_kosten+"','"+ List <Person> persons+"');";
+		stmt.executeUpdate(sql);
+		stmt.close();	
+	}
+	public void createRechnung(String name, String bezahlart, double betrag, int auftrag_id, int auftraggeber_id, int verwalter_id) throws SQLException{
+		Statement stmt = c.createStatement();
+		String sql ="INSERT INTO Rechnung (name, bezahlart, betrag, auftrag_id, auftraggeber_id, verwalter_id) VALUES ('"+name+"','"+bezahlart+"','"+betrag+"','"+auftrag_id+"','"+auftraggeber_id+"','"+verwalter_id+"');";
+		stmt.executeUpdate(sql);
+		stmt.close();	
+	}
+	
+	}
+	
+		
+		
