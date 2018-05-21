@@ -1,7 +1,7 @@
 package Logic;
 
 public abstract class Kasse extends Finanzverwaltung {
-	final public KASSE_ID;
+	final public int KASSE_ID;
 	private String name;
 	private double soll;
 	private double ist;
