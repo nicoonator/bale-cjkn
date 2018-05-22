@@ -124,19 +124,19 @@ public class SQLManager {
 		}
 		sql="SELECT * FROM Verbindung_Person_Auftrag WHERE PERSON_ID = "+id+";";
 		ResultSet rs2 = stmt.executeQuery(sql);
-		boolean aufträge=false;
+		boolean auftrï¿½ge=false;
 		ResultSet rs3;
 		while(rs2.next()) {
 			sql="SELECT AUFTRAG_ID FROM Verbindung_Person_Auftrag WHERE (rolle ='"+rs2.getString("rolle")+"' AND AUFTRAG_ID = "+rs2.getInt("AUFTRAG_ID")+") AND PERSON_ID != "+rs2.getInt("PERSON_ID")+";";
 			rs3 = stmt.executeQuery(sql);
 			while(rs3.next()) {
 				sql="SELECT * FROM AUFTRAG WHERE AUFTRAG_ID = "+rs3.getInt(1)+" AND abgerechnet = 1 AND abgeholt = 1 ;";
-				if(stmt.executeQuery(sql).next()) aufträge = true;
+				if(stmt.executeQuery(sql).next()) auftrï¿½ge = true;
 			}
 			rs3.close();
 		}
 		rs2.close();
-		if(aufträge) {
+		if(auftrï¿½ge) {
 			throw new PersonHatAuftraegeException();
 		}
 		
@@ -343,7 +343,7 @@ public class SQLManager {
 	 * @throws ZuWenigBauteileImWarenkorbException 
 	 */
 	
-	// TODO: Noch können 10 Bauteile zurückgegeben werden obwohl der nutzer nur 4 hat.
+	// TODO: Noch kï¿½nnen 10 Bauteile zurï¿½ckgegeben werden obwohl der nutzer nur 4 hat.
 	public void addBauteil(int id, int anzahl, int person) throws SQLException, BauteilNichtImWarenkorbException, ZuWenigBauteileImWarenkorbException {
 		Statement stmt = c.createStatement();
 		String sql = "UPDATE Bauteil SET gelagert = gelagert + "+anzahl+" WHERE BAUTEIL_ID = "+id+";";
@@ -473,6 +473,18 @@ public class SQLManager {
 		String sql = "UPDATE Rechnung SET "+attribut+" = "+newData+" WHERE RECHNUNG_ID="+RECHNUNG_ID+";";
 		stmt.executeUpdate(sql);
 	
+		stmt.close();	
+	}
+	public void changeRechnungStatus (int id, String Status) throws SQLException {
+		Statement stmt = c.createStatement();
+		String sql ="SELECT "+Status+" FROM Rechnung WHERE RECHNUNG_ID = "+id+";";
+		if(stmt.executeQuery(sql).getInt(1)==1) {
+			sql="UPDATE Rechnung SET "+Status+" = 0 WHERE RECHNUNG_ID = "+id+";";
+		}
+		else {
+			sql="UPDATE Rechnung SET "+Status+" = 1 WHERE RECHNUNG_ID = "+id+";";
+		}
+		stmt.executeUpdate(sql);
 		stmt.close();	
 	}
 	
