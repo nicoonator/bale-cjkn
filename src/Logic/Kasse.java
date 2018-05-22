@@ -1,6 +1,19 @@
 package Logic;
 
 public abstract class Kasse extends Finanzverwaltung {
+	/**
+	 * @param kASSE_ID
+	 * @param name
+	 * @param soll
+	 * @param ist
+	 */
+	public Kasse(int kASSE_ID, String name, double soll, double ist) {
+		super();
+		KASSE_ID = kASSE_ID;
+		this.name = name;
+		this.soll = soll;
+		this.ist = ist;
+	}
 	final public int KASSE_ID;
 	private String name;
 	private double soll;

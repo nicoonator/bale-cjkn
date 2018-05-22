@@ -1,6 +1,19 @@
 package Logic;
 
 public class Topf extends Finanzverwaltung {
+	/**
+	 * @param tOPF_ID
+	 * @param name
+	 * @param soll
+	 * @param ist
+	 */
+	public Topf(int tOPF_ID, String name, double soll, double ist) {
+		super();
+		TOPF_ID = tOPF_ID;
+		this.name = name;
+		this.soll = soll;
+		this.ist = ist;
+	}
 	final public int TOPF_ID;
 	private String name;
 	private double soll;

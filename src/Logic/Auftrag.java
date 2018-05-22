@@ -1,6 +1,22 @@
 package Logic;
 
 public class Auftrag extends Fertigungsverwaltung {
+	/**
+	 * @param aUFTRAG_ID
+	 * @param tITEL
+	 * @param aRT
+	 * @param prognostizierte_kosten
+	 * @param reelle_kosten
+	 * @param angenommen
+	 * @param gefertigt
+	 * @param kalkuliert
+	 * @param abgeholt
+	 * @param abgerechnet
+	 * @param warten
+	 * @param unterbrochen
+	 * @param defekt
+	 */
+	
 	//Final?
 	final private int AUFTRAG_ID;
 	final private String TITEL;
@@ -16,6 +32,24 @@ public class Auftrag extends Fertigungsverwaltung {
 	private	boolean unterbrochen;
 	private	boolean defekt;
 	
+	public Auftrag(int aUFTRAG_ID, String tITEL, String aRT, double prognostizierte_kosten, double reelle_kosten,
+			boolean angenommen, boolean gefertigt, boolean kalkuliert, boolean abgeholt, boolean abgerechnet,
+			boolean warten, boolean unterbrochen, boolean defekt) {
+		super();
+		AUFTRAG_ID = aUFTRAG_ID;
+		TITEL = tITEL;
+		ART = aRT;
+		this.prognostizierte_kosten = prognostizierte_kosten;
+		this.reelle_kosten = reelle_kosten;
+		this.angenommen = angenommen;
+		this.gefertigt = gefertigt;
+		this.kalkuliert = kalkuliert;
+		this.abgeholt = abgeholt;
+		this.abgerechnet = abgerechnet;
+		this.warten = warten;
+		this.unterbrochen = unterbrochen;
+		this.defekt = defekt;
+	}
 	
 	public double getPrognostizierte_kosten() {
 		return prognostizierte_kosten;
