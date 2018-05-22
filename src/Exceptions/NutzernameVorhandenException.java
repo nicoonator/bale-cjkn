@@ -1,6 +1,6 @@
 package Exceptions;
 
-public class NutzernameVorhandenException extends Exception {
+public class NutzernameVorhandenException extends DatabaseException {
 
 	public NutzernameVorhandenException() {
 		

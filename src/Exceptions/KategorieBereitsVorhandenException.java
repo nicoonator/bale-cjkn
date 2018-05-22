@@ -7,7 +7,7 @@ package Exceptions;
  * @author Nico Rychlik
  *
  */
-public class KategorieBereitsVorhandenException extends Exception {
+public class KategorieBereitsVorhandenException extends DatabaseException {
 
 	public KategorieBereitsVorhandenException() {
 		

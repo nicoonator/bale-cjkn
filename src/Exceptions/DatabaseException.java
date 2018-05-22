@@ -7,15 +7,15 @@ package Exceptions;
  * @author Nico Rychlik
  *
  */
-public class PersonNichtInDBException extends DatabaseException {
-	
-	public PersonNichtInDBException() {
+public class DatabaseException extends Exception {
+
+	DatabaseException(){
 		
 	}
 	
 	@Override
 	public String getMessage(){
-		return "Die gesuchte Person ist nicht mehr Teil des Datenbestandes!";
+		return "";
 	}
 	
 	@Override

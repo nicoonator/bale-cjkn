@@ -7,7 +7,7 @@ package Exceptions;
  * @author Nico Rychlik
  *
  */
-public class BauteilBereitsVorhandenException extends Exception {
+public class BauteilBereitsVorhandenException extends DatabaseException {
 
 	public BauteilBereitsVorhandenException() {
 		

@@ -7,7 +7,7 @@ package Exceptions;
  * @author Nico Rychlik
  *
  */
-public class BauteilNichtImWarenkorbException extends Exception {
+public class BauteilNichtImWarenkorbException extends DatabaseException {
 
 	public BauteilNichtImWarenkorbException() {
 		

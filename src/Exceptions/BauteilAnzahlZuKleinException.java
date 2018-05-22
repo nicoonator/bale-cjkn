@@ -7,7 +7,7 @@ package Exceptions;
  * @author Nico Rychlik
  *
  */
-public class BauteilAnzahlZuKleinException extends Exception {
+public class BauteilAnzahlZuKleinException extends DatabaseException {
 
 	int gelagert;
 	
