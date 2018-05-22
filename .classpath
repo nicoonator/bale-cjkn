@@ -2,6 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/Users/NicoR/Library/Mobile Documents/com~apple~CloudDocs/Uni/6. Semester/ProPra/Projekt 1/git/elab-cjkn/sqlite-jdbc-3.21.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Nico/git/elab-cjkn/sqlite-jdbc-3.21.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
