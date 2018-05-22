@@ -4,12 +4,18 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import Exceptions.AuftragNichtVorhandenException;
 import Exceptions.BauteilAnzahlZuKleinException;
 import Exceptions.BauteilBereitsVorhandenException;
 import Exceptions.BauteilNichtImWarenkorbException;
+import Exceptions.CannotDeleteLastAdminException;
+import Exceptions.DatabaseException;
 import Exceptions.KategorieBereitsVorhandenException;
 import Exceptions.NutzernameVorhandenException;
+import Exceptions.PersonHatAuftraegeException;
+import Exceptions.PersonHatNochSchuldenException;
 import Exceptions.PersonNichtInDBException;
+import Exceptions.ZuWenigBauteileImWarenkorbException;
 
 import java.util.Date;
 import Logic.*;
@@ -102,10 +108,41 @@ public class SQLManager {
 	 * @author Nico Rychlik
 	 * @param id
 	 * @throws SQLException
+	 * @throws PersonHatNochSchuldenException 
 	 */
-	public void deletePerson (int id) throws SQLException{
+	public void deletePerson (int id) throws SQLException, DatabaseException{
 		Statement stmt = c.createStatement();
-		String sql ="DELETE FROM Person WHERE PERSON_ID="+id+";";
+		String sql;
+		if(this.getPersonByID(id).isAdmin()) {
+			sql="SELECT count(*) FROM Person WHERE rolle=0;";
+			ResultSet rs = stmt.executeQuery(sql);
+			if (rs.getInt(1)==1) throw new CannotDeleteLastAdminException();
+			rs.close();
+		}
+		if(this.getPersonByID(id).getBauteilschulden()!=0) {
+			throw new PersonHatNochSchuldenException();
+		}
+		sql="SELECT * FROM Verbindung_Person_Auftrag WHERE PERSON_ID = "+id+";";
+		ResultSet rs2 = stmt.executeQuery(sql);
+		boolean aufträge=false;
+		ResultSet rs3;
+		while(rs2.next()) {
+			sql="SELECT AUFTRAG_ID FROM Verbindung_Person_Auftrag WHERE (rolle ='"+rs2.getString("rolle")+"' AND AUFTRAG_ID = "+rs2.getInt("AUFTRAG_ID")+") AND PERSON_ID != "+rs2.getInt("PERSON_ID")+";";
+			rs3 = stmt.executeQuery(sql);
+			while(rs3.next()) {
+				sql="SELECT * FROM AUFTRAG WHERE AUFTRAG_ID = "+rs3.getInt(1)+" AND abgerechnet = 1 AND abgeholt = 1 ;";
+				if(stmt.executeQuery(sql).next()) aufträge = true;
+			}
+			rs3.close();
+		}
+		rs2.close();
+		if(aufträge) {
+			throw new PersonHatAuftraegeException();
+		}
+		
+		
+		
+		sql= "DELETE FROM Person WHERE PERSON_ID="+id+";";
 		stmt.executeUpdate(sql);
 		stmt.close();	
 	}
@@ -303,10 +340,11 @@ public class SQLManager {
 	 * @param person
 	 * @throws SQLException
 	 * @throws BauteilNichtImWarenkorbException 
+	 * @throws ZuWenigBauteileImWarenkorbException 
 	 */
 	
 	// TODO: Noch können 10 Bauteile zurückgegeben werden obwohl der nutzer nur 4 hat.
-	public void addBauteil(int id, int anzahl, int person) throws SQLException, BauteilNichtImWarenkorbException {
+	public void addBauteil(int id, int anzahl, int person) throws SQLException, BauteilNichtImWarenkorbException, ZuWenigBauteileImWarenkorbException {
 		Statement stmt = c.createStatement();
 		String sql = "UPDATE Bauteil SET gelagert = gelagert + "+anzahl+" WHERE BAUTEIL_ID = "+id+";";
 		stmt.executeUpdate(sql);
@@ -317,14 +355,17 @@ public class SQLManager {
 		}
 		else {
 			if(rs.getInt("anzahl")!=0) {
-				sql="UPDATE Bauteilwarenkorb SET anzahl= anzahl - "+Integer.toString(anzahl)+" WHERE PERSON_ID = '"+person+"' AND BAUTEIL_ID = '"+id+"';";
-				stmt.executeUpdate(sql);
-				double preis;
-				double anz=anzahl;
-				sql="SELECT preis FROM Bauteil WHERE BAUTEIL_ID ="+id+";";
-				preis = stmt.executeQuery(sql).getDouble(1);
-				sql="UPDATE Person SET bauteilschulden = bauteilschulden - "+(preis*anz)+";";
-				stmt.executeUpdate(sql);
+				if(rs.getInt("anzahl")>=anzahl) {
+					sql="UPDATE Bauteilwarenkorb SET anzahl= anzahl - "+Integer.toString(anzahl)+" WHERE PERSON_ID = '"+person+"' AND BAUTEIL_ID = '"+id+"';";
+					stmt.executeUpdate(sql);
+					double preis;
+					double anz=anzahl;
+					sql="SELECT preis FROM Bauteil WHERE BAUTEIL_ID ="+id+";";
+					preis = stmt.executeQuery(sql).getDouble(1);
+					sql="UPDATE Person SET bauteilschulden = bauteilschulden - "+(preis*anz)+";";
+					stmt.executeUpdate(sql);
+				}
+				else throw new ZuWenigBauteileImWarenkorbException(rs.getInt("anzahl"));
 			}
 			else throw new BauteilNichtImWarenkorbException();
 		}
@@ -371,7 +412,39 @@ public class SQLManager {
 	
 	public void createAuftrag(String titel, String art, double prog_kosten, double reele_kosten, List <Person> persons) throws SQLException{
 		Statement stmt = c.createStatement();
-		String sql ="INSERT INTO Auftrag (titel, art, prog_kosten, reele_kosten,personen) VALUES ('"+titel+"','"+art+"','"+prog_kosten+"','"+reele_kosten+"','"+ List<Person> persons+"');";
+		String sql ="INSERT INTO Auftrag (titel, art, prog_kosten, reele_kosten,angenommen, gefertigt, kalkuliert, abgeholt, abgerechnet, warten, unterbrochen, defekt) VALUES ('"+titel+"','"+art+"','"+prog_kosten+"','"+reele_kosten+"',1,0,0,0,0,0,0,0);";
+		stmt.executeUpdate(sql);
+		stmt.close();	
+	}
+	
+	public void modifyAuftrag(int AUFTRAG_ID, String attribut, String newData) throws SQLException{
+		Statement stmt = c.createStatement();
+		String sql = "UPDATE Auftrag SET "+attribut+" = "+newData+" WHERE AUFTRAG_ID="+AUFTRAG_ID+";";
+		stmt.executeUpdate(sql);
+		stmt.close();	
+	}
+	
+	public Auftrag getAuftragByID(int ID) throws SQLException, DatabaseException {
+		Auftrag result = null;
+		Statement stmt = c.createStatement();
+		String sql = "SELECT * FROM Auftrag WHERE AUFTRAG_ID = "+ID+";";
+		ResultSet rs = stmt.executeQuery(sql);
+		if (rs.next()) result = new Auftrag(rs.getInt("AUFTRAG_ID"),rs.getString("TITEL"),rs.getString("ART"),rs.getDouble("prognostizierte_kosten"),rs.getDouble("reelle_kosten"),this.convertIntToBoolean(rs.getInt("angenommen")),this.convertIntToBoolean(rs.getInt("gefertigt")),this.convertIntToBoolean(rs.getInt("kalkuliert")),this.convertIntToBoolean(rs.getInt("abgeholt")),this.convertIntToBoolean(rs.getInt("abgerechnet")),this.convertIntToBoolean(rs.getInt("warten")),this.convertIntToBoolean(rs.getInt("unterbrochen")),this.convertIntToBoolean(rs.getInt("defekt")));
+		stmt.close();
+		rs.close();
+		if (result!=null) return result;
+		else throw new AuftragNichtVorhandenException();
+	}
+	
+	public void changeAuftragStatus (int id, String Status) throws SQLException {
+		Statement stmt = c.createStatement();
+		String sql ="SELECT "+Status+" FROM AUFTRAG WHERE AUFTRAG_ID = "+id+";";
+		if(stmt.executeQuery(sql).getInt(1)==1) {
+			sql="UPDATE AUFTRAG SET "+Status+" = 0 WHERE AUFTRAG_ID = "+id+";";
+		}
+		else {
+			sql="UPDATE AUFTRAG SET "+Status+" = 1 WHERE AUFTRAG_ID = "+id+";";
+		}
 		stmt.executeUpdate(sql);
 		stmt.close();	
 	}
@@ -382,9 +455,9 @@ public class SQLManager {
 		stmt.executeUpdate(sql);
 		stmt.close();	
 	}
-	public void createRechnung(String name, String bezahlart, double betrag, int auftrag_id, int auftraggeber_id, int verwalter_id) throws SQLException{
+	public void createRechnung(String name, String bezahlart, double betrag, int auftrag_id, int auftraggeber_id, int verwalter_id, int topf_id) throws SQLException{
 		Statement stmt = c.createStatement();
-		String sql ="INSERT INTO Rechnung (name, bezahlart, betrag, auftrag_id, auftraggeber_id, verwalter_id) VALUES ('"+name+"','"+bezahlart+"','"+betrag+"','"+auftrag_id+"','"+auftraggeber_id+"','"+verwalter_id+"');";
+		String sql ="INSERT INTO Rechnung (rechnungsname, bezahlart, betrag, AUFTRAG_ID, AUFTRAGGEBER_ID, ANSPRECHPARTNER_ID, TOPF_ID, bearbeitung, eingereicht, abgewickelt, ausstehend) VALUES ('"+name+"','"+bezahlart+"','"+betrag+"','"+auftrag_id+"','"+auftraggeber_id+"','"+verwalter_id+"','"+topf_id+"',0,0,0,0);";
 		stmt.executeUpdate(sql);
 		stmt.close();	
 	
@@ -399,9 +472,13 @@ public class SQLManager {
 		Statement stmt = c.createStatement();
 		String sql = "UPDATE Rechnung SET "+attribut+" = "+newData+" WHERE RECHNUNG_ID="+RECHNUNG_ID+";";
 		stmt.executeUpdate(sql);
-		String sql2 = "UPDATE Rechnung SET zuletzt_geaendert = "+(new Date().getTime()/1000)+" WHERE RECHNUNG_ID="+RECHNUNG_ID+";";
-		stmt.executeUpdate(sql2);
+	
 		stmt.close();	
+	}
+	
+	public boolean convertIntToBoolean (int i) {
+		if (i==1) return true;
+		else return false;
 	}
 }
 
