@@ -124,19 +124,19 @@ public class SQLManager {
 		}
 		sql="SELECT * FROM Verbindung_Person_Auftrag WHERE PERSON_ID = "+id+";";
 		ResultSet rs2 = stmt.executeQuery(sql);
-		boolean auftr�ge=false;
+		boolean auftraege=false;
 		ResultSet rs3;
 		while(rs2.next()) {
 			sql="SELECT AUFTRAG_ID FROM Verbindung_Person_Auftrag WHERE (rolle ='"+rs2.getString("rolle")+"' AND AUFTRAG_ID = "+rs2.getInt("AUFTRAG_ID")+") AND PERSON_ID != "+rs2.getInt("PERSON_ID")+";";
 			rs3 = stmt.executeQuery(sql);
 			while(rs3.next()) {
 				sql="SELECT * FROM AUFTRAG WHERE AUFTRAG_ID = "+rs3.getInt(1)+" AND abgerechnet = 1 AND abgeholt = 1 ;";
-				if(stmt.executeQuery(sql).next()) auftr�ge = true;
+				if(stmt.executeQuery(sql).next()) auftraege = true;
 			}
 			rs3.close();
 		}
 		rs2.close();
-		if(auftr�ge) {
+		if(auftraege) {
 			throw new PersonHatAuftraegeException();
 		}
 		
@@ -467,6 +467,7 @@ public class SQLManager {
 		String sql ="DELETE FROM Rechnung WHERE RECHNUNG_ID="+id+";";
 		stmt.executeUpdate(sql);
 		stmt.close();	
+		if (true) throw new NeueException();
 	}
 	public void modifyRechnung(int RECHNUNG_ID, String attribut, String newData) throws SQLException{
 		Statement stmt = c.createStatement();
