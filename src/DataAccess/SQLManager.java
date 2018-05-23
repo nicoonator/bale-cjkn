@@ -461,9 +461,21 @@ public class SQLManager {
 		Statement stmt = c.createStatement();
 		String sql ="DELETE FROM Auftrag WHERE AUFTRAG_ID="+id+";";
 		stmt.executeUpdate(sql);
-		stmt.close();	
+		stmt.close();
 	}
-	
+	public List<Auftrag> getAllAuftrag() throws SQLException {
+		List<Auftrag> result= new ArrayList<Auftrag>();
+		Statement stmt = c.createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT * FROM Auftrag;");
+		Auftrag tempAuftrag=null;
+		while (rs.next()) {
+			
+			result.add(tempAuftrag);
+		}
+		rs.close();
+		stmt.close();
+		return result;
+	}
 	
 	public void createRechnung(String name, String bezahlart, double betrag, int auftrag_id, int auftraggeber_id, int verwalter_id, int topf_id) throws SQLException{
 		Statement stmt = c.createStatement();
@@ -479,11 +491,21 @@ public class SQLManager {
 		stmt.close();	
 	
 	}
+	public Rechnung getRechnungByID(int ID) throws SQLException, DatabaseException {
+		Rechnung result = null;
+		Statement stmt = c.createStatement();
+		String sql = "SELECT * FROM Rechnung WHERE RECHNUNG_ID = "+ID+";";
+		ResultSet rs = stmt.executeQuery(sql);
+		if (rs.next()) result = new Rechnung(rs.getInt("RECHNUNG_ID"),rs.getDate("RECHNUNGSDATUM"),rs.getString("rechnungsname"),rs.getString("bezahlart"),rs.getDouble("betrag"),this.convertIntToBoolean(rs.getInt("bearbeitung")),this.convertIntToBoolean(rs.getInt("eingereicht")),this.convertIntToBoolean(rs.getInt("abgewickelt")),this.convertIntToBoolean(rs.getInt("ausstehend")));
+		stmt.close();
+		rs.close();
+		if (result!=null) return result;
+		else throw new RechnungNichtVorhandenException();
+	}
 	public void modifyRechnung(int RECHNUNG_ID, String attribut, String newData) throws SQLException{
 		Statement stmt = c.createStatement();
 		String sql = "UPDATE Rechnung SET "+attribut+" = "+newData+" WHERE RECHNUNG_ID="+RECHNUNG_ID+";";
 		stmt.executeUpdate(sql);
-	
 		stmt.close();	
 	}
 	
@@ -500,9 +522,20 @@ public class SQLManager {
 		stmt.executeUpdate(sql);
 		stmt.close();	
 	}
+	public List<Rechnung> getAllRechnung() throws SQLException {
+		List<Rechnung> result= new ArrayList<Rechnung>();
+		Statement stmt = c.createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT * FROM Rechnung;");
+		Rechnung tempRechnung=null;
+		while (rs.next()) {
+			
+			result.add(tempRechnung);
+		}
+		rs.close();
+		stmt.close();
+		return result;
+	}
 	
-	// TODO get ALL Rechung/Auftrag
-	// TODO get RechungByID
 	// TODO Töpfe / Kassen erstellen (getByID, getAll, modify, create delete? modify)
 	// 
 	
