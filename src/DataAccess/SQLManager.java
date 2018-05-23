@@ -4,18 +4,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import Exceptions.AuftragNichtVorhandenException;
-import Exceptions.BauteilAnzahlZuKleinException;
-import Exceptions.BauteilBereitsVorhandenException;
-import Exceptions.BauteilNichtImWarenkorbException;
-import Exceptions.CannotDeleteLastAdminException;
-import Exceptions.DatabaseException;
-import Exceptions.KategorieBereitsVorhandenException;
-import Exceptions.NutzernameVorhandenException;
-import Exceptions.PersonHatAuftraegeException;
-import Exceptions.PersonHatNochSchuldenException;
-import Exceptions.PersonNichtInDBException;
-import Exceptions.ZuWenigBauteileImWarenkorbException;
+import Exceptions.*;
+
 
 import java.util.Date;
 import Logic.*;
@@ -476,6 +466,11 @@ public class SQLManager {
 		stmt.close();	
 	}
 	
+	/**
+	 * @author Nico Rychlik
+	 * @param i
+	 * @return gibt true zurück wenn i==1 ist, ansonsten false
+	 */
 	public boolean convertIntToBoolean (int i) {
 		if (i==1) return true;
 		else return false;
