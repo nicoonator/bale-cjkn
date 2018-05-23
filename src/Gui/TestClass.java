@@ -16,8 +16,10 @@ public class TestClass {
 		//	SQLManager.getInstance().deletePerson(1);
 		//	SQLManager.getInstance().addKategorie("Test");
 		//	SQLManager.getInstance().createBauteil("Testbauteil", "link", 5.33, 10, 0, 0, "Regal", 1);
-		//	SQLManager.getInstance().removeBauteil(2, 6, 8);
-			SQLManager.getInstance().addBauteil(2, 5, 8);
+			SQLManager.getInstance().removeBauteil(2, 6, 8);
+		//	SQLManager.getInstance().addBauteil(2, 5, 8);
+		//	System.out.println(new Date().getTime()/1000);
+		//	System.out.println(new Date(1527061626L*1000L).toString());
 		}
 		catch (Exception e) {
 			e.printStackTrace();
