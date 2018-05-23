@@ -5,7 +5,7 @@ public class Auftrag extends Fertigungsverwaltung {
 	 * @param aUFTRAG_ID
 	 * @param tITEL
 	 * @param aRT
-	 * @param prognostizierte_kosten
+	 * @param progno_cost
 	 * @param reelle_kosten
 	 * @param angenommen
 	 * @param gefertigt
@@ -19,9 +19,9 @@ public class Auftrag extends Fertigungsverwaltung {
 	
 	//Final?
 	final private int AUFTRAG_ID;
-	final private String TITEL;
+	private String titel;
 	final private String ART;
-	private double prognostizierte_kosten; // Vielleicht abkuerzen?
+	private double progno_cost; 
 	private	double reelle_kosten;
 	private	boolean angenommen;
 	private	boolean gefertigt;
@@ -37,9 +37,9 @@ public class Auftrag extends Fertigungsverwaltung {
 			boolean warten, boolean unterbrochen, boolean defekt) {
 		super();
 		AUFTRAG_ID = aUFTRAG_ID;
-		TITEL = tITEL;
+		titel = tITEL;
 		ART = aRT;
-		this.prognostizierte_kosten = prognostizierte_kosten;
+		this.progno_cost = prognostizierte_kosten;
 		this.reelle_kosten = reelle_kosten;
 		this.angenommen = angenommen;
 		this.gefertigt = gefertigt;
@@ -51,12 +51,30 @@ public class Auftrag extends Fertigungsverwaltung {
 		this.defekt = defekt;
 	}
 	
-	public double getPrognostizierte_kosten() {
-		return prognostizierte_kosten;
+	
+	
+	public String getTitel() {
+		return titel;
 	}
-	public void setPrognostizierte_kosten(double prognostizierte_kosten) {
-		this.prognostizierte_kosten = prognostizierte_kosten;
+
+
+
+	public void setTitel(String titel) {
+		this.titel = titel;
 	}
+
+
+
+	public double getProgno_cost() {
+		return progno_cost;
+	}
+
+
+	public void setProgno_cost(double progno_cost) {
+		this.progno_cost = progno_cost;
+	}
+
+
 	public double getReelle_kosten() {
 		return reelle_kosten;
 	}
@@ -115,7 +133,7 @@ public class Auftrag extends Fertigungsverwaltung {
 		return AUFTRAG_ID;
 	}
 	public String getTITEL() {
-		return TITEL;
+		return titel;
 	}
 	public String getART() {
 		return ART;
