@@ -19,7 +19,7 @@ public class Finanzverwaltung {
 	}
 	
 	public void exportRechnung(int rechnung_id) {
-		//TODO
+		//TODO PDF!
 	}
 	
 	public void changeStatus (int id, String status) {
