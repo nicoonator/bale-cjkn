@@ -1,17 +1,22 @@
 package Logic;
 
+import java.sql.SQLException;
+
+import DataAccess.SQLManager;
+import Exceptions.KategorieBereitsVorhandenException;
+
 public class Bauteileverwaltung {
 
-	public void addKategorie(String name) {
-		//TODO
+	public void addKategorie(String name) throws KategorieBereitsVorhandenException, SQLException {
+		SQLManager.getInstance().addKategorie(name);
 	}
 	//Welche ID ist damit gemeint?
-	public void deleteKategorie(int ID) {
-		//TODO
+	public void deleteKategorie(int ID) throws SQLException {
+		SQLManager.getInstance().deleteKategorie(ID);
 	}
 	
 	public void renameKategorie(int ID, String newName) {
-		//TODO
+		SQLManager.
 	}
 	
 	public void createBauteil(String name, String link, int gelagert, int geplant, int bestellt, String ort) {
