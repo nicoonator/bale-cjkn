@@ -10,12 +10,14 @@ import Exceptions.BauteilBereitsVorhandenException;
 import Exceptions.BauteilNichtImWarenkorbException;
 import Exceptions.CannotDeleteLastAdminException;
 import Exceptions.DatabaseException;
+import Exceptions.KasseNichtVorhandenException;
 import Exceptions.KategorieBereitsVorhandenException;
 import Exceptions.KategorieNameBereitsVorhandenException;
 import Exceptions.NutzernameVorhandenException;
 import Exceptions.PersonHatAuftraegeException;
 import Exceptions.PersonHatNochSchuldenException;
 import Exceptions.PersonNichtInDBException;
+import Exceptions.TopfNichtVorhandenException;
 import Exceptions.ZuWenigBauteileImWarenkorbException;
 
 import java.util.Date;
@@ -501,10 +503,258 @@ public class SQLManager {
 		stmt.close();	
 	}
 	
+	/**
+	 * This method loads the requested "Topf" from database.
+	 * 
+	 * @author Joel Wolf
+	 * @param TOPF_ID
+	 * @return the requested "Topf"
+	 * @throws SQLException
+	 * @throws DatabaseException
+	 */
+	public Topf getTopfByID(int TOPF_ID) throws SQLException, DatabaseException {
+		
+		Topf result = null;
+		Statement stmt = c.createStatement();
+		String sql = "SELECT * FROM Topf WHERE TOPF_ID = " + TOPF_ID + ";";
+		ResultSet rs = stmt.executeQuery(sql);
+		
+		if(rs.next()) 
+			result = new Topf(rs.getInt("TOPF_ID"), rs.getString("name"), rs.getDouble("soll"), rs.getDouble("ist"));
+		
+		stmt.close();
+		rs.close();
+		
+		if(result != null)
+			return result;
+		else 
+			throw new TopfNichtVorhandenException();
+	}
+	
+	/**
+	 * This method loads all "Toepfe" from database.
+	 * 
+	 * @author Joel Wolf
+	 * @return list of all "Toepfe"
+	 * @throws SQLException
+	 */
+	public List<Topf> getAllToepfe() throws SQLException {
+		
+		List<Topf> result = new ArrayList<Topf>();
+		Statement stmt = c.createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT * FROM Topf;");
+		
+		while(rs.next()) {
+			
+			result.add(new Topf(rs.getInt("TOPF_ID"), rs.getString("name"), rs.getDouble("soll"), rs.getDouble("ist")));
+		}
+		
+		stmt.close();		
+		rs.close();
+		
+		return result;
+	}
+	
+	/**
+	 * This method saves the modified attribute from a "Topf" to database.
+	 * 
+	 * @author Joel Wolf
+	 * @param TOPF_ID
+	 * @param attribut the modified attribute from the "Topf"
+	 * @param newData the new value from the attribute
+	 * @throws SQLException
+	 */
+	public void modifyTopf(int TOPF_ID, String attribut, String newData) throws SQLException {
+		
+		Statement stmt = c.createStatement();
+		String sql = "UPDATE Topf SET " + attribut + " = " + newData + " WHERE TOPF_ID = " + TOPF_ID + ";";
+		
+		stmt.executeUpdate(sql);
+		
+		stmt.close();
+	}
+	
+	/**
+	 * This method inserts a new "Topf" into database.
+	 * 
+	 * @author Joel Wolf
+	 * @param TOPF_ID
+	 * @param name the name of the "Topf"
+	 * @param soll "soll"-value of the "Topf"
+	 * @param ist "ist"-value of the "Topf"
+	 * @throws SQLException
+	 */
+	public void createTopf(int TOPF_ID, String name, double soll, double ist, int KASSE_ID) throws SQLException {
+		
+		Statement stmt = c.createStatement();
+		String sql = "INSERT INTO Topf (TOPF_ID, name, soll, ist, KASSE_ID) VALUES (" 
+				+ TOPF_ID + ", '" + name + "', " + soll + ", " + ist + ", " + KASSE_ID + ");";
+		
+		stmt.executeUpdate(sql);
+		
+		stmt.close();
+	}
+	
+	/**
+	 * This method deletes a "Topf" from database.
+	 * 
+	 * @author Joel Wolf
+	 * @param TOPF_ID
+	 * @throws SQLException
+	 */
+	public void deleteTopf(int TOPF_ID) throws SQLException {
+		
+		Statement stmt = c.createStatement();
+		String sql = "DELETE FROM Topf WHERE TOPF_ID = " + TOPF_ID + ";";
+		
+		stmt.executeUpdate(sql);
+		
+		stmt.close();	
+	}
+	
+	/**
+	 * This method loads the requested "Kasse" from database.
+	 * 
+	 * @author Joel Wolf
+	 * @param KASSE_ID
+	 * @return the requested "Kasse"
+	 * @throws SQLException
+	 * @throws DatabaseException
+	 */
+	public Kasse getKasseByID(int KASSE_ID) throws SQLException, DatabaseException {
+		
+		Kasse result = null;
+		Statement stmt = c.createStatement();
+		String sql = "SELECT * FROM Kasse WHERE KASSE_ID = " + KASSE_ID + ";";
+		ResultSet rs = stmt.executeQuery(sql);
+		
+		if(rs.next()) {
+			
+			switch(rs.getInt("typ")) {
+			case 1:
+				result = new Barkasse(rs.getInt("KASSE_ID"), rs.getString("name"), 
+						rs.getDouble("soll"), rs.getDouble("ist"));
+				break;
+			case 2:
+				result = new Konto(rs.getInt("KASSE_ID"), rs.getString("name"), 
+						rs.getDouble("soll"), rs.getDouble("ist"));
+				break;
+			case 3:
+				result = new Kostenstelle(rs.getInt("KASSE_ID"), rs.getString("name"), 
+						rs.getDouble("soll"), rs.getDouble("ist"));
+				break;
+			}
+		}
+		
+		stmt.close();
+		rs.close();
+		
+		if(result != null)
+			return result;
+		else 
+			throw new KasseNichtVorhandenException();
+	}
+	
+	/**
+	 * This method loads all "Kassen" from database.
+	 * 
+	 * @author Joel Wolf
+	 * @return list of all "Kassen"
+	 * @throws SQLException
+	 */
+	public List<Kasse> getAllKassen() throws SQLException {
+		
+		List<Kasse> result = new ArrayList<Kasse>();
+		Statement stmt = c.createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT * FROM Kasse;");
+		
+		while(rs.next()) {
+			
+			switch(rs.getInt("typ")) {
+			case 1:
+				result.add(new Barkasse(rs.getInt("KASSE_ID"), rs.getString("name"), 
+						rs.getDouble("soll"), rs.getDouble("ist")));
+				break;
+			case 2:
+				result.add(new Konto(rs.getInt("KASSE_ID"), rs.getString("name"), 
+						rs.getDouble("soll"), rs.getDouble("ist")));
+				break;
+			case 3:
+				result.add(new Kostenstelle(rs.getInt("KASSE_ID"), rs.getString("name"), 
+						rs.getDouble("soll"), rs.getDouble("ist")));
+				break;
+			}
+		}
+		
+		stmt.close();		
+		rs.close();
+		
+		return result;
+	}
+	
+	/**
+	 * This method saves the modified attribute from a "Kasse" to database.
+	 * 
+	 * @author Joel Wolf
+	 * @param KASSE_ID
+	 * @param attribut the modified attribute from the "Kasse"
+	 * @param newData the new value from the attribute
+	 * @throws SQLException
+	 */
+	public void modifyKasse(int KASSE_ID, String attribut, String newData) throws SQLException {
+		
+		Statement stmt = c.createStatement();
+		String sql = "UPDATE Kasse SET " + attribut + " = " + newData + " WHERE KASSE_ID = " + KASSE_ID + ";";
+		
+		stmt.executeUpdate(sql);
+		
+		stmt.close();
+	}
+	
+	/**
+	 * This method inserts a new "Kasse" into database.
+	 * 
+	 * @author Joel Wolf
+	 * @param KASSE_ID
+	 * @param name the name of the "Kasse"
+	 * @param soll "soll"-value of the "Kasse"
+	 * @param ist "ist"-value of the "Kasse"
+	 * @throws SQLException
+	 */
+	public void createKasse(int KASSE_ID, String name, double soll, double ist, int typ) throws SQLException {
+		
+		Statement stmt = c.createStatement();
+		String sql = "INSERT INTO Kasse (KASSE_ID, name, soll, ist) VALUES (" 
+				+ KASSE_ID + ", '" + name + "', " + soll + ", " + ist + ", " + typ + ");";
+		
+		stmt.executeUpdate(sql);
+		
+		stmt.close();
+	}
+	
+	/**
+	 * This method deletes a "Kasse" from database.
+	 * 
+	 * @author Joel Wolf
+	 * @param KASSE_ID
+	 * @throws SQLException
+	 */
+	public void deleteKasse(int KASSE_ID) throws SQLException {
+		
+		Statement stmt = c.createStatement();
+		String sql = "DELETE FROM Kasse WHERE KASSE_ID = " + KASSE_ID + ";";
+		
+		stmt.executeUpdate(sql);
+		
+		stmt.close();	
+	}
+	
+	
 	// TODO get ALL Rechung/Auftrag
 	// TODO get RechungByID
 	// TODO Töpfe / Kassen erstellen (getByID, getAll, modify, create delete? modify)
 	// 
+	
 	
 	public boolean convertIntToBoolean (int i) {
 		if (i==1) return true;
