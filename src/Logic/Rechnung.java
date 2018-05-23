@@ -2,7 +2,7 @@ package Logic;
 
 import java.util.Date;
 
-public class Rechnung extends Finanzverwaltung{
+public class Rechnung {
 
 	/**
 	 * @param rECHNUNG_ID

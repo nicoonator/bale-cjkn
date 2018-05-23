@@ -17,7 +17,7 @@ int gelagert;
 	
 	@Override
 	public String getMessage(){
-		return "Der Nutzer hat nur noch "+Integer.toString(gelagert)+" Teile dieses Bauteils, will aber mehr Teile zurückgeben!";
+		return "Der Nutzer hat nur noch "+Integer.toString(gelagert)+" Teile dieses Bauteils, will aber mehr Teile zurueckgeben!";
 	}
 	
 	@Override

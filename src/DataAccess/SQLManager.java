@@ -4,9 +4,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import Exceptions.*;
-
-
 import java.util.Date;
 import Logic.*;
 
@@ -100,6 +99,8 @@ public class SQLManager {
 	 * @throws SQLException
 	 * @throws PersonHatNochSchuldenException 
 	 */
+	
+	// KEVIN: logiK?
 	public void deletePerson (int id) throws SQLException, DatabaseException{
 		Statement stmt = c.createStatement();
 		String sql;
@@ -114,19 +115,19 @@ public class SQLManager {
 		}
 		sql="SELECT * FROM Verbindung_Person_Auftrag WHERE PERSON_ID = "+id+";";
 		ResultSet rs2 = stmt.executeQuery(sql);
-		boolean aufträge=false;
+		boolean auftraege=false;
 		ResultSet rs3;
 		while(rs2.next()) {
 			sql="SELECT AUFTRAG_ID FROM Verbindung_Person_Auftrag WHERE (rolle ='"+rs2.getString("rolle")+"' AND AUFTRAG_ID = "+rs2.getInt("AUFTRAG_ID")+") AND PERSON_ID != "+rs2.getInt("PERSON_ID")+";";
 			rs3 = stmt.executeQuery(sql);
 			while(rs3.next()) {
 				sql="SELECT * FROM AUFTRAG WHERE AUFTRAG_ID = "+rs3.getInt(1)+" AND abgerechnet = 1 AND abgeholt = 1 ;";
-				if(stmt.executeQuery(sql).next()) aufträge = true;
+				if(stmt.executeQuery(sql).next()) auftraege = true;
 			}
 			rs3.close();
 		}
 		rs2.close();
-		if(aufträge) {
+		if(auftraege) {
 			throw new PersonHatAuftraegeException();
 		}
 		
@@ -164,7 +165,7 @@ public class SQLManager {
 		boolean result= false;
 		Statement stmt = c.createStatement();
 		ResultSet rs = stmt.executeQuery("SELECT rolle FROM Person WHERE PERSON_ID = "+id+";");
-		if (rs.getInt(0)==0) result=true;
+		if (rs.getInt(1)==0) result=true;
 		rs.close();
 		stmt.close();
 		return result;
@@ -260,6 +261,8 @@ public class SQLManager {
 	 * @param id
 	 * @throws SQLException
 	 */
+	
+	// TODO: WENN BAUTEILE DRIN SIND? --> Bauteile haben keine Kategorie mehr (Trash Kategorie)
 	public void deleteKategorie(int id) throws SQLException {
 		Statement stmt = c.createStatement();
 		String sql ="DELETE FROM Kategorie WHERE KATEGORIE_ID="+id+";";
@@ -281,6 +284,7 @@ public class SQLManager {
 			String sql = "UPDATE Kategorie SET name = "+name+" WHERE KATEGORIE_ID="+id+";";
 			stmt.executeUpdate(sql);
 		}
+		else throw new KategorieBereitsVorhandenException();
 		stmt.close();	
 	}
 	
@@ -332,8 +336,8 @@ public class SQLManager {
 	 * @throws BauteilNichtImWarenkorbException 
 	 * @throws ZuWenigBauteileImWarenkorbException 
 	 */
-	
-	// TODO: Noch können 10 Bauteile zurückgegeben werden obwohl der nutzer nur 4 hat.
+	// Aus dem Warenkorb IN dem Bestand
+	// TODO: debug
 	public void addBauteil(int id, int anzahl, int person) throws SQLException, BauteilNichtImWarenkorbException, ZuWenigBauteileImWarenkorbException {
 		Statement stmt = c.createStatement();
 		String sql = "UPDATE Bauteil SET gelagert = gelagert + "+anzahl+" WHERE BAUTEIL_ID = "+id+";";
@@ -371,6 +375,8 @@ public class SQLManager {
 	 * @throws SQLException
 	 * @throws BauteilAnzahlZuKleinException
 	 */
+	
+	// IN den Warenkorb REIN 
 	public void removeBauteil(int id, int anzahl, int person) throws SQLException, BauteilAnzahlZuKleinException {
 		Statement stmt = c.createStatement();
 		String sql = "SELECT gelagert FROM Bauteil WHERE BAUTEIL_ID = "+id+";";
@@ -425,7 +431,7 @@ public class SQLManager {
 		if (result!=null) return result;
 		else throw new AuftragNichtVorhandenException();
 	}
-	
+	//Zeit
 	public void changeAuftragStatus (int id, String Status) throws SQLException {
 		Statement stmt = c.createStatement();
 		String sql ="SELECT "+Status+" FROM AUFTRAG WHERE AUFTRAG_ID = "+id+";";
@@ -438,13 +444,27 @@ public class SQLManager {
 		stmt.executeUpdate(sql);
 		stmt.close();	
 	}
-
+	//Nur loeschen wenns keine Rechnung gibt
 	public void deleteAuftrag (int id) throws SQLException{
 		Statement stmt = c.createStatement();
 		String sql ="DELETE FROM Auftrag WHERE AUFTRAG_ID="+id+";";
 		stmt.executeUpdate(sql);
-		stmt.close();	
+		stmt.close();
 	}
+	public List<Auftrag> getAllAuftrag() throws SQLException {
+		List<Auftrag> result= new ArrayList<Auftrag>();
+		Statement stmt = c.createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT * FROM Auftrag;");
+		Auftrag tempAuftrag=null;
+		while (rs.next()) {
+			
+			result.add(tempAuftrag);
+		}
+		rs.close();
+		stmt.close();
+		return result;
+	}
+	
 	public void createRechnung(String name, String bezahlart, double betrag, int auftrag_id, int auftraggeber_id, int verwalter_id, int topf_id) throws SQLException{
 		Statement stmt = c.createStatement();
 		String sql ="INSERT INTO Rechnung (rechnungsname, bezahlart, betrag, AUFTRAG_ID, AUFTRAGGEBER_ID, ANSPRECHPARTNER_ID, TOPF_ID, bearbeitung, eingereicht, abgewickelt, ausstehend) VALUES ('"+name+"','"+bezahlart+"','"+betrag+"','"+auftrag_id+"','"+auftraggeber_id+"','"+verwalter_id+"','"+topf_id+"',0,0,0,0);";
@@ -457,20 +477,64 @@ public class SQLManager {
 		String sql ="DELETE FROM Rechnung WHERE RECHNUNG_ID="+id+";";
 		stmt.executeUpdate(sql);
 		stmt.close();	
+	
+	}
+	public Rechnung getRechnungByID(int ID) throws SQLException, DatabaseException {
+		Rechnung result = null;
+		Statement stmt = c.createStatement();
+		String sql = "SELECT * FROM Rechnung WHERE RECHNUNG_ID = "+ID+";";
+		ResultSet rs = stmt.executeQuery(sql);
+		if (rs.next()) result = new Rechnung(rs.getInt("RECHNUNG_ID"),rs.getDate("RECHNUNGSDATUM"),rs.getString("rechnungsname"),rs.getString("bezahlart"),rs.getDouble("betrag"),this.convertIntToBoolean(rs.getInt("bearbeitung")),this.convertIntToBoolean(rs.getInt("eingereicht")),this.convertIntToBoolean(rs.getInt("abgewickelt")),this.convertIntToBoolean(rs.getInt("ausstehend")));
+		stmt.close();
+		rs.close();
+		if (result!=null) return result;
+		else throw new RechnungNichtVorhandenException();
 	}
 	public void modifyRechnung(int RECHNUNG_ID, String attribut, String newData) throws SQLException{
 		Statement stmt = c.createStatement();
 		String sql = "UPDATE Rechnung SET "+attribut+" = "+newData+" WHERE RECHNUNG_ID="+RECHNUNG_ID+";";
 		stmt.executeUpdate(sql);
-	
 		stmt.close();	
 	}
 	
+
 	/**
 	 * @author Nico Rychlik
 	 * @param i
 	 * @return gibt true zurück wenn i==1 ist, ansonsten false
 	 */
+
+	//Zeit
+	public void changeRechnungStatus (int id, String Status) throws SQLException {
+		Statement stmt = c.createStatement();
+		String sql ="SELECT "+Status+" FROM Rechnung WHERE RECHNUNG_ID = "+id+";";
+		if(stmt.executeQuery(sql).getInt(1)==1) {
+			sql="UPDATE Rechnung SET "+Status+" = 0 WHERE RECHNUNG_ID = "+id+";";
+		}
+		else {
+			sql="UPDATE Rechnung SET "+Status+" = 1 WHERE RECHNUNG_ID = "+id+";";
+		}
+		stmt.executeUpdate(sql);
+		stmt.close();	
+	}
+	public List<Rechnung> getAllRechnung() throws SQLException {
+		List<Rechnung> result= new ArrayList<Rechnung>();
+		Statement stmt = c.createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT * FROM Rechnung;");
+		Rechnung tempRechnung=null;
+		while (rs.next()) {
+			
+			result.add(tempRechnung);
+		}
+		rs.close();
+		stmt.close();
+		return result;
+	}
+	
+	// TODO Toepfe / Kassen erstellen (getByID, getAll, modify, create delete? modify)
+	// 
+	
+
 	public boolean convertIntToBoolean (int i) {
 		if (i==1) return true;
 		else return false;

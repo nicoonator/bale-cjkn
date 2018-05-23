@@ -1,6 +1,6 @@
 package Logic;
 
-// Ist vererbung von Gui noetig?
+
 public class Finanzverwaltung {
 	
 	
@@ -8,8 +8,6 @@ public class Finanzverwaltung {
 		//TODO
 	}
 	
-	//Frage fuer Besprechung: Im UML war in der Methodenuebergabe rechnung_id vom Typ id eingetragen
-	//Denke damit war aber Int gemeint
 	public void deleteRechnung(int rechnung_id) {
 		//TODO
 	}
@@ -19,7 +17,7 @@ public class Finanzverwaltung {
 	}
 	
 	public void exportRechnung(int rechnung_id) {
-		//TODO
+		//TODO PDF!
 	}
 	
 	public void changeStatus (int id, String status) {

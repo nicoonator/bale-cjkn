@@ -1,6 +1,6 @@
 package Logic;
 
-public abstract class Kasse extends Finanzverwaltung {
+public abstract class Kasse {
 	/**
 	 * @param kASSE_ID
 	 * @param name

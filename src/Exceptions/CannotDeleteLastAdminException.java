@@ -15,7 +15,7 @@ public class CannotDeleteLastAdminException extends DatabaseException {
 	
 	@Override
 	public String getMessage(){
-		return "Die zu löschende Person hat noch Bauteilschulden!";
+		return "Der letzte Admin kann nicht geloescht werden!";
 	}
 	
 	@Override
