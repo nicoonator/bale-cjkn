@@ -1,6 +1,6 @@
 package Logic;
 
-public class Topf extends Finanzverwaltung {
+public class Topf {
 	/**
 	 * @param tOPF_ID
 	 * @param name

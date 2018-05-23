@@ -4,7 +4,7 @@
 package Logic;
 
 
-public class Kategorie extends Bauteileverwaltung {
+public class Kategorie {
 
 	/**
 	 * @param int1

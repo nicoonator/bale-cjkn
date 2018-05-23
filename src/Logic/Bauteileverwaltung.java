@@ -10,7 +10,7 @@ public class Bauteileverwaltung {
 	public void addKategorie(String name) throws KategorieBereitsVorhandenException, SQLException {
 		SQLManager.getInstance().addKategorie(name);
 	}
-	//Welche ID ist damit gemeint?
+	
 	public void deleteKategorie(int ID) throws SQLException {
 		SQLManager.getInstance().deleteKategorie(ID);
 	}

@@ -1,6 +1,6 @@
 package Logic;
 
-public class Auftrag extends Fertigungsverwaltung {
+public class Auftrag {
 	/**
 	 * @param aUFTRAG_ID
 	 * @param tITEL
@@ -17,7 +17,7 @@ public class Auftrag extends Fertigungsverwaltung {
 	 * @param defekt
 	 */
 	
-	//Final?
+	
 	final private int AUFTRAG_ID;
 	private String titel;
 	final private String ART;
