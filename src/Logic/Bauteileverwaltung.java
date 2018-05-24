@@ -3,11 +3,12 @@ package Logic;
 import java.sql.SQLException;
 
 import DataAccess.SQLManager;
+import Exceptions.DatabaseException;
 import Exceptions.KategorieBereitsVorhandenException;
 
 public class Bauteileverwaltung {
 
-	public void addKategorie(String name) throws KategorieBereitsVorhandenException, SQLException {
+	public void addKategorie(String name) throws DatabaseException, SQLException {
 		SQLManager.getInstance().addKategorie(name);
 	}
 	
@@ -15,8 +16,8 @@ public class Bauteileverwaltung {
 		SQLManager.getInstance().deleteKategorie(ID);
 	}
 	
-	public void renameKategorie(int ID, String newName) {
-		SQLManager.
+	public void renameKategorie(int ID, String newName) throws DatabaseException, SQLException {
+		SQLManager.getInstance().renameKategorie(ID, newName);
 	}
 	
 	public void createBauteil(String name, String link, int gelagert, int geplant, int bestellt, String ort) {
