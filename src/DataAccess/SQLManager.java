@@ -3,23 +3,7 @@ package DataAccess;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import Exceptions.AuftragNichtVorhandenException;
-import Exceptions.BauteilAnzahlZuKleinException;
-import Exceptions.BauteilBereitsVorhandenException;
-import Exceptions.BauteilNichtImWarenkorbException;
-import Exceptions.CannotDeleteLastAdminException;
-import Exceptions.DatabaseException;
-import Exceptions.KasseNichtVorhandenException;
-import Exceptions.KategorieBereitsVorhandenException;
-import Exceptions.KategorieNameBereitsVorhandenException;
-import Exceptions.NutzernameVorhandenException;
-import Exceptions.PersonHatAuftraegeException;
-import Exceptions.PersonHatNochSchuldenException;
-import Exceptions.PersonNichtInDBException;
-import Exceptions.TopfNichtVorhandenException;
-import Exceptions.ZuWenigBauteileImWarenkorbException;
-
+import Exceptions.*;
 import java.util.Date;
 import Logic.*;
 
@@ -422,7 +406,7 @@ public class SQLManager {
 	
 	public void createAuftrag(String titel, String art, double prog_kosten, double reele_kosten, List <Person> persons) throws SQLException{
 		Statement stmt = c.createStatement();
-		String sql ="INSERT INTO Auftrag (titel, art, prog_kosten, reele_kosten,angenommen, gefertigt, kalkuliert, abgeholt, abgerechnet, warten, unterbrochen, defekt) VALUES ('"+titel+"','"+art+"','"+prog_kosten+"','"+reele_kosten+"',1,0,0,0,0,0,0,0);";
+		String sql ="INSERT INTO Auftrag (titel, art, prog_kosten, reele_kosten,angenommen, gefertigt, kalkuliert, abgeholt, abgerechnet, warten, unterbrochen, defekt, date_angenommen) VALUES ('"+titel+"','"+art+"','"+prog_kosten+"','"+reele_kosten+"',1,0,0,0,0,0,0,0,"+new Date().getTime()/1000L+");";
 		stmt.executeUpdate(sql);
 		stmt.close();	
 	}
@@ -433,7 +417,7 @@ public class SQLManager {
 		stmt.executeUpdate(sql);
 		stmt.close();	
 	}
-	
+	//Zeit im Konstruktor
 	public Auftrag getAuftragByID(int ID) throws SQLException, DatabaseException {
 		Auftrag result = null;
 		Statement stmt = c.createStatement();
@@ -445,16 +429,18 @@ public class SQLManager {
 		if (result!=null) return result;
 		else throw new AuftragNichtVorhandenException();
 	}
-	//Zeit
+	//TODO Zeit
 	public void changeAuftragStatus (int id, String Status) throws SQLException {
 		Statement stmt = c.createStatement();
 		String sql ="SELECT "+Status+" FROM AUFTRAG WHERE AUFTRAG_ID = "+id+";";
 		if(stmt.executeQuery(sql).getInt(1)==1) {
-			sql="UPDATE AUFTRAG SET "+Status+" = 0 WHERE AUFTRAG_ID = "+id+";";
+			sql="UPDATE Auftrag SET "+Status+" = 0 WHERE AUFTRAG_ID = "+id+";";
 		}
 		else {
-			sql="UPDATE AUFTRAG SET "+Status+" = 1 WHERE AUFTRAG_ID = "+id+";";
+			sql="UPDATE Auftrag SET "+Status+" = 1 WHERE AUFTRAG_ID = "+id+";";
 		}
+		stmt.executeUpdate(sql);
+		sql="UPDATE Auftrag SET date_"+Status+" = "+(new Date().getTime()/1000)+" WHERE PERSON_ID = "+id+";";
 		stmt.executeUpdate(sql);
 		stmt.close();	
 	}
@@ -463,13 +449,28 @@ public class SQLManager {
 		Statement stmt = c.createStatement();
 		String sql ="DELETE FROM Auftrag WHERE AUFTRAG_ID="+id+";";
 		stmt.executeUpdate(sql);
-		stmt.close();	
+		stmt.close();
 	}
 	
-	
+	//TODO Zeit
+	//TODO: Konstruktor anpassen sobald Dates in der Klasse sind
+	public List<Auftrag> getAllAuftrag() throws SQLException {
+		List<Auftrag> result= new ArrayList<Auftrag>();
+		Statement stmt = c.createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT * FROM Auftrag;");
+		Auftrag tempAuftrag=null;
+		while (rs.next()) {
+			tempAuftrag = new Auftrag(rs.getInt("AUFTRAG_ID"),rs.getString("TITEL"),rs.getString("ART"),rs.getDouble("prognostizierte_kosten"),rs.getDouble("reelle_kosten"),this.convertIntToBoolean(rs.getInt("angenommen")),this.convertIntToBoolean(rs.getInt("gefertigt")),this.convertIntToBoolean(rs.getInt("kalkuliert")),this.convertIntToBoolean(rs.getInt("abgeholt")),this.convertIntToBoolean(rs.getInt("abgerechnet")),this.convertIntToBoolean(rs.getInt("warten")),this.convertIntToBoolean(rs.getInt("unterbrochen")),this.convertIntToBoolean(rs.getInt("defekt")));
+			result.add(tempAuftrag);
+		}
+		rs.close();
+		stmt.close();
+		return result;
+	}
+	//TODO: Rechnungsdatum
 	public void createRechnung(String name, String bezahlart, double betrag, int auftrag_id, int auftraggeber_id, int verwalter_id, int topf_id) throws SQLException{
 		Statement stmt = c.createStatement();
-		String sql ="INSERT INTO Rechnung (rechnungsname, bezahlart, betrag, AUFTRAG_ID, AUFTRAGGEBER_ID, ANSPRECHPARTNER_ID, TOPF_ID, bearbeitung, eingereicht, abgewickelt, ausstehend) VALUES ('"+name+"','"+bezahlart+"','"+betrag+"','"+auftrag_id+"','"+auftraggeber_id+"','"+verwalter_id+"','"+topf_id+"',0,0,0,0);";
+		String sql ="INSERT INTO Rechnung (rechnungsname, bezahlart, betrag, AUFTRAG_ID, AUFTRAGGEBER_ID, ANSPRECHPARTNER_ID, TOPF_ID, bearbeitung, eingereicht, abgewickelt, ausstehend, RECHNUNGSDATUM) VALUES ('"+name+"','"+bezahlart+"','"+betrag+"','"+auftrag_id+"','"+auftraggeber_id+"','"+verwalter_id+"','"+topf_id+"',0,0,0,0, "+new Date().getTime()+");";
 		stmt.executeUpdate(sql);
 		stmt.close();	
 	
@@ -481,15 +482,33 @@ public class SQLManager {
 		stmt.close();	
 	
 	}
+	
+	//TODO: Konstruktor anpassen sobald Dates in der Klasse sind
+	public Rechnung getRechnungByID(int ID) throws SQLException, DatabaseException {
+		Rechnung result = null;
+		Statement stmt = c.createStatement();
+		String sql = "SELECT * FROM Rechnung WHERE RECHNUNG_ID = "+ID+";";
+		ResultSet rs = stmt.executeQuery(sql);
+		if (rs.next()) result = new Rechnung(rs.getInt("RECHNUNG_ID"),rs.getDate("RECHNUNGSDATUM"),rs.getString("rechnungsname"),rs.getString("bezahlart"),rs.getDouble("betrag"),this.convertIntToBoolean(rs.getInt("bearbeitung")),this.convertIntToBoolean(rs.getInt("eingereicht")),this.convertIntToBoolean(rs.getInt("abgewickelt")),this.convertIntToBoolean(rs.getInt("ausstehend")));
+		stmt.close();
+		rs.close();
+		if (result!=null) return result;
+		else throw new RechnungNichtVorhandenException();
+	}
 	public void modifyRechnung(int RECHNUNG_ID, String attribut, String newData) throws SQLException{
 		Statement stmt = c.createStatement();
 		String sql = "UPDATE Rechnung SET "+attribut+" = "+newData+" WHERE RECHNUNG_ID="+RECHNUNG_ID+";";
 		stmt.executeUpdate(sql);
-	
 		stmt.close();	
 	}
 	
-	//Zeit
+
+	/**
+	 * @author Nico Rychlik
+	 * @param i
+	 * @return gibt true zur�ck wenn i==1 ist, ansonsten false
+	 */
+
 	public void changeRechnungStatus (int id, String Status) throws SQLException {
 		Statement stmt = c.createStatement();
 		String sql ="SELECT "+Status+" FROM Rechnung WHERE RECHNUNG_ID = "+id+";";
@@ -500,7 +519,9 @@ public class SQLManager {
 			sql="UPDATE Rechnung SET "+Status+" = 1 WHERE RECHNUNG_ID = "+id+";";
 		}
 		stmt.executeUpdate(sql);
-		stmt.close();	
+		sql="UPDATE Rechnung SET date_"+Status+" = "+(new Date().getTime()/1000)+" WHERE PERSON_ID = "+id+";";
+		stmt.executeUpdate(sql);
+		stmt.close();
 	}
 	
 	/**
@@ -752,9 +773,23 @@ public class SQLManager {
 	
 	// TODO get ALL Rechung/Auftrag
 	// TODO get RechungByID
-	// TODO Töpfe / Kassen erstellen (getByID, getAll, modify, create delete? modify)
-	// 
+	// TODO Toepfe / Kassen erstellen (getByID, getAll, modify, create delete? modify)
+
 	
+	//TODO: Konstruktor anpassen sobald Dates in der Klasse sind
+	public List<Rechnung> getAllRechnung() throws SQLException {
+		List<Rechnung> result= new ArrayList<Rechnung>();
+		Statement stmt = c.createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT * FROM Rechnung;");
+		Rechnung tempRechnung=null;
+		while (rs.next()) {
+			tempRechnung = new Rechnung(rs.getInt("RECHNUNG_ID"),rs.getDate("RECHNUNGSDATUM"),rs.getString("rechnungsname"),rs.getString("bezahlart"),rs.getDouble("betrag"),this.convertIntToBoolean(rs.getInt("bearbeitung")),this.convertIntToBoolean(rs.getInt("eingereicht")),this.convertIntToBoolean(rs.getInt("abgewickelt")),this.convertIntToBoolean(rs.getInt("ausstehend")));
+			result.add(tempRechnung);
+		}
+		rs.close();
+		stmt.close();
+		return result;
+	}
 	
 	public boolean convertIntToBoolean (int i) {
 		if (i==1) return true;
