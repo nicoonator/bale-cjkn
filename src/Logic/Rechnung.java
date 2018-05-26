@@ -15,19 +15,7 @@ public class Rechnung {
 	 * @param abgewickelt
 	 * @param ausstehend
 	 */
-	public Rechnung(int rECHNUNG_ID, Date rECHNUNGSDATUM, String rechnungsname, String bezahlart, double betrag,
-			boolean bearbeitung, boolean eingereicht, boolean abgewickelt, boolean ausstehend) {
-		super();
-		RECHNUNG_ID = rECHNUNG_ID;
-		RECHNUNGSDATUM = rECHNUNGSDATUM;
-		this.rechnungsname = rechnungsname;
-		this.bezahlart = bezahlart;
-		this.betrag = betrag;
-		this.bearbeitung = bearbeitung;
-		this.eingereicht = eingereicht;
-		this.abgewickelt = abgewickelt;
-		this.ausstehend = ausstehend;
-	}
+
 	final private int RECHNUNG_ID;
 	final private Date RECHNUNGSDATUM;
 	private String rechnungsname;
@@ -42,6 +30,41 @@ public class Rechnung {
 	private Date date_abgewickelt;
 	private Date date_ausstehend;
 	
+	
+	
+	/**
+	 * @param rECHNUNG_ID
+	 * @param rECHNUNGSDATUM
+	 * @param rechnungsname
+	 * @param bezahlart
+	 * @param betrag
+	 * @param bearbeitung
+	 * @param eingereicht
+	 * @param abgewickelt
+	 * @param ausstehend
+	 * @param date_bearbeitung
+	 * @param date_eingereicht
+	 * @param date_abgewickelt
+	 * @param date_ausstehend
+	 */
+	public Rechnung(int rECHNUNG_ID, Date rECHNUNGSDATUM, String rechnungsname, String bezahlart, double betrag,
+			boolean bearbeitung, boolean eingereicht, boolean abgewickelt, boolean ausstehend, Date date_bearbeitung,
+			Date date_eingereicht, Date date_abgewickelt, Date date_ausstehend) {
+		super();
+		RECHNUNG_ID = rECHNUNG_ID;
+		RECHNUNGSDATUM = rECHNUNGSDATUM;
+		this.rechnungsname = rechnungsname;
+		this.bezahlart = bezahlart;
+		this.betrag = betrag;
+		this.bearbeitung = bearbeitung;
+		this.eingereicht = eingereicht;
+		this.abgewickelt = abgewickelt;
+		this.ausstehend = ausstehend;
+		this.date_bearbeitung = date_bearbeitung;
+		this.date_eingereicht = date_eingereicht;
+		this.date_abgewickelt = date_abgewickelt;
+		this.date_ausstehend = date_ausstehend;
+	}
 	/**
 	 * @return the date_bearbeitung
 	 */

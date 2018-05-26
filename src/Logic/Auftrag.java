@@ -42,6 +42,62 @@ public class Auftrag {
 	private Date date_unterbrochen;
 	private Date date_defekt;
 	
+	
+	
+	/**
+	 * @param aUFTRAG_ID
+	 * @param titel
+	 * @param aRT
+	 * @param progno_cost
+	 * @param reelle_kosten
+	 * @param angenommen
+	 * @param gefertigt
+	 * @param kalkuliert
+	 * @param abgeholt
+	 * @param abgerechnet
+	 * @param warten
+	 * @param unterbrochen
+	 * @param defekt
+	 * @param date_angenommen
+	 * @param date_gefertigt
+	 * @param date_kalkuliert
+	 * @param date_abgeholt
+	 * @param date_abgerechnet
+	 * @param date_warten
+	 * @param date_unterbrochen
+	 * @param date_defekt
+	 */
+	public Auftrag(int aUFTRAG_ID, String titel, String aRT, double progno_cost, double reelle_kosten,
+			boolean angenommen, boolean gefertigt, boolean kalkuliert, boolean abgeholt, boolean abgerechnet,
+			boolean warten, boolean unterbrochen, boolean defekt, Date date_angenommen, Date date_gefertigt,
+			Date date_kalkuliert, Date date_abgeholt, Date date_abgerechnet, Date date_warten, Date date_unterbrochen,
+			Date date_defekt) {
+		super();
+		AUFTRAG_ID = aUFTRAG_ID;
+		this.titel = titel;
+		ART = aRT;
+		this.progno_cost = progno_cost;
+		this.reelle_kosten = reelle_kosten;
+		this.angenommen = angenommen;
+		this.gefertigt = gefertigt;
+		this.kalkuliert = kalkuliert;
+		this.abgeholt = abgeholt;
+		this.abgerechnet = abgerechnet;
+		this.warten = warten;
+		this.unterbrochen = unterbrochen;
+		this.defekt = defekt;
+		this.date_angenommen = date_angenommen;
+		this.date_gefertigt = date_gefertigt;
+		this.date_kalkuliert = date_kalkuliert;
+		this.date_abgeholt = date_abgeholt;
+		this.date_abgerechnet = date_abgerechnet;
+		this.date_warten = date_warten;
+		this.date_unterbrochen = date_unterbrochen;
+		this.date_defekt = date_defekt;
+	}
+
+
+
 	/**
 	 * @return the date_angenommen
 	 */
@@ -183,29 +239,8 @@ public class Auftrag {
 	public void setDate_defekt(Date date_defekt) {
 		this.date_defekt = date_defekt;
 	}
-
-
-
-	public Auftrag(int aUFTRAG_ID, String tITEL, String aRT, double prognostizierte_kosten, double reelle_kosten,
-			boolean angenommen, boolean gefertigt, boolean kalkuliert, boolean abgeholt, boolean abgerechnet,
-			boolean warten, boolean unterbrochen, boolean defekt) {
-		super();
-		AUFTRAG_ID = aUFTRAG_ID;
-		titel = tITEL;
-		ART = aRT;
-		this.progno_cost = prognostizierte_kosten;
-		this.reelle_kosten = reelle_kosten;
-		this.angenommen = angenommen;
-		this.gefertigt = gefertigt;
-		this.kalkuliert = kalkuliert;
-		this.abgeholt = abgeholt;
-		this.abgerechnet = abgerechnet;
-		this.warten = warten;
-		this.unterbrochen = unterbrochen;
-		this.defekt = defekt;
-	}
 	
-	
+
 	
 	public String getTitel() {
 		return titel;
