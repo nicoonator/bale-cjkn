@@ -1,6 +1,14 @@
 package Logic;
 
+
 public class Personenverwaltung {
+	
+	private static Personenverwaltung instance;
+	
+	public static Personenverwaltung getInstance(){
+		if (instance==null) instance = new Personenverwaltung();
+		return instance;
+	}
 
 	public void createPerson(String vorname, String nachname, String strasse, 
 			int hausnr, int PLZ, String email) {

@@ -8,6 +8,14 @@ import Exceptions.KategorieBereitsVorhandenException;
 
 public class Bauteileverwaltung {
 
+	private static Bauteileverwaltung instance;
+	
+	public static Bauteileverwaltung getInstance(){
+		if (instance==null) instance = new Bauteileverwaltung();
+		return instance;
+	}
+	
+	
 	public void addKategorie(String name) throws DatabaseException, SQLException {
 		SQLManager.getInstance().addKategorie(name);
 	}
