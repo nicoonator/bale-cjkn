@@ -770,10 +770,6 @@ public class SQLManager {
 		stmt.close();	
 	}
 	
-	
-	// TODO get ALL Rechung/Auftrag
-	// TODO get RechungByID
-	// TODO Toepfe / Kassen erstellen (getByID, getAll, modify, create delete? modify)
 
 	
 	//TODO: Konstruktor anpassen sobald Dates in der Klasse sind
