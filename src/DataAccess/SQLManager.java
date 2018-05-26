@@ -406,7 +406,7 @@ public class SQLManager {
 	
 	public void createAuftrag(String titel, String art, double prog_kosten, double reele_kosten, List <Person> persons) throws SQLException{
 		Statement stmt = c.createStatement();
-		String sql ="INSERT INTO Auftrag (titel, art, prog_kosten, reele_kosten,angenommen, gefertigt, kalkuliert, abgeholt, abgerechnet, warten, unterbrochen, defekt, date_angenommen) VALUES ('"+titel+"','"+art+"','"+prog_kosten+"','"+reele_kosten+"',1,0,0,0,0,0,0,0,"+new Date().getTime()/1000L+");";
+		String sql ="INSERT INTO Auftrag (titel, art, prog_kosten, reele_kosten,angenommen, gefertigt, kalkuliert, abgeholt, abgerechnet, warten, unterbrochen, defekt, date_angenommen, date_gefertigt, date_kalkuliert, date_abgeholt, date_abgerechnet, date_warten, date_unterbrochen, date_defekt) VALUES ('"+titel+"','"+art+"','"+prog_kosten+"','"+reele_kosten+"',1,0,0,0,0,0,0,0,"+new Date().getTime()/1000L+","+new Date().getTime()/1000L+","+new Date().getTime()/1000L+","+new Date().getTime()/1000L+","+new Date().getTime()/1000L+","+new Date().getTime()/1000L+","+new Date().getTime()/1000L+","+new Date().getTime()/1000L+");";
 		stmt.executeUpdate(sql);
 		stmt.close();	
 	}
@@ -417,19 +417,19 @@ public class SQLManager {
 		stmt.executeUpdate(sql);
 		stmt.close();	
 	}
-	//Zeit im Konstruktor
+
 	public Auftrag getAuftragByID(int ID) throws SQLException, DatabaseException {
 		Auftrag result = null;
 		Statement stmt = c.createStatement();
 		String sql = "SELECT * FROM Auftrag WHERE AUFTRAG_ID = "+ID+";";
 		ResultSet rs = stmt.executeQuery(sql);
-		if (rs.next()) result = new Auftrag(rs.getInt("AUFTRAG_ID"),rs.getString("TITEL"),rs.getString("ART"),rs.getDouble("prognostizierte_kosten"),rs.getDouble("reelle_kosten"),this.convertIntToBoolean(rs.getInt("angenommen")),this.convertIntToBoolean(rs.getInt("gefertigt")),this.convertIntToBoolean(rs.getInt("kalkuliert")),this.convertIntToBoolean(rs.getInt("abgeholt")),this.convertIntToBoolean(rs.getInt("abgerechnet")),this.convertIntToBoolean(rs.getInt("warten")),this.convertIntToBoolean(rs.getInt("unterbrochen")),this.convertIntToBoolean(rs.getInt("defekt")));
+		if (rs.next()) result = new Auftrag(rs.getInt("AUFTRAG_ID"),rs.getString("TITEL"),rs.getString("ART"),rs.getDouble("prognostizierte_kosten"),rs.getDouble("reelle_kosten"),this.convertIntToBoolean(rs.getInt("angenommen")),this.convertIntToBoolean(rs.getInt("gefertigt")),this.convertIntToBoolean(rs.getInt("kalkuliert")),this.convertIntToBoolean(rs.getInt("abgeholt")),this.convertIntToBoolean(rs.getInt("abgerechnet")),this.convertIntToBoolean(rs.getInt("warten")),this.convertIntToBoolean(rs.getInt("unterbrochen")),this.convertIntToBoolean(rs.getInt("defekt")),new Date(rs.getLong("date_angenommen")*1000L),new Date(rs.getLong("date_gefertigt")*1000L),new Date(rs.getLong("date_kalkuliert")*1000L),new Date(rs.getLong("date_abgeholt")*1000L),new Date(rs.getLong("date_abgerechnet")*1000L),new Date(rs.getLong("date_warten")*1000L),new Date(rs.getLong("date_unterbrochen")*1000L),new Date(rs.getLong("date_defekt")*1000L));
 		stmt.close();
 		rs.close();
 		if (result!=null) return result;
 		else throw new AuftragNichtVorhandenException();
 	}
-	//TODO Zeit
+
 	public void changeAuftragStatus (int id, String Status) throws SQLException {
 		Statement stmt = c.createStatement();
 		String sql ="SELECT "+Status+" FROM AUFTRAG WHERE AUFTRAG_ID = "+id+";";
@@ -452,15 +452,14 @@ public class SQLManager {
 		stmt.close();
 	}
 	
-	//TODO Zeit
-	//TODO: Konstruktor anpassen sobald Dates in der Klasse sind
+
 	public List<Auftrag> getAllAuftrag() throws SQLException {
 		List<Auftrag> result= new ArrayList<Auftrag>();
 		Statement stmt = c.createStatement();
 		ResultSet rs = stmt.executeQuery("SELECT * FROM Auftrag;");
 		Auftrag tempAuftrag=null;
 		while (rs.next()) {
-			tempAuftrag = new Auftrag(rs.getInt("AUFTRAG_ID"),rs.getString("TITEL"),rs.getString("ART"),rs.getDouble("prognostizierte_kosten"),rs.getDouble("reelle_kosten"),this.convertIntToBoolean(rs.getInt("angenommen")),this.convertIntToBoolean(rs.getInt("gefertigt")),this.convertIntToBoolean(rs.getInt("kalkuliert")),this.convertIntToBoolean(rs.getInt("abgeholt")),this.convertIntToBoolean(rs.getInt("abgerechnet")),this.convertIntToBoolean(rs.getInt("warten")),this.convertIntToBoolean(rs.getInt("unterbrochen")),this.convertIntToBoolean(rs.getInt("defekt")));
+			tempAuftrag = new Auftrag(rs.getInt("AUFTRAG_ID"),rs.getString("TITEL"),rs.getString("ART"),rs.getDouble("prognostizierte_kosten"),rs.getDouble("reelle_kosten"),this.convertIntToBoolean(rs.getInt("angenommen")),this.convertIntToBoolean(rs.getInt("gefertigt")),this.convertIntToBoolean(rs.getInt("kalkuliert")),this.convertIntToBoolean(rs.getInt("abgeholt")),this.convertIntToBoolean(rs.getInt("abgerechnet")),this.convertIntToBoolean(rs.getInt("warten")),this.convertIntToBoolean(rs.getInt("unterbrochen")),this.convertIntToBoolean(rs.getInt("defekt")),new Date(rs.getLong("date_angenommen")*1000L),new Date(rs.getLong("date_gefertigt")*1000L),new Date(rs.getLong("date_kalkuliert")*1000L),new Date(rs.getLong("date_abgeholt")*1000L),new Date(rs.getLong("date_abgerechnet")*1000L),new Date(rs.getLong("date_warten")*1000L),new Date(rs.getLong("date_unterbrochen")*1000L),new Date(rs.getLong("date_defekt")*1000L));
 			result.add(tempAuftrag);
 		}
 		rs.close();
@@ -470,7 +469,7 @@ public class SQLManager {
 	//TODO: Rechnungsdatum
 	public void createRechnung(String name, String bezahlart, double betrag, int auftrag_id, int auftraggeber_id, int verwalter_id, int topf_id) throws SQLException{
 		Statement stmt = c.createStatement();
-		String sql ="INSERT INTO Rechnung (rechnungsname, bezahlart, betrag, AUFTRAG_ID, AUFTRAGGEBER_ID, ANSPRECHPARTNER_ID, TOPF_ID, bearbeitung, eingereicht, abgewickelt, ausstehend, RECHNUNGSDATUM) VALUES ('"+name+"','"+bezahlart+"','"+betrag+"','"+auftrag_id+"','"+auftraggeber_id+"','"+verwalter_id+"','"+topf_id+"',0,0,0,0, "+new Date().getTime()+");";
+		String sql ="INSERT INTO Rechnung (rechnungsname, bezahlart, betrag, AUFTRAG_ID, AUFTRAGGEBER_ID, ANSPRECHPARTNER_ID, TOPF_ID, bearbeitung, eingereicht, abgewickelt, ausstehend, RECHNUNGSDATUM, date_bearbeitung, date_eingereicht, date_abgewickelt, date_ausstehend) VALUES ('"+name+"','"+bezahlart+"','"+betrag+"','"+auftrag_id+"','"+auftraggeber_id+"','"+verwalter_id+"','"+topf_id+"',0,0,0,0, "+new Date().getTime()/1000L+", "+new Date().getTime()/1000L+", "+new Date().getTime()/1000L+", "+new Date().getTime()/1000L+", "+new Date().getTime()/1000L+");";
 		stmt.executeUpdate(sql);
 		stmt.close();	
 	
@@ -489,7 +488,7 @@ public class SQLManager {
 		Statement stmt = c.createStatement();
 		String sql = "SELECT * FROM Rechnung WHERE RECHNUNG_ID = "+ID+";";
 		ResultSet rs = stmt.executeQuery(sql);
-		if (rs.next()) result = new Rechnung(rs.getInt("RECHNUNG_ID"),rs.getDate("RECHNUNGSDATUM"),rs.getString("rechnungsname"),rs.getString("bezahlart"),rs.getDouble("betrag"),this.convertIntToBoolean(rs.getInt("bearbeitung")),this.convertIntToBoolean(rs.getInt("eingereicht")),this.convertIntToBoolean(rs.getInt("abgewickelt")),this.convertIntToBoolean(rs.getInt("ausstehend")));
+		if (rs.next()) result = new Rechnung(rs.getInt("RECHNUNG_ID"),rs.getDate("RECHNUNGSDATUM"),rs.getString("rechnungsname"),rs.getString("bezahlart"),rs.getDouble("betrag"),this.convertIntToBoolean(rs.getInt("bearbeitung")),this.convertIntToBoolean(rs.getInt("eingereicht")),this.convertIntToBoolean(rs.getInt("abgewickelt")),this.convertIntToBoolean(rs.getInt("ausstehend")),new Date(rs.getLong("date_bearbeitung")*1000L),new Date(rs.getLong("date_eingereicht")*1000L),new Date(rs.getLong("date_abgewickelt")*1000L),new Date(rs.getLong("date_ausstehend")*1000L));
 		stmt.close();
 		rs.close();
 		if (result!=null) return result;
@@ -503,11 +502,6 @@ public class SQLManager {
 	}
 	
 
-	/**
-	 * @author Nico Rychlik
-	 * @param i
-	 * @return gibt true zur�ck wenn i==1 ist, ansonsten false
-	 */
 
 	public void changeRechnungStatus (int id, String Status) throws SQLException {
 		Statement stmt = c.createStatement();
@@ -779,7 +773,7 @@ public class SQLManager {
 		ResultSet rs = stmt.executeQuery("SELECT * FROM Rechnung;");
 		Rechnung tempRechnung=null;
 		while (rs.next()) {
-			tempRechnung = new Rechnung(rs.getInt("RECHNUNG_ID"),rs.getDate("RECHNUNGSDATUM"),rs.getString("rechnungsname"),rs.getString("bezahlart"),rs.getDouble("betrag"),this.convertIntToBoolean(rs.getInt("bearbeitung")),this.convertIntToBoolean(rs.getInt("eingereicht")),this.convertIntToBoolean(rs.getInt("abgewickelt")),this.convertIntToBoolean(rs.getInt("ausstehend")));
+			tempRechnung = new Rechnung(rs.getInt("RECHNUNG_ID"),rs.getDate("RECHNUNGSDATUM"),rs.getString("rechnungsname"),rs.getString("bezahlart"),rs.getDouble("betrag"),this.convertIntToBoolean(rs.getInt("bearbeitung")),this.convertIntToBoolean(rs.getInt("eingereicht")),this.convertIntToBoolean(rs.getInt("abgewickelt")),this.convertIntToBoolean(rs.getInt("ausstehend")),new Date(rs.getLong("date_bearbeitung")*1000L),new Date(rs.getLong("date_eingereicht")*1000L),new Date(rs.getLong("date_abgewickelt")*1000L),new Date(rs.getLong("date_ausstehend")*1000L));
 			result.add(tempRechnung);
 		}
 		rs.close();
