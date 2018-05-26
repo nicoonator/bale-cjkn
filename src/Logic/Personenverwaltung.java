@@ -1,5 +1,9 @@
 package Logic;
 
+import java.sql.SQLException;
+
+import DataAccess.SQLManager;
+import Exceptions.DatabaseException;
 
 public class Personenverwaltung {
 	
@@ -11,24 +15,24 @@ public class Personenverwaltung {
 	}
 
 	public void createPerson(String vorname, String nachname, String strasse, 
-			int hausnr, int PLZ, String email) {
+			int hausnr, int PLZ, String email, String nutzername, String passwort, int rolle) throws DatabaseException, SQLException {
 		
-		//TODO
+		SQLManager.getInstance().createPerson(vorname, nachname, strasse, hausnr, PLZ, email, nutzername, passwort, rolle);
 	}
 	
-	public void deletePerson(int id) {
+	public void deletePerson(int id) throws SQLException, DatabaseException {
 		
-		//TODO
+		SQLManager.getInstance().deletePerson(id);
 	}
 	
-	public void modifyPerson(int id, String attribute, String newData) {
+	public void modifyPerson(int id, String attribute, String newData) throws SQLException {
 		
-		//TODO
+		SQLManager.getInstance().modifyPerson(id, attribute, newData);
 	}
 	
-	public boolean checkadmin(int id) {
+	public boolean checkadmin(int id) throws SQLException {
 		
-		//TODO
+		SQLManager.getInstance().checkAdmin(id);
 		
 		return false;
 	}
