@@ -787,6 +787,12 @@ public class SQLManager {
 		return result;
 	}
 	
+	/**
+	 * 
+	 * @author Nico Rychlik
+	 * @param i
+	 * @return true if i is 1 else false
+	 */
 	public boolean convertIntToBoolean (int i) {
 		if (i==1) return true;
 		else return false;
