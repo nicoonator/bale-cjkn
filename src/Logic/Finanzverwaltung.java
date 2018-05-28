@@ -65,6 +65,6 @@ public class Finanzverwaltung {
 		SQLManager.getInstance().changeRechnungStatus(id, status);
 	}
 	
-	//TODO Create T�pfe/Kassen
+	//TODO Create Toepfe/Kassen
 	
 }
