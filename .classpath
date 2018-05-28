@@ -3,5 +3,12 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="C:/Users/Nico/git/elab-cjkn/sqlite-jdbc-3.21.0.jar"/>
+	<classpathentry kind="lib" path="Apache PDFBox/fontbox-2.0.9.jar"/>
+	<classpathentry kind="lib" path="Apache PDFBox/pdfbox-2.0.9.jar"/>
+	<classpathentry kind="lib" path="Apache PDFBox/pdfbox-app-2.0.9.jar"/>
+	<classpathentry kind="lib" path="Apache PDFBox/pdfbox-tools-2.0.9.jar"/>
+	<classpathentry kind="lib" path="Apache PDFBox/preflight-2.0.9.jar"/>
+	<classpathentry kind="lib" path="Apache PDFBox/preflight-app-2.0.9.jar"/>
+	<classpathentry kind="lib" path="Apache PDFBox/xmpbox-2.0.9.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
