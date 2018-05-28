@@ -1,6 +1,10 @@
 package Logic;
 
+import java.io.IOException;
 import java.sql.SQLException;
+
+import org.apache.pdfbox.pdmodel.*;
+import org.apache.pdfbox.pdmodel.font.*;
 
 import DataAccess.SQLManager;
 import Exceptions.DatabaseException;
@@ -26,14 +30,41 @@ public class Finanzverwaltung {
 		SQLManager.getInstance().modifyRechnung(rechnung_id, attribut, newData);
 	}
 	
-	public void exportRechnung(int rechnung_id) throws SQLException, DatabaseException {
+	public void exportRechnung(int rechnung_id) throws SQLException, DatabaseException, IOException {
 		Rechnung tempRechnung = SQLManager.getInstance().getRechnungByID(rechnung_id);
+		
+		String path = "Rechnungen/Rechnung_" + String.valueOf(tempRechnung.getRECHNUNG_ID()) + ".pdf";
+		
+		PDDocument document = new PDDocument();
+		PDPage page = new PDPage();
+		PDPageContentStream contentStream = new PDPageContentStream(document, page);
+		
+		document.addPage(page);
+		
+		contentStream.beginText();
+		contentStream.setFont(PDType1Font.TIMES_ROMAN, 12);
+		contentStream.newLineAtOffset(40, 750);
+		contentStream.setLeading(14.5f);
+		
+		contentStream.showText("Hallo!");
+		contentStream.newLine();
+		contentStream.newLine();
+		contentStream.showText("bla ... blub");
+		contentStream.newLine();
+		contentStream.showText("lululu");
+		
+		contentStream.endText();
+		contentStream.close();
+		
+		document.save(path);
+		
+		document.close();
 	}
 	
 	public void changeStatus (int id, String status) throws SQLException {
 		SQLManager.getInstance().changeRechnungStatus(id, status);
 	}
 	
-	//TODO Create Töpfe/Kassen
+	//TODO Create Tï¿½pfe/Kassen
 	
 }
