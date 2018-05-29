@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.Date;
 
 import DataAccess.SQLManager;
+import Logic.Bauteileverwaltung;
 import Logic.Finanzverwaltung;
 import Logic.Rechnung;
 
@@ -25,6 +26,7 @@ public class TestClass {
 		//	SQLManager.getInstance().createAuftrag("test", "druck", 5, 10, null);
 		//	SQLManager.getInstance().createRechnung("test", "bar", 5, 1, 8, 8, 2);
 		//	Finanzverwaltung.getInstance().exportRechnung(1);
+			Bauteileverwaltung.getInstance().addKategorie("Trash");
 		}
 		catch (Exception e) {
 			e.printStackTrace();
