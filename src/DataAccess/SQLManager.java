@@ -258,12 +258,27 @@ public class SQLManager {
 	 * @author Nico Rychlik
 	 * @param id
 	 * @throws SQLException
+	 * @throws KategorieBereitsVorhandenException 
+	 * @throws DeleteTrashException 
 	 */
 	
-	// TODO: WENN BAUTEILE DRIN SIND? --> Bauteile haben keine Kategorie mehr (Trash Kategorie)
-	public void deleteKategorie(int id) throws SQLException {
+	public void deleteKategorie(int id) throws SQLException, DatabaseException {
 		Statement stmt = c.createStatement();
-		String sql ="DELETE FROM Kategorie WHERE KATEGORIE_ID="+id+";";
+		String sql = "SELECT * FROM Bauteil WHERE KATEGORIE_ID = "+id+";";
+		if (stmt.executeQuery(sql).next()) {
+			/** Kategorie 3 --> Trash Kategorie */
+			if (!(stmt.executeQuery("SELECT KATEGORIE_ID FROM Kategorie WHERE name = trash;").next())) {
+				this.addKategorie("trash");
+			}
+			sql = "SELECT KATEGORIE_ID FROM Kategorie WHERE name = trash";
+			ResultSet rs = stmt.executeQuery(sql);
+			int trash = rs.getInt(1);
+			if (trash == id) throw new DeleteTrashException();
+			sql = "UPDATE Bauteil SET KATEGORIE_ID = "+trash+" WHERE KATEGORIE ID = "+id+";";
+			stmt.executeUpdate(sql);
+			rs.close();
+		}
+		sql ="DELETE FROM Kategorie WHERE KATEGORIE_ID="+id+";";
 		stmt.executeUpdate(sql);
 		stmt.close();	
 	}
