@@ -16,8 +16,8 @@ public class Fertigungsverwaltung {
 		return instance;
 	}
 	
-	public void createAuftrag(String titel, String art, double prog_kosten, double reele_kosten, List<Person> personen) throws SQLException {
-		SQLManager.getInstance().createAuftrag(titel, art, prog_kosten, reele_kosten, personen);
+	public void createAuftrag(String titel, String art, double prog_kosten, double reele_kosten, int auftraggeber_ID, int verwalter_ID, List<Person> personen) throws SQLException {
+		SQLManager.getInstance().createAuftrag(titel, art, prog_kosten, reele_kosten,auftraggeber_ID, verwalter_ID, personen);
 	}
 	
 	public void deleteAuftrag(int id) throws SQLException, DatabaseException {
@@ -30,6 +30,14 @@ public class Fertigungsverwaltung {
 	
 	public void modifyAuftrag(int id, String attribut, String newData) throws SQLException {
 		SQLManager.getInstance().modifyAuftrag(id, attribut, newData);
+	}
+	
+	public Auftrag getAuftragByID (int id) throws SQLException, DatabaseException{
+		return SQLManager.getInstance().getAuftragByID(id);
+	}
+	
+	public List<Auftrag> getAllAuftrag () throws SQLException, DatabaseException{
+		return SQLManager.getInstance().getAllAuftrag();
 	}
 	
 }
