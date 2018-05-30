@@ -15,7 +15,7 @@ public class PersonHatAuftraegeException extends DatabaseException {
 	
 	@Override
 	public String getMessage(){
-		return "Die zu löschende Person hat noch nicht abgewickelte Aufträge, für die Sie verantwortlich ist!";
+		return "Die zu loeschende Person hat noch nicht abgewickelte Auftraege, fuer die Sie verantwortlich ist!";
 	}
 	
 	@Override

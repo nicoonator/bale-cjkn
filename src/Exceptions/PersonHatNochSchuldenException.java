@@ -15,7 +15,7 @@ public class PersonHatNochSchuldenException extends DatabaseException {
 	
 	@Override
 	public String getMessage(){
-		return "Die zu löschende Person hat noch Bauteilschulden!";
+		return "Die zu loeschende Person hat noch Bauteilschulden!";
 	}
 	
 	@Override

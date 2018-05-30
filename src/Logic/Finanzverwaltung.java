@@ -23,7 +23,7 @@ public class Finanzverwaltung {
 		SQLManager.getInstance().createRechnung(name, bezahlart, betrag, auftrag_id, auftraggeber_id, verwalter_id, topf_id);
 	}
 	
-	public void deleteRechnung(int rechnung_id) throws SQLException {
+	public void deleteRechnung(int rechnung_id) throws SQLException, DatabaseException {
 		SQLManager.getInstance().deleteRechnung(rechnung_id);
 	}
 	
@@ -78,6 +78,6 @@ public class Finanzverwaltung {
 		SQLManager.getInstance().changeRechnungStatus(id, status);
 	}
 	
-	//TODO Create T�pfe/Kassen
+	//TODO Create Toepfe/Kassen
 	
 }

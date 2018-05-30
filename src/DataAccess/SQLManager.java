@@ -159,10 +159,10 @@ public class SQLManager {
 	 * @return returns true if id is of type admin
 	 * @throws SQLException
 	 */
-	public boolean checkAdmin (int id) throws SQLException {
+	public boolean checkAdmin (String nutzername) throws SQLException {
 		boolean result= false;
 		Statement stmt = c.createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT rolle FROM Person WHERE PERSON_ID = "+id+";");
+		ResultSet rs = stmt.executeQuery("SELECT rolle FROM Person WHERE nutzername = '"+nutzername+"';");
 		if (rs.getInt(1)==0) result=true;
 		rs.close();
 		stmt.close();
@@ -179,7 +179,8 @@ public class SQLManager {
 	public boolean login (String username, String password) throws SQLException {
 		boolean result=false;
 		Statement stmt =c.createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT * FROM PERSON WHERE nutzername='"+username+"AND WHERE passwort='"+password+"';");
+		String sql="SELECT * FROM PERSON WHERE nutzername= '"+username+"' AND passwort= '"+password+"';";
+		ResultSet rs = stmt.executeQuery(sql);
 		if (rs.next()) result=true;
 		rs.close();
 		stmt.close();
@@ -254,16 +255,31 @@ public class SQLManager {
 		return result;
 	}
 	
+	
 	/**
+	 * loescht die Kategorie und weist Bauteilen die dieser Kategorie angehoeren die Trash Kategorie zu und erstellt sie ggf.
 	 * @author Nico Rychlik
 	 * @param id
 	 * @throws SQLException
+	 * @throws DatabaseException
 	 */
-	
-	// TODO: WENN BAUTEILE DRIN SIND? --> Bauteile haben keine Kategorie mehr (Trash Kategorie)
-	public void deleteKategorie(int id) throws SQLException {
+	public void deleteKategorie(int id) throws SQLException, DatabaseException {
 		Statement stmt = c.createStatement();
-		String sql ="DELETE FROM Kategorie WHERE KATEGORIE_ID="+id+";";
+		String sql = "SELECT * FROM Bauteil WHERE KATEGORIE_ID = "+id+";";
+		if (stmt.executeQuery(sql).next()) {
+			/** Kategorie 3 --> Trash Kategorie */
+			if (!(stmt.executeQuery("SELECT KATEGORIE_ID FROM Kategorie WHERE name = trash;").next())) {
+				this.addKategorie("trash");
+			}
+			sql = "SELECT KATEGORIE_ID FROM Kategorie WHERE name = trash";
+			ResultSet rs = stmt.executeQuery(sql);
+			int trash = rs.getInt(1);
+			if (trash == id) throw new DeleteTrashException();
+			sql = "UPDATE Bauteil SET KATEGORIE_ID = "+trash+" WHERE KATEGORIE ID = "+id+";";
+			stmt.executeUpdate(sql);
+			rs.close();
+		}
+		sql ="DELETE FROM Kategorie WHERE KATEGORIE_ID="+id+";";
 		stmt.executeUpdate(sql);
 		stmt.close();	
 	}
@@ -406,7 +422,7 @@ public class SQLManager {
 	
 	public void createAuftrag(String titel, String art, double prog_kosten, double reele_kosten, List <Person> persons) throws SQLException{
 		Statement stmt = c.createStatement();
-		String sql ="INSERT INTO Auftrag (titel, art, prog_kosten, reele_kosten,angenommen, gefertigt, kalkuliert, abgeholt, abgerechnet, warten, unterbrochen, defekt, date_angenommen, date_gefertigt, date_kalkuliert, date_abgeholt, date_abgerechnet, date_warten, date_unterbrochen, date_defekt) VALUES ('"+titel+"','"+art+"','"+prog_kosten+"','"+reele_kosten+"',1,0,0,0,0,0,0,0,"+new Date().getTime()/1000L+","+new Date().getTime()/1000L+","+new Date().getTime()/1000L+","+new Date().getTime()/1000L+","+new Date().getTime()/1000L+","+new Date().getTime()/1000L+","+new Date().getTime()/1000L+","+new Date().getTime()/1000L+");";
+		String sql ="INSERT INTO Auftrag (titel, art, prognostizierte_kosten, reele_kosten,angenommen, gefertigt, kalkuliert, abgeholt, abgerechnet, warten, unterbrochen, defekt, date_angenommen, date_gefertigt, date_kalkuliert, date_abgeholt, date_abgerechnet, date_warten, date_unterbrochen, date_defekt) VALUES ('"+titel+"','"+art+"','"+prog_kosten+"','"+reele_kosten+"',1,0,0,0,0,0,0,0,"+new Date().getTime()/1000L+","+new Date().getTime()/1000L+","+new Date().getTime()/1000L+","+new Date().getTime()/1000L+","+new Date().getTime()/1000L+","+new Date().getTime()/1000L+","+new Date().getTime()/1000L+","+new Date().getTime()/1000L+");";
 		stmt.executeUpdate(sql);
 		stmt.close();	
 	}
@@ -444,9 +460,17 @@ public class SQLManager {
 		stmt.executeUpdate(sql);
 		stmt.close();	
 	}
+	
 	//Nur loeschen wenns keine Rechnung gibt
-	public void deleteAuftrag (int id) throws SQLException{
+	/**
+	 * @author Christin Meyer, Nico Rychlik
+	 * @param id
+	 * @throws SQLException
+	 * @throws deleteAuftragExRechnungException 
+	 */
+	public void deleteAuftrag (int id) throws SQLException, deleteAuftragExRechnungException{
 		Statement stmt = c.createStatement();
+		if (stmt.executeQuery("SELECT * FROM Rechnung WHERE AUFTRAG_ID = "+id+";").next()) throw new deleteAuftragExRechnungException();
 		String sql ="DELETE FROM Auftrag WHERE AUFTRAG_ID="+id+";";
 		stmt.executeUpdate(sql);
 		stmt.close();
@@ -466,29 +490,37 @@ public class SQLManager {
 		stmt.close();
 		return result;
 	}
-	//TODO: Rechnungsdatum
+
 	public void createRechnung(String name, String bezahlart, double betrag, int auftrag_id, int auftraggeber_id, int verwalter_id, int topf_id) throws SQLException{
 		Statement stmt = c.createStatement();
-		String sql ="INSERT INTO Rechnung (rechnungsname, bezahlart, betrag, AUFTRAG_ID, AUFTRAGGEBER_ID, ANSPRECHPARTNER_ID, TOPF_ID, bearbeitung, eingereicht, abgewickelt, ausstehend, RECHNUNGSDATUM, date_bearbeitung, date_eingereicht, date_abgewickelt, date_ausstehend) VALUES ('"+name+"','"+bezahlart+"','"+betrag+"','"+auftrag_id+"','"+auftraggeber_id+"','"+verwalter_id+"','"+topf_id+"',0,0,0,0, "+new Date().getTime()/1000L+", "+new Date().getTime()/1000L+", "+new Date().getTime()/1000L+", "+new Date().getTime()/1000L+", "+new Date().getTime()/1000L+");";
+		String sql ="INSERT INTO Rechnung (rechnungsname, bezahlungsart, betrag, AUFTRAG_ID, AUFTRAGGEBER_ID, ANSPRECHPARTNER_ID, TOPF_ID, bearbeitung, eingereicht, abgewickelt, ausstehend, RECHNUNGSDATUM, date_bearbeitung, date_eingereicht, date_abgewickelt, date_ausstehend) VALUES ('"+name+"','"+bezahlart+"','"+betrag+"','"+auftrag_id+"','"+auftraggeber_id+"','"+verwalter_id+"','"+topf_id+"',0,0,0,0, "+new Date().getTime()/1000L+", "+new Date().getTime()/1000L+", "+new Date().getTime()/1000L+", "+new Date().getTime()/1000L+", "+new Date().getTime()/1000L+");";
 		stmt.executeUpdate(sql);
 		stmt.close();	
 	
 	}
-	public void deleteRechnung (int id) throws SQLException{
+	
+	/**
+	 * nur loeschen, wenn die Rechnung auch abgewickelt ist
+	 * @author Christin Meyer, Nico Rychlik
+	 * @param id
+	 * @throws SQLException
+	 * @throws DatabaseException 
+	 */
+	public void deleteRechnung (int id) throws SQLException, DatabaseException{
 		Statement stmt = c.createStatement();
+		if (!this.getRechnungByID(id).isAbgewickelt()) throw new RechnungNochNichtAbgewickeltException();
 		String sql ="DELETE FROM Rechnung WHERE RECHNUNG_ID="+id+";";
 		stmt.executeUpdate(sql);
 		stmt.close();	
 	
 	}
 	
-	//TODO: Konstruktor anpassen sobald Dates in der Klasse sind
 	public Rechnung getRechnungByID(int ID) throws SQLException, DatabaseException {
 		Rechnung result = null;
 		Statement stmt = c.createStatement();
 		String sql = "SELECT * FROM Rechnung WHERE RECHNUNG_ID = "+ID+";";
 		ResultSet rs = stmt.executeQuery(sql);
-		if (rs.next()) result = new Rechnung(rs.getInt("RECHNUNG_ID"),rs.getDate("RECHNUNGSDATUM"),rs.getString("rechnungsname"),rs.getString("bezahlart"),rs.getDouble("betrag"),this.convertIntToBoolean(rs.getInt("bearbeitung")),this.convertIntToBoolean(rs.getInt("eingereicht")),this.convertIntToBoolean(rs.getInt("abgewickelt")),this.convertIntToBoolean(rs.getInt("ausstehend")),new Date(rs.getLong("date_bearbeitung")*1000L),new Date(rs.getLong("date_eingereicht")*1000L),new Date(rs.getLong("date_abgewickelt")*1000L),new Date(rs.getLong("date_ausstehend")*1000L));
+		if (rs.next()) result = new Rechnung(rs.getInt("RECHNUNG_ID"),rs.getDate("RECHNUNGSDATUM"),rs.getString("rechnungsname"),rs.getString("bezahlungsart"),rs.getDouble("betrag"),this.convertIntToBoolean(rs.getInt("bearbeitung")),this.convertIntToBoolean(rs.getInt("eingereicht")),this.convertIntToBoolean(rs.getInt("abgewickelt")),this.convertIntToBoolean(rs.getInt("ausstehend")),new Date(rs.getLong("date_bearbeitung")*1000L),new Date(rs.getLong("date_eingereicht")*1000L),new Date(rs.getLong("date_abgewickelt")*1000L),new Date(rs.getLong("date_ausstehend")*1000L));
 		stmt.close();
 		rs.close();
 		if (result!=null) return result;
@@ -765,8 +797,6 @@ public class SQLManager {
 	}
 	
 
-	
-	//TODO: Konstruktor anpassen sobald Dates in der Klasse sind
 	public List<Rechnung> getAllRechnung() throws SQLException {
 		List<Rechnung> result= new ArrayList<Rechnung>();
 		Statement stmt = c.createStatement();

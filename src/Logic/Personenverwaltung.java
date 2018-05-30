@@ -30,9 +30,9 @@ public class Personenverwaltung {
 		SQLManager.getInstance().modifyPerson(id, attribute, newData);
 	}
 	
-	public boolean checkadmin(int id) throws SQLException {
+	public boolean checkadmin(String nutzername) throws SQLException {
 		
-		SQLManager.getInstance().checkAdmin(id);
+		SQLManager.getInstance().checkAdmin(nutzername);
 		
 		return false;
 	}

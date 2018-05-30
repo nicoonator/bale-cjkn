@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 import DataAccess.SQLManager;
+import Exceptions.DatabaseException;
+import Exceptions.deleteAuftragExRechnungException;
 
 public class Fertigungsverwaltung {
 	
@@ -18,7 +20,7 @@ public class Fertigungsverwaltung {
 		SQLManager.getInstance().createAuftrag(titel, art, prog_kosten, reele_kosten, personen);
 	}
 	
-	public void deleteAuftrag(int id) throws SQLException {
+	public void deleteAuftrag(int id) throws SQLException, DatabaseException {
 		SQLManager.getInstance().deleteAuftrag(id);
 	}
 	

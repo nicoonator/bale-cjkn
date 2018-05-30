@@ -24,7 +24,7 @@ public class Bauteileverwaltung {
 		SQLManager.getInstance().addKategorie(name);
 	}
 	
-	public void deleteKategorie(int ID) throws SQLException {
+	public void deleteKategorie(int ID) throws SQLException, DatabaseException {
 		SQLManager.getInstance().deleteKategorie(ID);
 	}
 	
