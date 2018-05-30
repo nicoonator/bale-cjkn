@@ -31,7 +31,7 @@ public class HauptGUI extends Application{
 	    BorderPane borderPane = new BorderPane();
 	    String arr[] = {"Personenverwaltung", "Auftragsverwaltung", "Finanzverwaltung", "Bauteileverwaltung"};
 	    
-	    for (int i = 0; i < 5; i++) {
+	    for (int i = 0; i < 4; i++) {
 	    	Tab tab = new Tab(arr[i]);
 	    	HBox hbox = new HBox();
 	    	HBox hboxbtn = new HBox();
