@@ -1,6 +1,7 @@
 package Logic;
 
 import java.util.Date;
+import java.util.List;
 
 public class Auftrag {
 	/**
@@ -41,9 +42,11 @@ public class Auftrag {
 	private Date date_warten;
 	private Date date_unterbrochen;
 	private Date date_defekt;
+	private Person auftraggeber;
+	private Person verwalter;
+	private List<Person> vertreter;
 	
-	
-	
+
 	/**
 	 * @param aUFTRAG_ID
 	 * @param titel
@@ -66,12 +69,15 @@ public class Auftrag {
 	 * @param date_warten
 	 * @param date_unterbrochen
 	 * @param date_defekt
+	 * @param auftraggeber
+	 * @param verwalter
+	 * @param vertreter
 	 */
 	public Auftrag(int aUFTRAG_ID, String titel, String aRT, double progno_cost, double reelle_kosten,
 			boolean angenommen, boolean gefertigt, boolean kalkuliert, boolean abgeholt, boolean abgerechnet,
 			boolean warten, boolean unterbrochen, boolean defekt, Date date_angenommen, Date date_gefertigt,
 			Date date_kalkuliert, Date date_abgeholt, Date date_abgerechnet, Date date_warten, Date date_unterbrochen,
-			Date date_defekt) {
+			Date date_defekt, Person auftraggeber, Person verwalter, List<Person> vertreter) {
 		super();
 		AUFTRAG_ID = aUFTRAG_ID;
 		this.titel = titel;
@@ -94,9 +100,12 @@ public class Auftrag {
 		this.date_warten = date_warten;
 		this.date_unterbrochen = date_unterbrochen;
 		this.date_defekt = date_defekt;
+		this.auftraggeber = auftraggeber;
+		this.verwalter = verwalter;
+		this.vertreter = vertreter;
 	}
 
-
+	
 
 	/**
 	 * @return the date_angenommen
@@ -104,8 +113,6 @@ public class Auftrag {
 	public Date getDate_angenommen() {
 		return date_angenommen;
 	}
-
-
 
 	/**
 	 * @param date_angenommen the date_angenommen to set
@@ -326,5 +333,61 @@ public class Auftrag {
 	}
 	public String getART() {
 		return ART;
+	}
+
+
+
+
+
+	/**
+	 * @return the auftraggeber
+	 */
+	public Person getAuftraggeber() {
+		return auftraggeber;
+	}
+
+
+
+	/**
+	 * @param auftraggeber the auftraggeber to set
+	 */
+	public void setAuftraggeber(Person auftraggeber) {
+		this.auftraggeber = auftraggeber;
+	}
+
+
+
+	/**
+	 * @return the verwalter
+	 */
+	public Person getVerwalter() {
+		return verwalter;
+	}
+
+
+
+	/**
+	 * @param verwalter the verwalter to set
+	 */
+	public void setVerwalter(Person verwalter) {
+		this.verwalter = verwalter;
+	}
+
+
+
+	/**
+	 * @return the vertreter
+	 */
+	public List<Person> getVertreter() {
+		return vertreter;
+	}
+
+
+
+	/**
+	 * @param vertreter the vertreter to set
+	 */
+	public void setVertreter(List<Person> vertreter) {
+		this.vertreter = vertreter;
 	}
 }
