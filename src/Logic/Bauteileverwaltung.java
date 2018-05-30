@@ -1,13 +1,11 @@
 package Logic;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import DataAccess.SQLManager;
-import Exceptions.BauteilAnzahlZuKleinException;
-import Exceptions.BauteilBereitsVorhandenException;
 import Exceptions.BauteilNichtImWarenkorbException;
 import Exceptions.DatabaseException;
-import Exceptions.KategorieBereitsVorhandenException;
 import Exceptions.ZuWenigBauteileImWarenkorbException;
 
 public class Bauteileverwaltung {
@@ -48,5 +46,28 @@ public class Bauteileverwaltung {
 		SQLManager.getInstance().removeBauteil(ID, anzahl, person_id);
 	}
 	
+	public List<Bauteil> getAllBauteile() throws SQLException {
+		return SQLManager.getInstance().getAllBauteil();
+	}
+	
+	public Bauteil getBauteilByID(int id) throws SQLException{
+		return SQLManager.getInstance().getBauteilByID(id);
+	}
+	
+	public List<Kategorie> getAllKategorie() throws SQLException{
+		return SQLManager.getInstance().getAllKategorie();
+	}
+	
+	public Kategorie getKategorieByID(int id) throws SQLException{
+		return SQLManager.getInstance().getKategorieByID(id);
+	}
+	
+	public List<Bauteilwarenkorbelement> getBauteilwarenkorbByID(int id) throws SQLException{
+		return SQLManager.getInstance().getBauteilwarenkorbByID(id);
+	}
+	
+	public void ClearBauteilwarenkorb(int id) throws SQLException {
+		SQLManager.getInstance().clearBauteilwarenkorb(id);
+	}
 }
 
