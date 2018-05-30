@@ -32,22 +32,22 @@ public class HauptGUI extends Application{
 	    String arr[] = {"Personenverwaltung", "Auftragsverwaltung", "Finanzverwaltung", "Bauteileverwaltung"};
 	    
 	    for (int i = 0; i < 4; i++) {
+	    	//if(admin)
 	    	Tab tab = new Tab(arr[i]);
 	    	HBox hbox = new HBox();
 	    	HBox hboxbtn = new HBox();
 	    	tab.setClosable(false);
-	      
 	    	hbox.getChildren().add(new Label("Tab" + i));
 	      
 	    	Button btn = new Button("Bestaetigen");
 	    	hboxbtn.getChildren().add(btn);
-	      
-	    	hboxbtn.setAlignment(Pos.CENTER);
+	    	hboxbtn.setAlignment(Pos.BOTTOM_CENTER);
 	    	hbox.setAlignment(Pos.CENTER);
 	    	
 	    	//tab.setContent laesst nur immer eine Sache zu, ueberschreibt die andere?
-	    	tab.setContent(hbox);
 	    	tab.setContent(hboxbtn);
+	    	tab.setContent(hbox);
+	    	
 	    	
 	     
 	      
