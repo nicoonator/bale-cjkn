@@ -30,6 +30,14 @@ public class Finanzverwaltung {
 		SQLManager.getInstance().modifyRechnung(rechnung_id, attribut, newData);
 	}
 	
+	/**
+	 * This method exports an invoice to PDF.
+	 * 
+	 * @param rechnung_id the ID of the selected invoice0
+	 * @throws SQLException
+	 * @throws DatabaseException
+	 * @throws IOException
+	 */
 	public void exportRechnung(int rechnung_id) throws SQLException, DatabaseException, IOException {
 		Rechnung tempRechnung = SQLManager.getInstance().getRechnungByID(rechnung_id);
 		
