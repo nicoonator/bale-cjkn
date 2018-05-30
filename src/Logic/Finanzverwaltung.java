@@ -1,5 +1,6 @@
 package Logic;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -63,6 +64,10 @@ public class Finanzverwaltung {
 		
 		contentStream.endText();
 		contentStream.close();
+		
+		File file = new File("Rechnungen");
+		if(!file.isDirectory())
+			file.mkdir();
 		
 		document.save(path);
 		
