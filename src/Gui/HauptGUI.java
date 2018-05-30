@@ -15,6 +15,13 @@ import javafx.stage.Stage;
 
 public class HauptGUI extends Application{
 	
+	boolean admin;
+	
+	public HauptGUI (boolean admin) {
+		super();
+		this.admin=admin;
+	}
+	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		primaryStage.setTitle("Tabs");
@@ -22,7 +29,7 @@ public class HauptGUI extends Application{
 		Scene scene = new Scene (root, 1000, 500);
 		TabPane tabPane = new TabPane();
 	    BorderPane borderPane = new BorderPane();
-	    String arr[] = {"benutzer", "admin", "secret", "supersecret", "dontclick"};
+	    String arr[] = {"Personenverwaltung", "Auftragsverwaltung", "Finanzverwaltung", "Bauteileverwaltung"};
 	    
 	    for (int i = 0; i < 5; i++) {
 	    	Tab tab = new Tab(arr[i]);

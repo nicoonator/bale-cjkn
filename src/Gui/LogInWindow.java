@@ -1,4 +1,9 @@
 package Gui;
+import java.sql.SQLException;
+
+import Exceptions.DatabaseException;
+import Logic.LogIn;
+import Logic.Personenverwaltung;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -17,7 +22,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class LogInWindow extends Application {
-	HauptGUI a = new HauptGUI();
 	public static void main(String[] args) {
 		launch(args);
 		}
@@ -71,8 +75,8 @@ public class LogInWindow extends Application {
             public void handle(ActionEvent e) {
         		
         		
-        		nutzerTextFeld.getText();
-        		passTextFeld.getText();
+        		String nutzer=nutzerTextFeld.getText();
+        		String pw=passTextFeld.getText();
         		//Test
         		//System.out.println(nutzerTextFeld.getText() + "  " + passTextFeld.getText());
         		
@@ -89,12 +93,18 @@ public class LogInWindow extends Application {
         		
         		
         		//Bei Betaetigen des Knopfes oeffnet sich die Tab Instanz
-        		try {
-					a.start(primaryStage);
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+        		
+        			try {
+						if(LogIn.getInstance().login(nutzer, pw)) new HauptGUI(Personenverwaltung.getInstance().checkadmin(nutzer)).start(primaryStage);
+						else ;//TODO LoginException.getMessage nutzen
+					} catch (DatabaseException | SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.getMessage(); // <-- Diesen String nutzen
+					} catch (Exception e2) {
+						// TODO Auto-generated catch block
+						e2.printStackTrace();
+					} 
+				
         		
             }
         });
