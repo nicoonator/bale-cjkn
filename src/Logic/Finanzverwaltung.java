@@ -34,7 +34,7 @@ public class Finanzverwaltung {
 	/**
 	 * This method exports an invoice to PDF.
 	 * 
-	 * @param rechnung_id the ID of the selected invoice0
+	 * @param rechnung_id the ID of the selected invoice
 	 * @throws SQLException
 	 * @throws DatabaseException
 	 * @throws IOException
@@ -42,7 +42,9 @@ public class Finanzverwaltung {
 	public void exportRechnung(int rechnung_id) throws SQLException, DatabaseException, IOException {
 		Rechnung tempRechnung = SQLManager.getInstance().getRechnungByID(rechnung_id);
 		
-		String path = "Rechnungen/Rechnung_" + String.valueOf(tempRechnung.getRECHNUNG_ID()) + ".pdf";
+		//TODO Druckdatum, Name/Anschrift von Auftraggeber, ausdruckender Admin
+		
+		String path = "Rechnungen/Rechnung_" + rechnung_id + ".pdf";
 		
 		PDDocument document = new PDDocument();
 		PDPage page = new PDPage();
@@ -51,16 +53,31 @@ public class Finanzverwaltung {
 		document.addPage(page);
 		
 		contentStream.beginText();
-		contentStream.setFont(PDType1Font.TIMES_ROMAN, 12);
-		contentStream.newLineAtOffset(40, 750);
-		contentStream.setLeading(14.5f);
+		contentStream.setFont(PDType1Font.TIMES_ROMAN, 30);
+		contentStream.newLineAtOffset(80, 700);
+		contentStream.setLeading(29.0f);
 		
-		contentStream.showText("Hallo!");
+		contentStream.showText("Rechnung");
 		contentStream.newLine();
 		contentStream.newLine();
-		contentStream.showText("bla ... blub");
+		contentStream.setFont(PDType1Font.TIMES_ROMAN, 20);
+		contentStream.showText("Rechnungsname: " + tempRechnung.getRechnungsname());
 		contentStream.newLine();
-		contentStream.showText("lululu");
+		contentStream.showText("ID: " + rechnung_id);
+		contentStream.newLine();
+		contentStream.showText("Datum: " + tempRechnung.getRECHNUNGSDATUM());
+		contentStream.newLine();
+		contentStream.showText("Betrag: " + tempRechnung.getBetrag() + " €");
+		contentStream.newLine();
+		contentStream.showText("Bezahlart: " + tempRechnung.getBezahlart());
+		contentStream.newLine();
+		contentStream.newLine();
+		contentStream.showText("Bezahlt: ________________________________________");
+		contentStream.newLine();
+		contentStream.showText("                           (Datum, Unterschrift eLab)");
+		contentStream.newLine();
+		contentStream.newLine();
+		contentStream.showText("Anmerkungen:");
 		
 		contentStream.endText();
 		contentStream.close();
