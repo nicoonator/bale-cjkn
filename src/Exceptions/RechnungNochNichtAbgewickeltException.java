@@ -15,7 +15,7 @@ public class RechnungNochNichtAbgewickeltException extends DatabaseException {
 	
 	@Override
 	public String getMessage(){
-		return "Die Rechnung muss erst den Status abgewickelt haben, um gelöscht zu werden!";
+		return "Die Rechnung muss erst den Status abgewickelt haben, um geloescht zu werden!";
 	}
 	
 	@Override

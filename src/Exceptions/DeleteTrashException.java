@@ -15,7 +15,7 @@ public class DeleteTrashException extends DatabaseException {
 	
 	@Override
 	public String getMessage(){
-		return "Diese Kategorie kann erst gelöscht werden, wenn die verbliebenen Bauteile, die dieser Kategorie zugewiesen ist, anderen Kategorien zugewiesen werden!";
+		return "Diese Kategorie kann erst geloescht werden, wenn die verbliebenen Bauteile, die dieser Kategorie zugewiesen ist, anderen Kategorien zugewiesen werden!";
 	}
 	
 	@Override
