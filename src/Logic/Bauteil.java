@@ -10,8 +10,32 @@ public class Bauteil {
 	private	int geplant;
 	private	int bestellt;
 	private	String ort;
+	private int Kategorie_ID;
 	
 	
+	/**
+	 * @param iD
+	 * @param name
+	 * @param link
+	 * @param preis
+	 * @param gelagert
+	 * @param geplant
+	 * @param bestellt
+	 * @param ort
+	 */
+	public Bauteil(int iD, String name, String link, double preis, int gelagert, int geplant, int bestellt,
+			String ort, int Kategorie_ID) {
+		super();
+		ID = iD;
+		this.name = name;
+		this.link = link;
+		this.preis = preis;
+		this.gelagert = gelagert;
+		this.geplant = geplant;
+		this.bestellt = bestellt;
+		this.ort = ort;
+		this.Kategorie_ID=Kategorie_ID;
+	}
 	public int getID() {
 		return ID;
 	}
@@ -59,6 +83,18 @@ public class Bauteil {
 	}
 	public void setOrt(String ort) {
 		this.ort = ort;
+	}
+	/**
+	 * @return the kategorie_ID
+	 */
+	public int getKategorie_ID() {
+		return Kategorie_ID;
+	}
+	/**
+	 * @param kategorie_ID the kategorie_ID to set
+	 */
+	public void setKategorie_ID(int kategorie_ID) {
+		Kategorie_ID = kategorie_ID;
 	}
 	
 	
