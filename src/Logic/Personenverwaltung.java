@@ -1,6 +1,7 @@
 package Logic;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import DataAccess.SQLManager;
 import Exceptions.DatabaseException;
@@ -32,8 +33,19 @@ public class Personenverwaltung {
 	
 	public boolean checkadmin(String nutzername) throws SQLException {
 		
-		SQLManager.getInstance().checkAdmin(nutzername);
+		return SQLManager.getInstance().checkAdmin(nutzername);
 		
-		return false;
 	}
+	public Person getPersonByID(int ID) throws DatabaseException, SQLException {
+		return SQLManager.getInstance().getPersonByID(ID);
+	}
+	
+	public List<Person> getAllPersons() throws SQLException {
+		return SQLManager.getInstance().getAllPersons();
+	}
+	
+	public List<Person> getAllAdmins() throws SQLException {
+		return SQLManager.getInstance().getAllAdmins();
+	}
+	
 }
