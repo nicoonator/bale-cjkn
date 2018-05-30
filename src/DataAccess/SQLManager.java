@@ -159,10 +159,10 @@ public class SQLManager {
 	 * @return returns true if id is of type admin
 	 * @throws SQLException
 	 */
-	public boolean checkAdmin (int id) throws SQLException {
+	public boolean checkAdmin (String nutzername) throws SQLException {
 		boolean result= false;
 		Statement stmt = c.createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT rolle FROM Person WHERE PERSON_ID = "+id+";");
+		ResultSet rs = stmt.executeQuery("SELECT rolle FROM Person WHERE nutzername = '"+nutzername+"';");
 		if (rs.getInt(1)==0) result=true;
 		rs.close();
 		stmt.close();
@@ -179,7 +179,8 @@ public class SQLManager {
 	public boolean login (String username, String password) throws SQLException {
 		boolean result=false;
 		Statement stmt =c.createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT * FROM PERSON WHERE nutzername='"+username+"AND WHERE passwort='"+password+"';");
+		String sql="SELECT * FROM PERSON WHERE nutzername= '"+username+"' AND passwort= '"+password+"';";
+		ResultSet rs = stmt.executeQuery(sql);
 		if (rs.next()) result=true;
 		rs.close();
 		stmt.close();
