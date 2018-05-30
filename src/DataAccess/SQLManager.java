@@ -768,11 +768,11 @@ public class SQLManager {
 	 * @param ist "ist"-value of the "Kasse"
 	 * @throws SQLException
 	 */
-	public void createKasse(int KASSE_ID, String name, double soll, double ist, int typ) throws SQLException {
+	public void createKasse( String name, double soll) throws SQLException {
 		
 		Statement stmt = c.createStatement();
-		String sql = "INSERT INTO Kasse (KASSE_ID, name, soll, ist) VALUES (" 
-				+ KASSE_ID + ", '" + name + "', " + soll + ", " + ist + ", " + typ + ");";
+		String sql = "INSERT INTO Kasse ( name, soll, ist) VALUES ("
+				+ "'" + name + "', " + soll + ", 0,0);";
 		
 		stmt.executeUpdate(sql);
 		
@@ -820,6 +820,18 @@ public class SQLManager {
 	public boolean convertIntToBoolean (int i) {
 		if (i==1) return true;
 		else return false;
+	}
+	
+	public List<Person> getAllAdmins() throws SQLException{
+		List<Person> result= new ArrayList<Person>();
+		Statement stmt = c.createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT * FROM Person WHERE rolle = 0;");
+		while (rs.next()) {
+				result.add(new Mitglied(rs.getInt("PERSON_ID"), rs.getString("vorname"), rs.getString("nachname"),  rs.getString("strasse"),  rs.getInt("hausnr"),  rs.getInt("PLZ"), rs.getString("email"), new Date((rs.getLong("zuerst_erstellt"))*1000L), new Date((rs.getLong("zuletzt_geaendert"))*1000L), rs.getString("nutzername"), rs.getString("passwort"), rs.getInt("bauteilschulden"), new ArrayList<Bauteil>(), true));
+		}
+		stmt.close();
+		rs.close();
+		return result;
 	}
 }
 
