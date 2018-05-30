@@ -29,6 +29,11 @@ public class Rechnung {
 	private Date date_eingereicht;
 	private Date date_abgewickelt;
 	private Date date_ausstehend;
+	private int auftrag_ID;
+	//private int auftrag_ID;
+	//private int topf_ID;
+	
+	//TODO RECHNUNG IM SQLMANAGER + Toepfe +auftraggeber(session?)
 	
 	//AUFTRAG_ID
 	
@@ -49,7 +54,7 @@ public class Rechnung {
 	 */
 	public Rechnung(int rECHNUNG_ID, Date rECHNUNGSDATUM, String rechnungsname, String bezahlart, double betrag,
 			boolean bearbeitung, boolean eingereicht, boolean abgewickelt, boolean ausstehend, Date date_bearbeitung,
-			Date date_eingereicht, Date date_abgewickelt, Date date_ausstehend) {
+			Date date_eingereicht, Date date_abgewickelt, Date date_ausstehend, int auftrag_ID) {
 		super();
 		RECHNUNG_ID = rECHNUNG_ID;
 		RECHNUNGSDATUM = rECHNUNGSDATUM;
@@ -64,6 +69,7 @@ public class Rechnung {
 		this.date_eingereicht = date_eingereicht;
 		this.date_abgewickelt = date_abgewickelt;
 		this.date_ausstehend = date_ausstehend;
+		this.auftrag_ID=auftrag_ID;
 	}
 	/**
 	 * @return the date_bearbeitung
@@ -160,6 +166,18 @@ public class Rechnung {
 	}
 	public Date getRECHNUNGSDATUM() {
 		return RECHNUNGSDATUM;
+	}
+	/**
+	 * @return the auftrag_ID
+	 */
+	public int getAuftrag_ID() {
+		return auftrag_ID;
+	}
+	/**
+	 * @param auftrag_ID the auftrag_ID to set
+	 */
+	public void setAuftrag_ID(int auftrag_ID) {
+		this.auftrag_ID = auftrag_ID;
 	}
 	
 }
