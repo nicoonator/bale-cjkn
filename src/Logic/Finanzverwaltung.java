@@ -42,6 +42,8 @@ public class Finanzverwaltung {
 	public void exportRechnung(int rechnung_id) throws SQLException, DatabaseException, IOException {
 		Rechnung tempRechnung = SQLManager.getInstance().getRechnungByID(rechnung_id);
 		
+		//TODO Druckdatum, Name/Anschrift von Auftraggeber, ausdruckender Admin
+		
 		String path = "Rechnungen/Rechnung_" + rechnung_id + ".pdf";
 		
 		PDDocument document = new PDDocument();
