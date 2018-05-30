@@ -2,6 +2,7 @@ package Gui;
 import java.sql.SQLException;
 
 import Exceptions.DatabaseException;
+import Exceptions.LoginException;
 import Logic.LogIn;
 import Logic.Personenverwaltung;
 import javafx.application.Application;
@@ -87,7 +88,7 @@ public class LogInWindow extends Application {
         		//Moeglichkeit dem Nutzer anzuzeigen, dass entweder Nutzername oder 
         		//Passwort falsch ist.
         		//Test
-        		actiontarget.setText("Feedback");
+        		
         		
         		//TODO: Anbindung an SQL ? 
         		
@@ -96,13 +97,13 @@ public class LogInWindow extends Application {
         		
         			try {
 						if(LogIn.getInstance().login(nutzer, pw)) new HauptGUI(Personenverwaltung.getInstance().checkadmin(nutzer)).start(primaryStage);
-						else ;//TODO LoginException.getMessage nutzen
+						else actiontarget.setText(new LoginException().getMessage());;//TODO LoginException.getMessage nutzen
 					} catch (DatabaseException | SQLException e1) {
 						// TODO Auto-generated catch block
-						e1.getMessage(); // <-- Diesen String nutzen
+						actiontarget.setText(e1.getMessage()); // <-- Diesen String nutzen
 					} catch (Exception e2) {
 						// TODO Auto-generated catch block
-						e2.printStackTrace();
+						actiontarget.setText(e2.getMessage());
 					} 
 				
         		
