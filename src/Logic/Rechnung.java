@@ -30,7 +30,7 @@ public class Rechnung {
 	private Date date_abgewickelt;
 	private Date date_ausstehend;
 	
-	
+	//AUFTRAG_ID
 	
 	/**
 	 * @param rECHNUNG_ID
