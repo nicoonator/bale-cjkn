@@ -1,4 +1,4 @@
-package Gui;
+package GUI;
 import java.sql.SQLException;
 
 import Exceptions.DatabaseException;
