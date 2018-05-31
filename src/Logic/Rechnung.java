@@ -30,8 +30,8 @@ public class Rechnung {
 	private Date date_abgewickelt;
 	private Date date_ausstehend;
 	private int auftrag_ID;
-	//private int auftrag_ID;
-	//private int topf_ID;
+	private int verwalter_ID;
+	private int topf_ID;
 	
 	//TODO RECHNUNG IM SQLMANAGER + Toepfe +auftraggeber(session?)
 	
@@ -51,10 +51,14 @@ public class Rechnung {
 	 * @param date_eingereicht
 	 * @param date_abgewickelt
 	 * @param date_ausstehend
+	 * @param auftrag_ID
+	 * @param verwalter_ID
+	 * @param topf_ID
 	 */
 	public Rechnung(int rECHNUNG_ID, Date rECHNUNGSDATUM, String rechnungsname, String bezahlart, double betrag,
 			boolean bearbeitung, boolean eingereicht, boolean abgewickelt, boolean ausstehend, Date date_bearbeitung,
-			Date date_eingereicht, Date date_abgewickelt, Date date_ausstehend, int auftrag_ID) {
+			Date date_eingereicht, Date date_abgewickelt, Date date_ausstehend, int auftrag_ID, int verwalter_ID,
+			int topf_ID) {
 		super();
 		RECHNUNG_ID = rECHNUNG_ID;
 		RECHNUNGSDATUM = rECHNUNGSDATUM;
@@ -69,8 +73,11 @@ public class Rechnung {
 		this.date_eingereicht = date_eingereicht;
 		this.date_abgewickelt = date_abgewickelt;
 		this.date_ausstehend = date_ausstehend;
-		this.auftrag_ID=auftrag_ID;
+		this.auftrag_ID = auftrag_ID;
+		this.verwalter_ID = verwalter_ID;
+		this.topf_ID = topf_ID;
 	}
+	
 	/**
 	 * @return the date_bearbeitung
 	 */
@@ -178,6 +185,30 @@ public class Rechnung {
 	 */
 	public void setAuftrag_ID(int auftrag_ID) {
 		this.auftrag_ID = auftrag_ID;
+	}
+	/**
+	 * @return the verwalter_ID
+	 */
+	public int getVerwalter_ID() {
+		return verwalter_ID;
+	}
+	/**
+	 * @param verwalter_ID the verwalter_ID to set
+	 */
+	public void setVerwalter_ID(int verwalter_ID) {
+		this.verwalter_ID = verwalter_ID;
+	}
+	/**
+	 * @return the topf_ID
+	 */
+	public int getTopf_ID() {
+		return topf_ID;
+	}
+	/**
+	 * @param topf_ID the topf_ID to set
+	 */
+	public void setTopf_ID(int topf_ID) {
+		this.topf_ID = topf_ID;
 	}
 	
 }

@@ -577,7 +577,7 @@ public class SQLManager {
 		Statement stmt = c.createStatement();
 		String sql = "SELECT * FROM Rechnung WHERE RECHNUNG_ID = "+ID+";";
 		ResultSet rs = stmt.executeQuery(sql);
-		if (rs.next()) result = new Rechnung(rs.getInt("RECHNUNG_ID"),rs.getDate("RECHNUNGSDATUM"),rs.getString("rechnungsname"),rs.getString("bezahlungsart"),rs.getDouble("betrag"),this.convertIntToBoolean(rs.getInt("bearbeitung")),this.convertIntToBoolean(rs.getInt("eingereicht")),this.convertIntToBoolean(rs.getInt("abgewickelt")),this.convertIntToBoolean(rs.getInt("ausstehend")),new Date(rs.getLong("date_bearbeitung")*1000L),new Date(rs.getLong("date_eingereicht")*1000L),new Date(rs.getLong("date_abgewickelt")*1000L),new Date(rs.getLong("date_ausstehend")*1000L), rs.getInt("AUFTRAG_ID"));
+		if (rs.next()) result = new Rechnung(rs.getInt("RECHNUNG_ID"),rs.getDate("RECHNUNGSDATUM"),rs.getString("rechnungsname"),rs.getString("bezahlungsart"),rs.getDouble("betrag"),this.convertIntToBoolean(rs.getInt("bearbeitung")),this.convertIntToBoolean(rs.getInt("eingereicht")),this.convertIntToBoolean(rs.getInt("abgewickelt")),this.convertIntToBoolean(rs.getInt("ausstehend")),new Date(rs.getLong("date_bearbeitung")*1000L),new Date(rs.getLong("date_eingereicht")*1000L),new Date(rs.getLong("date_abgewickelt")*1000L),new Date(rs.getLong("date_ausstehend")*1000L), rs.getInt("AUFTRAG_ID"), rs.getInt("ANSPRECHPARTNER_ID"), rs.getInt("TOPF_ID"));
 		stmt.close();
 		rs.close();
 		if (result!=null) return result;
@@ -854,14 +854,13 @@ public class SQLManager {
 	}
 	
 
-	public List<Rechnung> getAllRechnung() throws SQLException {
+	public List<Rechnung> getAllRechnung() throws SQLException, DatabaseException {
 		List<Rechnung> result= new ArrayList<Rechnung>();
 		Statement stmt = c.createStatement();
 		ResultSet rs = stmt.executeQuery("SELECT * FROM Rechnung;");
 		Rechnung tempRechnung=null;
 		while (rs.next()) {
-			tempRechnung = new Rechnung(rs.getInt("RECHNUNG_ID"),rs.getDate("RECHNUNGSDATUM"),rs.getString("rechnungsname"),rs.getString("bezahlart"),rs.getDouble("betrag"),this.convertIntToBoolean(rs.getInt("bearbeitung")),this.convertIntToBoolean(rs.getInt("eingereicht")),this.convertIntToBoolean(rs.getInt("abgewickelt")),this.convertIntToBoolean(rs.getInt("ausstehend")),new Date(rs.getLong("date_bearbeitung")*1000L),new Date(rs.getLong("date_eingereicht")*1000L),new Date(rs.getLong("date_abgewickelt")*1000L),new Date(rs.getLong("date_ausstehend")*1000L), rs.getInt("AUFTRAG_ID"));
-			result.add(tempRechnung);
+			result.add(this.getRechnungByID(rs.getInt(1)));
 		}
 		rs.close();
 		stmt.close();
