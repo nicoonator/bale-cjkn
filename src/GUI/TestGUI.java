@@ -1,7 +1,7 @@
 package GUI;
 
-import GUI.Auftragsverwaltung.GUIAuftragsverwaltung;
 import GUI.Bauteileverwaltung.GUIBauteileverwaltung;
+import GUI.Fertigungsverwaltung.GUIFertigungsverwaltung;
 import GUI.Finanzverwaltung.GUIFinanzverwaltung;
 import GUI.Personenverwaltung.GUIPersonenverwaltung;
 import javafx.application.Application;
@@ -47,15 +47,15 @@ public class TestGUI extends Application {
 			SingleSelectionModel<Tab> selectionModel = tp.getSelectionModel();
 			
 			Tab tb1 = new Tab("Personenverwaltung");			
-			Tab tb2 = new Tab("Auftragsverwaltung");			
-			Tab tb3 = new Tab("Fertigungsverwaltung");			
+			Tab tb2 = new Tab("Fertigungsverwaltung");			
+			Tab tb3 = new Tab("Finanzverwaltung");			
 			Tab tb4 = new Tab("Bauteileverwaltung");
 			
 			tp.getTabs().addAll(tb1, tb2, tb3, tb4);
 			tp.prefWidthProperty().bind(primaryStage.widthProperty());
 			
 			new GUIPersonenverwaltung(tb1).open();
-			new GUIAuftragsverwaltung(tb2).open();
+			new GUIFertigungsverwaltung(tb2).open();
 			new GUIFinanzverwaltung(tb3).open();
 			new GUIBauteileverwaltung(tb4).open();
 			

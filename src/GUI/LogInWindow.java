@@ -60,7 +60,7 @@ public class LogInWindow extends Application {
         PasswordField passTextFeld = new PasswordField();
         grid.add(passTextFeld, 1, 2);
         
-        //TODO: Buttontext aendern ?
+        
         Button btn = new Button("Bestaetigen");
         HBox hbBtn = new HBox(10);
         hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
@@ -88,11 +88,7 @@ public class LogInWindow extends Application {
         		
         		//Moeglichkeit dem Nutzer anzuzeigen, dass entweder Nutzername oder 
         		//Passwort falsch ist.
-        		//Test
-        		
-        		
-        		//TODO: Anbindung an SQL ? 
-        		
+       
         		
         		//Bei Betaetigen des Knopfes oeffnet sich die Tab Instanz
         		

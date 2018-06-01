@@ -1,22 +1,13 @@
-/**
- * 
- */
-package GUI.Auftragsverwaltung;
+package GUI.Fertigungsverwaltung;
 
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.VBox;
 
-/**
- * @author Nico Rychlik
- *
- */
-
-public class GUIAuftragsverwaltung {
-	
+public class GUIAuftragLoeschen {
 	Tab tab;
 
-	public GUIAuftragsverwaltung(Tab tab) {
+	public GUIAuftragLoeschen(Tab tab) {
 		this.tab=tab;
 	}
 	

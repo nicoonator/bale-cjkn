@@ -291,7 +291,7 @@ public class GUIPersonenverwaltung {
 		else AlertBox.display("Fehler", "Kein Textfeld darf leer sein!");
 		return result;
 	}
-	}
+	
 
 	private boolean HausNrInputValidation(TextField hausnummerInput) {
 		boolean result=false;
