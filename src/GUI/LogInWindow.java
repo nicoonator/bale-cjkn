@@ -28,7 +28,8 @@ public class LogInWindow extends Application {
 		}
 	
 	@Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws Exception {
+	
 		//Fensterueberschrift
 		primaryStage.setTitle("Willkommen!");
         
@@ -96,9 +97,9 @@ public class LogInWindow extends Application {
         		//Bei Betaetigen des Knopfes oeffnet sich die Tab Instanz
         		
         			try {
-						if(LogIn.getInstance().login(nutzer, pw)) new HauptGUI(Personenverwaltung.getInstance().checkadmin(nutzer)).start(primaryStage);
+						if(LogIn.getInstance().login(nutzer, pw)) new TestGUI(Personenverwaltung.getInstance().checkadmin(nutzer)).start(primaryStage);
 						else actiontarget.setText(new LoginException().getMessage());;//TODO LoginException.getMessage nutzen
-					} catch (DatabaseException | SQLException e1) {
+					} catch (SQLException e1) {
 						// TODO Auto-generated catch block
 						actiontarget.setText(e1.getMessage()); // <-- Diesen String nutzen
 					} catch (Exception e2) {
@@ -115,6 +116,9 @@ public class LogInWindow extends Application {
         Scene scene = new Scene (grid, 400, 300);
         primaryStage.setScene(scene);
         primaryStage.show();
+        
+        //Bypass:
+        new TestGUI(true).start(primaryStage);
     }
     
 }
