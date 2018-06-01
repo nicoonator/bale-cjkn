@@ -13,6 +13,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TabPane.TabClosingPolicy;
@@ -24,17 +25,26 @@ import javafx.stage.Stage;
 
 public class TestGUI extends Application {
 	
+	boolean admin;
 	
+	public TestGUI (boolean admin) {
+		super();
+		this.admin=admin;
+	}
+	
+	/*
 	public static void main(String args[]) {
 		launch(args);
 	}
+	*/
 	
 	@Override
-	public void start(Stage primaryStage) throws Exception {
+	public void start(Stage primaryStage) {
 		try {
 			primaryStage.setTitle("Elab-Verwaltungstool");
 			
 			TabPane tp =new TabPane();
+			SingleSelectionModel<Tab> selectionModel = tp.getSelectionModel();
 			
 			Tab tb1 = new Tab("Personenverwaltung");			
 			Tab tb2 = new Tab("Auftragsverwaltung");			
@@ -48,6 +58,13 @@ public class TestGUI extends Application {
 			new GUIAuftragsverwaltung(tb2).open();
 			new GUIFinanzverwaltung(tb3).open();
 			new GUIBauteileverwaltung(tb4).open();
+			
+			if(!admin) {
+				tb1.disableProperty().set(true);
+				tb2.disableProperty().set(true);
+				tb3.disableProperty().set(true);
+				selectionModel.select(3);
+			}
 			
 			VBox v1 =new VBox();
 			v1.getChildren().addAll(tp);
