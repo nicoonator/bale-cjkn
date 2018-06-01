@@ -70,7 +70,7 @@ public class GUICreatePerson {
 		Label passwortLabel = new Label("Passwort: ");
 		GridPane.setConstraints(passwortLabel, 0, 7);
 		
-		TextField passwortInput = new TextField();
+		PasswordField passwortInput = new PasswordField();
 		GridPane.setConstraints(passwortInput, 1, 7);
 		
 		Button btn = new Button("Erstellen");

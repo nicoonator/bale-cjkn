@@ -15,6 +15,7 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -158,7 +159,7 @@ public class GUIPersonenverwaltung {
 		Label passwortLabel = new Label("Passwort: ");
 		GridPane.setConstraints(passwortLabel, 0, 7);
 		
-		TextField passwortInput = new TextField();
+		PasswordField passwortInput = new PasswordField();
 		GridPane.setConstraints(passwortInput, 1, 7);
 		
 		grid.getChildren().addAll(vornameLabel, vornameInput, nachnameLabel, nachnameInput, strasseLabel, strasseInput, hausnummerLabel, hausnummerInput, 
