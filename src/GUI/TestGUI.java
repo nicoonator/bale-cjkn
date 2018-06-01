@@ -36,12 +36,9 @@ public class TestGUI extends Application {
 			
 			TabPane tp =new TabPane();
 			
-			Tab tb1 = new Tab("Personenverwaltung");
-			
-			Tab tb2 = new Tab("Auftragsverwaltung");
-			
-			Tab tb3 = new Tab("Fertigungsverwaltung");
-			
+			Tab tb1 = new Tab("Personenverwaltung");			
+			Tab tb2 = new Tab("Auftragsverwaltung");			
+			Tab tb3 = new Tab("Fertigungsverwaltung");			
 			Tab tb4 = new Tab("Bauteileverwaltung");
 			
 			tp.getTabs().addAll(tb1, tb2, tb3, tb4);
