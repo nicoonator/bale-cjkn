@@ -44,7 +44,7 @@ public class Personenverwaltung {
 		return SQLManager.getInstance().getAllPersons();
 	}
 	
-	public List<Person> getAllAdmins() throws SQLException {
+	public List<Person> getAllAdmins() throws SQLException, DatabaseException {
 		return SQLManager.getInstance().getAllAdmins();
 	}
 	

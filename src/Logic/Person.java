@@ -21,7 +21,7 @@ public abstract class Person {
 	 * @param bauteilwarenkorb
 	 * @param admin
 	 */
-	public Person(int pERSON_ID, String vorname, String nachname, String strasse, int hausnr, int pLZ, String email,
+	public Person(int pERSON_ID, String vorname, String nachname, String strasse, String hausnr, int pLZ, String email,
 			Date zuerst_erstellt, Date zuletzt_geaendert, String nutzername, String passwort, double bauteilschulden,
 			List<Bauteil> bauteilwarenkorb, boolean admin) {
 		super();
@@ -30,7 +30,7 @@ public abstract class Person {
 		this.nachname = nachname;
 		this.strasse = strasse;
 		this.hausnr = hausnr;
-		PLZ = pLZ;
+		this.PLZ = pLZ;
 		this.email = email;
 		this.zuerst_erstellt = zuerst_erstellt;
 		this.zuletzt_geaendert = zuletzt_geaendert;
@@ -44,7 +44,7 @@ public abstract class Person {
 	private String vorname;
 	private String nachname;
 	private String strasse;
-	private int hausnr;
+	private String hausnr;
 	private int PLZ;
 	private String email;
 	private final Date zuerst_erstellt;
@@ -93,13 +93,13 @@ public abstract class Person {
 	/**
 	 * @return the hausnr
 	 */
-	public int getHausnr() {
+	public String getHausnr() {
 		return hausnr;
 	}
 	/**
 	 * @param hausnr the hausnr to set
 	 */
-	public void setHausnr(int hausnr) {
+	public void setHausnr(String hausnr) {
 		this.hausnr = hausnr;
 	}
 	/**

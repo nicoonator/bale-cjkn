@@ -21,7 +21,7 @@ public class Lehrstuhlperson extends Person {
 	 * @param bauteilwarenkorb
 	 * @param admin
 	 */
-	public Lehrstuhlperson(int pERSON_ID, String vorname, String nachname, String strasse, int hausnr, int pLZ,
+	public Lehrstuhlperson(int pERSON_ID, String vorname, String nachname, String strasse, String hausnr, int pLZ,
 			String email, Date zuerst_erstellt, Date zuletzt_geaendert, String nutzername, String passwort,
 			double bauteilschulden, List<Bauteil> bauteilwarenkorb, boolean admin) {
 		super(pERSON_ID, vorname, nachname, strasse, hausnr, pLZ, email, zuerst_erstellt, zuletzt_geaendert, nutzername,
