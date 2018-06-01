@@ -202,7 +202,7 @@ public class GUIPersonenverwaltung {
 				Person tempPerson = table.getSelectionModel().getSelectedItem();
 				if((passwortInput.getText()==null || passwortInput.getText().trim().isEmpty())&&(passwortconfirmInput.getText()==null || passwortconfirmInput.getText().trim().isEmpty())) {
 					//Wenn kein passwort geandert werden soll
-					if(IntegerInputValidation(PLZInput) && StringInputValidation(nutzernameInput) && StringInputValidation(vornameInput) && StringInputValidation(nachnameInput) && HausNrInputValidation(hausnummerInput) && StringInputValidation(strasseInput)){
+					if(IntegerInputValidation(PLZInput) && StringInputValidation(nutzernameInput) && StringInputValidation(vornameInput) && StringInputValidation(nachnameInput) && HausNrInputValidation(hausnummerInput) && StringInputValidation(strasseInput) && mailInputValidation(EMailInput)){
 						Personenverwaltung.getInstance().modifyPerson(tempPerson.getPERSON_ID(), "vorname", vornameInput.getText().trim());
 						Personenverwaltung.getInstance().modifyPerson(tempPerson.getPERSON_ID(), "nachname", nachnameInput.getText().trim());
 						Personenverwaltung.getInstance().modifyPerson(tempPerson.getPERSON_ID(), "strasse", strasseInput.getText().trim());
@@ -214,7 +214,7 @@ public class GUIPersonenverwaltung {
 				}
 				else {
 					//Wenn passwort geandert werden soll
-					if(passwordInputValidation(passwortInput, passwortconfirmInput) && IntegerInputValidation(PLZInput) && StringInputValidation(nutzernameInput) && StringInputValidation(vornameInput) && StringInputValidation(nachnameInput) && HausNrInputValidation(hausnummerInput) && StringInputValidation(strasseInput)){
+					if(passwordInputValidation(passwortInput, passwortconfirmInput) && IntegerInputValidation(PLZInput) && StringInputValidation(nutzernameInput) && StringInputValidation(vornameInput) && StringInputValidation(nachnameInput) && HausNrInputValidation(hausnummerInput) && mailInputValidation(EMailInput) && StringInputValidation(strasseInput)){
 						Personenverwaltung.getInstance().modifyPerson(tempPerson.getPERSON_ID(), "passwort", passwortInput.getText().trim());
 						Personenverwaltung.getInstance().modifyPerson(tempPerson.getPERSON_ID(), "vorname", vornameInput.getText().trim());
 						Personenverwaltung.getInstance().modifyPerson(tempPerson.getPERSON_ID(), "nachname", nachnameInput.getText().trim());
@@ -274,6 +274,24 @@ public class GUIPersonenverwaltung {
 		tab.setContent(bp);
 	}
 	
+
+	/**
+	 * @param eMailInput
+	 * @return
+	 */
+	private boolean mailInputValidation(TextField eMailInput) {
+		boolean result=false;
+		if (!(eMailInput.getText()==null || eMailInput.getText().trim().isEmpty())) {
+			// TODO: 
+			if (eMailInput.getText().trim().matches("[0-9].*")) {
+				result = true;
+			}
+			else AlertBox.display("Fehler", "E-Mail Adresse muss in der form 'abd@xyz.pq' sein!");
+		}
+		else AlertBox.display("Fehler", "Kein Textfeld darf leer sein!");
+		return result;
+	}
+	}
 
 	private boolean HausNrInputValidation(TextField hausnummerInput) {
 		boolean result=false;
