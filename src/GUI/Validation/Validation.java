@@ -68,6 +68,19 @@ public class Validation {
 		return result;
 	}
 	
+	public static boolean nutzernameInputValidation(TextField tf) {
+		boolean result=false;
+		if (!(tf.getText()==null || tf.getText().trim().isEmpty())) {
+			result = true;
+		}
+		else AlertBox.display("Fehler", "Kein Textfeld darf leer sein!");
+
+		if (!result) tf.setStyle("-fx-text-fill: red;");
+		else tf.setStyle(null);
+		
+		return result;
+	}
+	
 	public static boolean IntegerInputValidation(TextField tf) {
 		boolean result=false;
 		if (!(tf.getText()==null || tf.getText().trim().isEmpty())) {
