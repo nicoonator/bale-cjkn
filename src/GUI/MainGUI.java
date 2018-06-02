@@ -23,11 +23,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class TestGUI extends Application {
+public class MainGUI extends Application {
 	
 	boolean admin;
 	
-	public TestGUI (boolean admin) {
+	public MainGUI (boolean admin) {
 		super();
 		this.admin=admin;
 	}
