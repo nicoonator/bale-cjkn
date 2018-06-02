@@ -234,12 +234,19 @@ public class GUIPersonenverwaltung {
 			delete.setDisable(false);
 			modify.setDisable(false);
 			Person tempPerson = table.getSelectionModel().getSelectedItem();
+			vornameInput.setStyle(null);
 			vornameInput.setText(tempPerson.getVorname());
+			nachnameInput.setStyle(null);
 			nachnameInput.setText(tempPerson.getNachname());
+			strasseInput.setStyle(null);
 			strasseInput.setText(tempPerson.getStrasse());
+			hausnummerInput.setStyle(null);
 			hausnummerInput.setText(tempPerson.getHausnr());
+			PLZInput.setStyle(null);
 			PLZInput.setText(Integer.toString(tempPerson.getPLZ()));
+			EMailInput.setStyle(null);
 			EMailInput.setText(tempPerson.getEmail());
+			nutzernameInput.setStyle(null);
 			nutzernameInput.setText(tempPerson.getNutzername());
 		});
 		
