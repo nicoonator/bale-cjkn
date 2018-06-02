@@ -8,6 +8,7 @@ import java.util.Date;
 
 import Exceptions.DatabaseException;
 import GUI.AlertBox;
+import GUI.Validation.Validation;
 import Logic.Person;
 import Logic.Personenverwaltung;
 import javafx.collections.FXCollections;
@@ -41,7 +42,7 @@ public class GUIPersonenverwaltung {
 		this.tab=tab;
 	}
 	
-	public void open() throws SQLException {
+	public void open() {
 		
 		BorderPane bp = new BorderPane();
 		
@@ -59,18 +60,6 @@ public class GUIPersonenverwaltung {
 		delete.setDisable(true);
 		
 		top.getChildren().addAll(create, modify, delete);
-		
-		create.setOnAction(e -> {
-			//code goes here
-		});
-		
-		modify.setOnAction(e -> {
-			//code goes here
-		});
-		
-		delete.setOnAction(e -> {
-			//code goes here
-		});
 		
 		bp.setTop(top);
 		
@@ -100,7 +89,11 @@ public class GUIPersonenverwaltung {
 		rolleColumn.setCellValueFactory(new PropertyValueFactory<>("admin"));
 		
 		table = new TableView<>();
-		table.setItems(getPersonen());
+		try {
+			table.setItems(getPersonen());
+		} catch (SQLException e2) {
+			AlertBox.display("Fehler", e2.getMessage());
+		}
 		table.getColumns().addAll(vornameColumn, nachnameColumn, erstelltColumn, geaendertColumn, rolleColumn);
 		
 		table.setPrefWidth(620);
@@ -197,12 +190,11 @@ public class GUIPersonenverwaltung {
 		});
 		
 		modify.setOnMouseClicked(e -> {
-			TableViewSelectionModel<Person> temp = table.getSelectionModel();
+			Person tempPerson = table.getSelectionModel().getSelectedItem();
 			try {
-				Person tempPerson = table.getSelectionModel().getSelectedItem();
 				if((passwortInput.getText()==null || passwortInput.getText().trim().isEmpty())&&(passwortconfirmInput.getText()==null || passwortconfirmInput.getText().trim().isEmpty())) {
 					//Wenn kein passwort geandert werden soll
-					if(IntegerInputValidation(PLZInput) && StringInputValidation(nutzernameInput) && StringInputValidation(vornameInput) && StringInputValidation(nachnameInput) && HausNrInputValidation(hausnummerInput) && StringInputValidation(strasseInput) && mailInputValidation(EMailInput)){
+					if(Validation.IntegerInputValidation(PLZInput) && Validation.StringInputValidation(nutzernameInput) && Validation.StringInputValidation(vornameInput) && Validation.StringInputValidation(nachnameInput) && Validation.HausNrInputValidation(hausnummerInput) && Validation.StringInputValidation(strasseInput) && Validation.mailInputValidation(EMailInput)){
 						Personenverwaltung.getInstance().modifyPerson(tempPerson.getPERSON_ID(), "vorname", vornameInput.getText().trim());
 						Personenverwaltung.getInstance().modifyPerson(tempPerson.getPERSON_ID(), "nachname", nachnameInput.getText().trim());
 						Personenverwaltung.getInstance().modifyPerson(tempPerson.getPERSON_ID(), "strasse", strasseInput.getText().trim());
@@ -214,7 +206,7 @@ public class GUIPersonenverwaltung {
 				}
 				else {
 					//Wenn passwort geandert werden soll
-					if(passwordInputValidation(passwortInput, passwortconfirmInput) && IntegerInputValidation(PLZInput) && StringInputValidation(nutzernameInput) && StringInputValidation(vornameInput) && StringInputValidation(nachnameInput) && HausNrInputValidation(hausnummerInput) && mailInputValidation(EMailInput) && StringInputValidation(strasseInput)){
+					if(Validation.passwordInputValidation(passwortInput, passwortconfirmInput) && Validation.IntegerInputValidation(PLZInput) && Validation.StringInputValidation(nutzernameInput) && Validation.StringInputValidation(vornameInput) && Validation.StringInputValidation(nachnameInput) && Validation.HausNrInputValidation(hausnummerInput) && Validation.mailInputValidation(EMailInput) && Validation.StringInputValidation(strasseInput)){
 						Personenverwaltung.getInstance().modifyPerson(tempPerson.getPERSON_ID(), "passwort", passwortInput.getText().trim());
 						Personenverwaltung.getInstance().modifyPerson(tempPerson.getPERSON_ID(), "vorname", vornameInput.getText().trim());
 						Personenverwaltung.getInstance().modifyPerson(tempPerson.getPERSON_ID(), "nachname", nachnameInput.getText().trim());
@@ -233,7 +225,7 @@ public class GUIPersonenverwaltung {
 			}
 			
 			finally {
-				table.setSelectionModel(temp);
+				table.getSelectionModel().select(tempPerson);;
 			}
 			
 		});
@@ -279,31 +271,7 @@ public class GUIPersonenverwaltung {
 	 * @param eMailInput
 	 * @return
 	 */
-	private boolean mailInputValidation(TextField eMailInput) {
-		boolean result=false;
-		if (!(eMailInput.getText()==null || eMailInput.getText().trim().isEmpty())) {
-			// TODO: 
-			if (eMailInput.getText().trim().matches("[0-9].*")) {
-				result = true;
-			}
-			else AlertBox.display("Fehler", "E-Mail Adresse muss in der form 'abd@xyz.pq' sein!");
-		}
-		else AlertBox.display("Fehler", "Kein Textfeld darf leer sein!");
-		return result;
-	}
-	
 
-	private boolean HausNrInputValidation(TextField hausnummerInput) {
-		boolean result=false;
-		if (!(hausnummerInput.getText()==null || hausnummerInput.getText().trim().isEmpty())) {
-			if (hausnummerInput.getText().trim().matches("[0-9].*")) {
-				result = true;
-			}
-			else AlertBox.display("Fehler", "Hausnummer muss mit einer Zahl beginnen!");
-		}
-		else AlertBox.display("Fehler", "Kein Textfeld darf leer sein!");
-		return result;
-	}
 
 	public ObservableList<Person> getPersonen() throws SQLException{
 		ObservableList<Person> result = FXCollections.observableArrayList();
@@ -311,47 +279,6 @@ public class GUIPersonenverwaltung {
 			result.add(p);
 		}
 		return result;
-	
 	}
-	
-	
-	private boolean StringInputValidation(TextField tf) {
-		boolean result=false;
-		if (!(tf.getText()==null || tf.getText().trim().isEmpty())) {
-			result = true;
-		}
-		else AlertBox.display("Fehler", "Kein Textfeld darf leer sein!");
-		return result;
-	}
-	
-	private boolean IntegerInputValidation(TextField tf) {
-		boolean result=false;
-		if (!(tf.getText()==null || tf.getText().trim().isEmpty())) {
-			try {
-				Integer.parseInt(tf.getText());
-				result = true;
-			} catch (NumberFormatException e) {
-				AlertBox.display("Fehler", "PLZ darf nur Zahlen enthalten!");
-			}
-		}
-		else AlertBox.display("Fehler", "Kein Textfeld darf leer sein!");
-		return result;
-	}
-	
-	private boolean passwordInputValidation(PasswordField passwortInput, PasswordField passwortconfirmInput) {
-	    	boolean result=false;
-	    	if(passwortInput.getText().equals(passwortconfirmInput.getText())){
-				if (!(passwortInput.getText()==null || passwortInput.getText().trim().isEmpty())) {
-					result = true;
-				}
-				else {
-					AlertBox.display("Fehler", "Das Passwort muss angegeben werden!");
-				}
-			}
-			else {
-				AlertBox.display("Fehler", "Die Passwoerter stimmen nicht ueberein!");
-			}
-	    	return result;
-	    }
-	
 }
+	

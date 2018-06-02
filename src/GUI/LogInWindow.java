@@ -93,7 +93,7 @@ public class LogInWindow extends Application {
         		//Bei Betaetigen des Knopfes oeffnet sich die Tab Instanz
         		
         			try {
-						if(LogIn.getInstance().login(nutzer, pw)) new TestGUI(Personenverwaltung.getInstance().checkadmin(nutzer)).start(primaryStage);
+						if(LogIn.getInstance().login(nutzer, pw)) new MainGUI(Personenverwaltung.getInstance().checkadmin(nutzer),Personenverwaltung.getInstance().getIDByNutzername(nutzer)).start(primaryStage);
 						else actiontarget.setText(new LoginException().getMessage());;//TODO LoginException.getMessage nutzen
 					} catch (SQLException e1) {
 						// TODO Auto-generated catch block
@@ -114,7 +114,7 @@ public class LogInWindow extends Application {
         primaryStage.show();
         
         //Bypass:
-        new TestGUI(true).start(primaryStage);
+        new MainGUI(true, Personenverwaltung.getInstance().getIDByNutzername("nicoonator")).start(primaryStage);
     }
     
 }

@@ -91,6 +91,13 @@ public class SQLManager {
 		return result;
 	}
 	
+	public int getIDByNutzername(String name) throws SQLException, DatabaseException {
+		Statement stmt = c.createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT PERSON_ID FROM PERSON WHERE nutzername = '"+name+"';");
+		if(rs.next()) return rs.getInt(1);
+		else throw new NutzernameNichtVorhandenException();
+	}
+	
 	/**
 	 * @author Nico Rychlik
 	 * @param id
