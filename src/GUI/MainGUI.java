@@ -38,12 +38,6 @@ public class MainGUI extends Application {
 		this.nutzerID=nutzerID;
 	}
 	
-	/*
-	public static void main(String args[]) {
-		launch(args);
-	}
-	*/
-	
 	@Override
 	public void start(Stage primaryStage) {
 		try {
