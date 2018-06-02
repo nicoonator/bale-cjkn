@@ -42,7 +42,7 @@ public class GUIPersonenverwaltung {
 		this.tab=tab;
 	}
 	
-	public void open() throws SQLException {
+	public void open() {
 		
 		BorderPane bp = new BorderPane();
 		
@@ -60,18 +60,6 @@ public class GUIPersonenverwaltung {
 		delete.setDisable(true);
 		
 		top.getChildren().addAll(create, modify, delete);
-		
-		create.setOnAction(e -> {
-			//code goes here
-		});
-		
-		modify.setOnAction(e -> {
-			//code goes here
-		});
-		
-		delete.setOnAction(e -> {
-			//code goes here
-		});
 		
 		bp.setTop(top);
 		
@@ -101,7 +89,11 @@ public class GUIPersonenverwaltung {
 		rolleColumn.setCellValueFactory(new PropertyValueFactory<>("admin"));
 		
 		table = new TableView<>();
-		table.setItems(getPersonen());
+		try {
+			table.setItems(getPersonen());
+		} catch (SQLException e2) {
+			AlertBox.display("Fehler", e2.getMessage());
+		}
 		table.getColumns().addAll(vornameColumn, nachnameColumn, erstelltColumn, geaendertColumn, rolleColumn);
 		
 		table.setPrefWidth(620);
