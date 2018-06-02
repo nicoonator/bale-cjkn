@@ -198,9 +198,8 @@ public class GUIPersonenverwaltung {
 		});
 		
 		modify.setOnMouseClicked(e -> {
-			TableViewSelectionModel<Person> temp = table.getSelectionModel();
+			Person tempPerson = table.getSelectionModel().getSelectedItem();
 			try {
-				Person tempPerson = table.getSelectionModel().getSelectedItem();
 				if((passwortInput.getText()==null || passwortInput.getText().trim().isEmpty())&&(passwortconfirmInput.getText()==null || passwortconfirmInput.getText().trim().isEmpty())) {
 					//Wenn kein passwort geandert werden soll
 					if(Validation.IntegerInputValidation(PLZInput) && Validation.StringInputValidation(nutzernameInput) && Validation.StringInputValidation(vornameInput) && Validation.StringInputValidation(nachnameInput) && Validation.HausNrInputValidation(hausnummerInput) && Validation.StringInputValidation(strasseInput) && Validation.mailInputValidation(EMailInput)){
@@ -234,7 +233,7 @@ public class GUIPersonenverwaltung {
 			}
 			
 			finally {
-				table.setSelectionModel(temp);
+				table.getSelectionModel().select(tempPerson);;
 			}
 			
 		});
