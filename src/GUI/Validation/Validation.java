@@ -75,7 +75,7 @@ public class Validation {
 				Integer.parseInt(tf.getText());
 				result = true;
 			} catch (NumberFormatException e) {
-				AlertBox.display("Fehler", "PLZ darf nur Zahlen enthalten!");
+				AlertBox.display("Fehler", "Es wurde eine Zahl erwartet!");
 			}
 		}
 		else AlertBox.display("Fehler", "Kein Textfeld darf leer sein!");
