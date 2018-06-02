@@ -1,5 +1,8 @@
 package GUI;
 
+import java.sql.SQLException;
+
+import Exceptions.DatabaseException;
 import GUI.Bauteileverwaltung.GUIBauteileverwaltung;
 import GUI.Fertigungsverwaltung.GUIFertigungsverwaltung;
 import GUI.Finanzverwaltung.GUIFinanzverwaltung;
@@ -61,6 +64,20 @@ public class MainGUI extends Application {
 			new GUIFertigungsverwaltung(tb2).open();
 			new GUIFinanzverwaltung(tb3).open();
 			new GUIBauteileverwaltung(tb4, admin, Personenverwaltung.getInstance().getPersonByID(nutzerID)).open();
+			
+			tp.getSelectionModel().selectedItemProperty().addListener((ov, oldTab, newTab) -> {
+				if(newTab.equals(tb1)) new GUIPersonenverwaltung(tb1).open();
+				if(newTab.equals(tb2)) new GUIFertigungsverwaltung(tb2).open();
+				if(newTab.equals(tb3)) new GUIFinanzverwaltung(tb3).open();
+				if(newTab.equals(tb4))
+					try {
+						new GUIBauteileverwaltung(tb4, admin, Personenverwaltung.getInstance().getPersonByID(nutzerID)).open();
+					} catch (DatabaseException e) {
+						AlertBox.display("Fehler", e.getMessage());
+					} catch (SQLException e) {
+						AlertBox.display("Fehler", e.getMessage());
+					}
+		    });
 			
 			if(!admin) {
 				tb1.disableProperty().set(true);
