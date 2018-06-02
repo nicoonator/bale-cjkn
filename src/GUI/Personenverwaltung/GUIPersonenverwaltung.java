@@ -225,7 +225,7 @@ public class GUIPersonenverwaltung {
 			}
 			
 			finally {
-				table.getSelectionModel().select(tempPerson);;
+				table.getSelectionModel().select(tempPerson);
 			}
 			
 		});

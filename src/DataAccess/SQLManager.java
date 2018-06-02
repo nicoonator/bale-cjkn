@@ -430,12 +430,17 @@ public class SQLManager {
 	public Bauteil getBauteilByID (int id) throws SQLException {
 		Bauteil result = null;
 		Statement stmt = c.createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT * FROM Bauteil WHERE Bauteil_ID = "+id+";");
-		while(rs.next()) {
-			result= (new Bauteil(rs.getInt("BAUTEIL_ID"), rs.getString("name"), rs.getString("link"), rs.getDouble("preis"), rs.getInt("gelagert"), rs.getInt("geplant"), rs.getInt("bestellt"), rs.getString("ort"), rs.getInt("KATEGORIE_ID")));
+		ResultSet rs = stmt.executeQuery("SELECT * FROM Bauteil WHERE BAUTEIL_ID = "+id+";");
+		ResultSet rs2 = stmt.executeQuery("SELECT * FROM Bauteil WHERE BAUTEIL_ID = "+id+";");
+		if (rs.next()) {
+				result = new Bauteil(rs.getInt("BAUTEIL_ID"), rs.getString("name"), rs.getString("link"),
+						rs.getDouble("preis"), rs.getInt("gelagert"), rs.getInt("geplant"), rs.getInt("bestellt"),
+						rs.getString("ort"), rs.getInt("KATEGORIE_ID"),
+						Bauteileverwaltung.getInstance().getKategorieByID(rs.getInt("Kategorie_ID")).getName());
 		}
-		stmt.close();		
+		stmt.close();
 		rs.close();
+		rs2.close();
 		return result;
 	}
 	
@@ -444,8 +449,8 @@ public class SQLManager {
 		Statement stmt = c.createStatement();
 		ResultSet rs = stmt.executeQuery("SELECT * FROM Bauteil;");
 		while(rs.next()) {
-			result.add(new Bauteil(rs.getInt("BAUTEIL_ID"), rs.getString("name"), rs.getString("link"), rs.getDouble("preis"), rs.getInt("gelagert"), rs.getInt("geplant"), rs.getInt("bestellt"), rs.getString("ort"), rs.getInt("KATEGORIE_ID")));
-		}
+			result.add(this.getBauteilByID(rs.getInt(1)));
+			}
 		stmt.close();		
 		rs.close();
 		return result;
@@ -454,7 +459,8 @@ public class SQLManager {
 	public Kategorie getKategorieByID (int id) throws SQLException {
 		Kategorie result = null;
 		Statement stmt = c.createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT * FROM Bauteil WHERE Bauteil_ID = "+id+";");
+		String sql="SELECT * FROM Kategorie WHERE KATEGORIE_ID = "+id+";";
+		ResultSet rs = stmt.executeQuery(sql);
 		while(rs.next()) {
 			result=(new Kategorie (rs.getInt("KATEGORIE_ID"),rs.getString("name")));
 		}

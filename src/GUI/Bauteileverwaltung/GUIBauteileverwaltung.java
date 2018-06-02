@@ -67,6 +67,13 @@ public class GUIBauteileverwaltung {
 		new GUIBauteile(tb3).open();
 		new GUINutzerverwaltung(tb4, nutzer).open();
 		
+		tp.getSelectionModel().selectedItemProperty().addListener((ov, oldTab, newTab) -> {
+			if(newTab.equals(tb1)) new GUIWarenkorb(tb1, nutzer).open();
+			if(newTab.equals(tb2)) new GUIKategorie(tb2).open();
+			if(newTab.equals(tb3)) new GUIBauteile(tb3).open();
+			if(newTab.equals(tb4)) new GUINutzerverwaltung(tb4, nutzer).open();
+	    });
+		
 		if(!admin) {
 			tb4.disableProperty().set(true);
 			tb2.disableProperty().set(true);
