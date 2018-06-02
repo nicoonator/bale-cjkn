@@ -48,4 +48,8 @@ public class Personenverwaltung {
 		return SQLManager.getInstance().getAllAdmins();
 	}
 	
+	public int getIDByNutzername(String name) throws SQLException, DatabaseException {
+		return SQLManager.getInstance().getIDByNutzername(name);
+	}
+	
 }
