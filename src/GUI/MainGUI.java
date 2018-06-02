@@ -4,6 +4,7 @@ import GUI.Bauteileverwaltung.GUIBauteileverwaltung;
 import GUI.Fertigungsverwaltung.GUIFertigungsverwaltung;
 import GUI.Finanzverwaltung.GUIFinanzverwaltung;
 import GUI.Personenverwaltung.GUIPersonenverwaltung;
+import Logic.Personenverwaltung;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -26,10 +27,12 @@ import javafx.stage.Stage;
 public class MainGUI extends Application {
 	
 	boolean admin;
+	int nutzerID;
 	
-	public MainGUI (boolean admin) {
+	public MainGUI (boolean admin, int nutzerID) {
 		super();
 		this.admin=admin;
+		this.nutzerID=nutzerID;
 	}
 	
 	/*
@@ -57,7 +60,7 @@ public class MainGUI extends Application {
 			new GUIPersonenverwaltung(tb1).open();
 			new GUIFertigungsverwaltung(tb2).open();
 			new GUIFinanzverwaltung(tb3).open();
-			new GUIBauteileverwaltung(tb4).open();
+			new GUIBauteileverwaltung(tb4, admin, Personenverwaltung.getInstance().getPersonByID(nutzerID)).open();
 			
 			if(!admin) {
 				tb1.disableProperty().set(true);
