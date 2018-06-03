@@ -85,6 +85,7 @@ public class GUIWarenkorb {
 		} catch (SQLException e2) {
 			AlertBox.display("Fehler", e2.getMessage());
 		}
+		
 		bauteillager.getColumns().addAll(kategorieColumn, nameColumn, linkColumn, preisColumn, gelagertColumn, ortColumn);
 		
 		bauteillager.setPrefWidth(400);

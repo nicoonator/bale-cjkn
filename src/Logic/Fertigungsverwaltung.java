@@ -13,7 +13,7 @@ public class Fertigungsverwaltung {
 	
 	public static Fertigungsverwaltung getInstance(){
 		if (instance==null) instance = new Fertigungsverwaltung();
-		return instance;
+		return instance; 
 	}
 	
 	public void createAuftrag(String titel, String art, double prog_kosten, double reele_kosten, int auftraggeber_ID, int verwalter_ID, List<Person> personen) throws SQLException {

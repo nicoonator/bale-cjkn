@@ -328,9 +328,6 @@ public class Auftrag {
 	public int getAUFTRAG_ID() {
 		return AUFTRAG_ID;
 	}
-	public String getTITEL() {
-		return titel;
-	}
 	public String getART() {
 		return ART;
 	}

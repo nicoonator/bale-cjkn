@@ -71,15 +71,15 @@ public class GUIFertigungsverwaltung {
 		//Links
 		TableColumn<Auftrag, Integer> titel = new TableColumn<>("Auftragstitel");
 		//vornameColumn.setMinWidth(100);
-		titel.setCellValueFactory(new PropertyValueFactory<>("TITEL"));
+		titel.setCellValueFactory(new PropertyValueFactory<>("titel"));
 		
 		TableColumn<Auftrag, String> art = new TableColumn<>("Auftragsart");
 		//vornameColumn.setMinWidth(100);
-		titel.setCellValueFactory(new PropertyValueFactory<>("ART"));
+		art.setCellValueFactory(new PropertyValueFactory<>("ART"));
 		
 		TableColumn<Auftrag, String> auftrag_id = new TableColumn<>("Auftragsid");
 		//vornameColumn.setMinWidth(100);
-		titel.setCellValueFactory(new PropertyValueFactory<>("AUFTRAG_ID"));
+		auftrag_id.setCellValueFactory(new PropertyValueFactory<>("AUFTRAG_ID"));
 		
 		auftragTable = new TableView<>();
 		try {
@@ -90,10 +90,10 @@ public class GUIFertigungsverwaltung {
 			
 			
 			//Resultset Fehlerfenster
-			/*
+			
 			e2.printStackTrace();
 			AlertBox.display("Fehler", e2.getMessage() );
-			*/
+			
 		
 		
 		

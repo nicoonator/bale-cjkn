@@ -497,23 +497,36 @@ public class SQLManager {
 	public Auftrag getAuftragByID(int ID) throws SQLException, DatabaseException {
 		Auftrag result = null;
 		Statement stmt = c.createStatement();
-		String sql = "SELECT * FROM Auftrag WHERE AUFTRAG_ID = "+ID+";";
-		ResultSet rs = stmt.executeQuery(sql);
 		String sql2 ="SELECT PERSON_ID FROM Verbindung_Person_Auftrag WHERE AUFTRAG_ID = "+ID+" AND rolle = 0;";
-		Person auftraggeber = this.getPersonByID(stmt.executeQuery(sql2).getInt(1));
+		ResultSet rs3 = stmt.executeQuery(sql2);
+		Person auftraggeber = this.getPersonByID(rs3.getInt(1));
 		sql2 ="SELECT PERSON_ID FROM Verbindung_Person_Auftrag WHERE AUFTRAG_ID = "+ID+" AND rolle = 1;";
-		Person verwalter = this.getPersonByID(stmt.executeQuery(sql2).getInt(1));
+		rs3 = stmt.executeQuery(sql2);
+		Person verwalter = this.getPersonByID(rs3.getInt(1));
 		sql2 ="SELECT PERSON_ID FROM Verbindung_Person_Auftrag WHERE AUFTRAG_ID = "+ID+" AND rolle = 2;";
 		List<Person> vertreter= new ArrayList<Person>();
 		ResultSet rs2 = stmt.executeQuery(sql2);
 		while(rs2.next()) {
 			vertreter.add(this.getPersonByID(rs2.getInt(1)));
 		}
-		if (rs.next()) result = new Auftrag(rs.getInt("AUFTRAG_ID"),rs.getString("TITEL"),rs.getString("ART"),rs.getDouble("prognostizierte_kosten"),rs.getDouble("reelle_kosten"),this.convertIntToBoolean(rs.getInt("angenommen")),this.convertIntToBoolean(rs.getInt("gefertigt")),this.convertIntToBoolean(rs.getInt("kalkuliert")),this.convertIntToBoolean(rs.getInt("abgeholt")),this.convertIntToBoolean(rs.getInt("abgerechnet")),this.convertIntToBoolean(rs.getInt("warten")),this.convertIntToBoolean(rs.getInt("unterbrochen")),this.convertIntToBoolean(rs.getInt("defekt")),new Date(rs.getLong("date_angenommen")*1000L),new Date(rs.getLong("date_gefertigt")*1000L),new Date(rs.getLong("date_kalkuliert")*1000L),new Date(rs.getLong("date_abgeholt")*1000L),new Date(rs.getLong("date_abgerechnet")*1000L),new Date(rs.getLong("date_warten")*1000L),new Date(rs.getLong("date_unterbrochen")*1000L),new Date(rs.getLong("date_defekt")*1000L),auftraggeber,verwalter,vertreter);
-		stmt.close();
-		rs.close();
-		if (result!=null) return result;
-		else throw new AuftragNichtVorhandenException();
+		String sql = "SELECT * FROM Auftrag WHERE AUFTRAG_ID = '"+ID+"';";
+		ResultSet apfel = stmt.executeQuery(sql);
+		if (apfel.next()) {
+			result = new Auftrag(apfel.getInt("AUFTRAG_ID"),apfel.getString("TITEL"),apfel.getString("ART"),apfel.getDouble("prognostizierte_kosten"),apfel.getDouble("reelle_kosten"),this.convertIntToBoolean(apfel.getInt("angenommen")),this.convertIntToBoolean(apfel.getInt("gefertigt")),this.convertIntToBoolean(apfel.getInt("kalkuliert")),this.convertIntToBoolean(apfel.getInt("abgeholt")),this.convertIntToBoolean(apfel.getInt("abgerechnet")),this.convertIntToBoolean(apfel.getInt("warten")),this.convertIntToBoolean(apfel.getInt("unterbrochen")),this.convertIntToBoolean(apfel.getInt("defekt")),new Date(apfel.getLong("date_angenommen")*1000L),new Date(apfel.getLong("date_gefertigt")*1000L),new Date(apfel.getLong("date_kalkuliert")*1000L),new Date(apfel.getLong("date_abgeholt")*1000L),new Date(apfel.getLong("date_abgerechnet")*1000L),new Date(apfel.getLong("date_warten")*1000L),new Date(apfel.getLong("date_unterbrochen")*1000L),new Date(apfel.getLong("date_defekt")*1000L),auftraggeber,verwalter,vertreter);
+			stmt.close();
+			apfel.close();
+			rs2.close();
+			rs3.close();
+			return result;
+		}
+		else {
+			stmt.close();
+			apfel.close();
+			rs2.close();
+			rs3.close();
+			throw new AuftragNichtVorhandenException();
+			
+		}
 	}
 
 	public void changeAuftragStatus (int id, String Status) throws SQLException {
