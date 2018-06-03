@@ -54,6 +54,12 @@ public abstract class Person {
 	private double bauteilschulden = 0;
 	private List<Bauteil> bauteilwarenkorb;
 	private final boolean admin;
+	
+	@Override
+	public String toString() {
+		return vorname +" "+ nachname;
+	}
+	
 	/**
 	 * @return the vorname
 	 */
