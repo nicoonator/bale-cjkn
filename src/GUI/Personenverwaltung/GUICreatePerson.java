@@ -88,7 +88,7 @@ public class GUICreatePerson {
 		GridPane.setConstraints(btn, 1, 9);
 		
 		Button btnClose = new Button ("Schlieﬂen");
-		GridPane.setConstraints(btnClose, 1, 10);
+		GridPane.setConstraints(btnClose, 1, 9,1,1,HPos.RIGHT,null);
 		
 		ComboBox<String> comboBox;
 		comboBox = new ComboBox<>();
