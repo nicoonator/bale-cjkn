@@ -81,6 +81,14 @@ public class GUIFertigungsverwaltung {
 		//vornameColumn.setMinWidth(100);
 		auftrag_id.setCellValueFactory(new PropertyValueFactory<>("AUFTRAG_ID"));
 		
+		TableColumn<Auftrag, String> auftraggeber = new TableColumn<>("Auftragsgeber");
+		//vornameColumn.setMinWidth(100);
+		auftraggeber.setCellValueFactory(new PropertyValueFactory<>("auftraggeber"));
+		
+		TableColumn<Auftrag, String> verwalter = new TableColumn<>("Verwalter");
+		//vornameColumn.setMinWidth(100);
+		verwalter.setCellValueFactory(new PropertyValueFactory<>("verwalter"));
+		
 		auftragTable = new TableView<>();
 		try {
 			auftragTable.setItems(getAuftraege());
@@ -102,7 +110,7 @@ public class GUIFertigungsverwaltung {
 		
 		
 		}
-		auftragTable.getColumns().addAll(titel, art, auftrag_id);
+		auftragTable.getColumns().addAll(titel, art, auftrag_id, auftraggeber, verwalter);
 		
 		auftragTable.setPrefWidth(620);
 		bp.setLeft(auftragTable);
