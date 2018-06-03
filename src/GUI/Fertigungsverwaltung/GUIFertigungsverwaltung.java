@@ -68,56 +68,41 @@ public class GUIFertigungsverwaltung {
 		bp.setTop(top);
 		
 		
+		
 		//Links
 		TableColumn<Auftrag, Integer> titel = new TableColumn<>("Auftragstitel");
-		//vornameColumn.setMinWidth(100);
 		titel.setCellValueFactory(new PropertyValueFactory<>("titel"));
 		
 		TableColumn<Auftrag, String> art = new TableColumn<>("Auftragsart");
-		//vornameColumn.setMinWidth(100);
 		art.setCellValueFactory(new PropertyValueFactory<>("ART"));
 		
 		TableColumn<Auftrag, String> auftrag_id = new TableColumn<>("Auftragsid");
-		//vornameColumn.setMinWidth(100);
 		auftrag_id.setCellValueFactory(new PropertyValueFactory<>("AUFTRAG_ID"));
 		
 		TableColumn<Auftrag, String> auftraggeber = new TableColumn<>("Auftragsgeber");
-		//vornameColumn.setMinWidth(100);
 		auftraggeber.setCellValueFactory(new PropertyValueFactory<>("auftraggeber"));
 		
 		TableColumn<Auftrag, String> verwalter = new TableColumn<>("Verwalter");
-		//vornameColumn.setMinWidth(100);
 		verwalter.setCellValueFactory(new PropertyValueFactory<>("verwalter"));
+		
+		TableColumn<Auftrag, Double> prognostKosten = new TableColumn<>("Prognost. Kosten");
+		prognostKosten.setCellValueFactory(new PropertyValueFactory<>("progno_cost"));
+		
+		TableColumn<Auftrag, Double> reellKosten = new TableColumn<>("Reelle Kosten");
+		reellKosten.setCellValueFactory(new PropertyValueFactory<>("reelle_kosten"));
 		
 		auftragTable = new TableView<>();
 		try {
 			auftragTable.setItems(getAuftraege());
 		} catch (SQLException e2) {
-			
-		
-			
-			
-			//Resultset Fehlerfenster
-			
 			e2.printStackTrace();
 			AlertBox.display("Fehler", e2.getMessage() );
-			
-		
-		
-		
-		
-		
-		
-		
 		}
-		auftragTable.getColumns().addAll(titel, art, auftrag_id, auftraggeber, verwalter);
+		auftragTable.getColumns().addAll(titel, art, auftrag_id, auftraggeber, verwalter, prognostKosten, reellKosten);
 		
 		auftragTable.setPrefWidth(620);
 		bp.setLeft(auftragTable);
 	
-		
-				
-				// End of LEFT
 		
 		
 		
@@ -152,17 +137,18 @@ public class GUIFertigungsverwaltung {
 		Label l2 = new Label("Admins");
 		GridPane.setConstraints(l2, 2, 0);
 		int counter2 = 0;
-		ChoiceBox<String> choiceBoxAdmins = new ChoiceBox<>();
+		ChoiceBox<Person> choiceBoxAdmins = new ChoiceBox<>();
 		try {
 			List<Person> admins = Personenverwaltung.getInstance().getAllAdmins();
 			try {
-				while(admins.listIterator().hasNext()) {
-					choiceBoxAdmins.getItems().addAll(admins.listIterator(counter2).next().getVorname()+ " " + admins.listIterator(counter2).next().getNachname() + admins.listIterator(counter2).next().getPERSON_ID());
 				
-					counter2++;
-				}
+					
+					choiceBoxAdmins.getItems().addAll(admins);
+					
+					//choiceBoxAdmins.getItems().addAll(admins.listIterator(counter2).next().getVorname()+ " " + admins.listIterator(counter2).next().getNachname() + admins.listIterator(counter2).next().getPERSON_ID());
+					
 			}catch(Exception e) {
-				choiceBoxAdmins.setValue(admins.get(0).getVorname()+ " " +admins.get(0).getNachname() );
+				//choiceBoxAdmins.setValue(admins.get(0).getVorname()+ " " +admins.get(0).getNachname() );
 			}
 		} catch (SQLException e) {
 		} catch (DatabaseException e) {
@@ -192,59 +178,119 @@ public class GUIFertigungsverwaltung {
 		//Reele Kosten
 		Label l6 = new Label("Prognostizierte Kosten");
 		GridPane.setConstraints(l6 , 2 , 6);
-		TextField reeleKosten = new TextField();
-		GridPane.setConstraints(reeleKosten, 2, 7);
+		TextField reelleKosten = new TextField();
+		GridPane.setConstraints(reelleKosten, 2, 7);
 		
+		
+		//Checkboxen
 		
 		CheckBox angenommen = new CheckBox("Angenommen");
-		// In den Neu Knopf einbauen, dass wenn der gedrueckt wird, das die Untere Zeile ausgefuehrt wird
-		//angenommen.setSelected(true);
-		//
 		angenommen.setDisable(true);
 		GridPane.setConstraints(angenommen, 0, 9);
+		Label angenommenLabel = new Label();
+		GridPane.setConstraints(angenommenLabel, 1, 9);
+		
 		
 		CheckBox gefertigt = new CheckBox("Gefertigt");
 		gefertigt.setDisable(true);
-		GridPane.setConstraints(gefertigt, 1, 9);
+		GridPane.setConstraints(gefertigt, 0, 10);
+		Label gefertigtLabel = new Label();
+		GridPane.setConstraints(gefertigtLabel, 1, 10);
 		
 		CheckBox kalkuliert = new CheckBox("Kalkuliert");
 		kalkuliert.setDisable(true);
-		GridPane.setConstraints(kalkuliert, 0, 10);
+		GridPane.setConstraints(kalkuliert, 0, 11);
+		Label kalkuliertLabel = new Label();
+		GridPane.setConstraints(kalkuliertLabel, 1, 11);
 		
 		CheckBox abgeholt = new CheckBox("Abgeholt");
 		abgeholt.setDisable(true);
-		GridPane.setConstraints(abgeholt, 1, 10);
+		GridPane.setConstraints(abgeholt, 0, 12);
+		Label abgeholtLabel = new Label();
+		GridPane.setConstraints(abgeholtLabel, 1, 12);
 		
 		CheckBox abgerechnet = new CheckBox("Abgerechnet");
 		abgerechnet.setDisable(true);
-		GridPane.setConstraints(abgerechnet, 0, 11);
+		GridPane.setConstraints(abgerechnet, 0, 13);
+		Label abgerechnetLabel = new Label();
+		GridPane.setConstraints(abgerechnetLabel, 1, 13);
 		
 		CheckBox warten = new CheckBox("Warten");
 		warten.setDisable(true);
-		GridPane.setConstraints(warten, 1, 11);
+		GridPane.setConstraints(warten, 0, 14);
+		Label wartenLabel = new Label();
+		GridPane.setConstraints(wartenLabel, 1, 14);
 		
 		CheckBox unterbrochen = new CheckBox("Unterbrochen");
 		unterbrochen.setDisable(true);
-		GridPane.setConstraints(unterbrochen, 0, 12);
+		GridPane.setConstraints(unterbrochen, 0, 15);
+		Label unterbrochenLabel = new Label();
+		GridPane.setConstraints(unterbrochenLabel, 1, 15);
 		
 		CheckBox defekt = new CheckBox("Defekt");
 		defekt.setDisable(true);
-		GridPane.setConstraints(defekt, 1, 12);
+		GridPane.setConstraints(defekt, 0, 16);
+		Label defektLabel = new Label();
+		GridPane.setConstraints(defektLabel, 1, 16);
 		
-		//TODO Eventhandler
 		Button btn = new Button("Auftrag Exportieren");
 		GridPane.setConstraints(btn, 2, 15);
+		
+		
+		
+		
+		
+		
+		//EVENTS
+		
 		
 		create.setOnMouseClicked(e -> {
 			GUIAuftragErstellen.display();
 			
 		});
 		
+		
+		auftragTable.setOnMouseClicked(e -> {
+			delete.setDisable(false);
+			modify.setDisable(false);
+			Auftrag tempAuftrag = auftragTable.getSelectionModel().getSelectedItem();
+			
+			//TODO Choicebox Auswahl aus Tabelle holen und einfuegen
+			/*
+			choiceBoxPersonen.setStyle(null);
+			choiceBoxPersonen.setValue((tempAuftrag.getAuftraggeber().toString()));
+			choiceBoxAdmins.setStyle(null);
+			choiceBoxAdmins.setValue(choiceBoxAdmins.getItems().get(tempAuftrag.getVerwalter().getPERSON_ID()));
+			choiceBoxAdmins.setValue(tempAuftrag.getVerwalter());
+			choiceBoxAdmins.getSelectionModel().select(choiceBoxAdmins.getItems().indexOf(tempAuftrag.getVerwalter()));
+			*/
+			
+			auftragsTitel.setStyle(null);
+			auftragsTitel.setText(tempAuftrag.getTitel());
+			choiceBoxArt.setStyle(null);
+			choiceBoxArt.setValue(tempAuftrag.getART());
+			prognoKosten.setStyle(null);
+			prognoKosten.setText(Double.toString(tempAuftrag.getProgno_cost()));
+			reelleKosten.setStyle(null);
+			reelleKosten.setText(Double.toString(tempAuftrag.getReelle_kosten()));
+			
+
+		});
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		btn.setOnMouseClicked(e -> {
 		});
 		
 		bp.setCenter(grid);
-		grid.getChildren().addAll(l1,choiceBoxPersonen, l2, choiceBoxAdmins,l3, auftragsTitel, l4, choiceBoxArt, l5, prognoKosten , l6, reeleKosten, btn, angenommen,gefertigt, kalkuliert, abgeholt, abgerechnet, warten, unterbrochen, defekt);
+		grid.getChildren().addAll(l1,choiceBoxPersonen, l2, choiceBoxAdmins,l3, auftragsTitel, l4, choiceBoxArt, l5, prognoKosten , l6, reelleKosten, btn, angenommen,gefertigt, kalkuliert, abgeholt, abgerechnet, warten, unterbrochen, defekt
+				,angenommenLabel,gefertigtLabel,kalkuliertLabel,abgeholtLabel,abgerechnetLabel,wartenLabel,unterbrochenLabel,defektLabel);
 		
 		
 		tab.setContent(bp);
