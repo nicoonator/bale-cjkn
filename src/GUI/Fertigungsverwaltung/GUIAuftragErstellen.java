@@ -107,8 +107,9 @@ public class GUIAuftragErstellen {
 			
 			
 			grid.getChildren().addAll(l1, choiceBoxPersonen, l2, choiceBoxAdmins, btn, comboBox, l3, l4 , l5, reeleKosten, prognoKosten, auftragsTitel);
-		
-			/*btn.setOnMouseClicked(e -> {
+			
+			/*
+			btn.setOnMouseClicked(e -> {
 				
 				if(Validation.passwordInputValidation(passwortInput, passwortconfirmInput) && Validation.IntegerInputValidation(PLZInput) && Validation.nutzernameInputValidation(nutzernameInput) && Validation.StringInputValidation(vornameInput) && Validation.StringInputValidation(nachnameInput) && Validation.HausNrInputValidation(hausnummerInput) && Validation.StringInputValidation(strasseInput) && Validation.ComboBoxValidation(comboBox)){
 						
@@ -123,8 +124,8 @@ public class GUIAuftragErstellen {
 					AlertBox.display("Fehler", e1.getMessage());
 				}
 				}});
+				 */
 			
-			*/
 	        Scene scene = new Scene(grid);
 	        window.setScene(scene);
 	        window.initModality(Modality.APPLICATION_MODAL);
