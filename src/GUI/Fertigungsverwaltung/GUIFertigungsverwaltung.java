@@ -45,7 +45,7 @@ public class GUIFertigungsverwaltung {
 	Tab tab;
 	TableView<Auftrag> auftragTable;
 	public GUIFertigungsverwaltung(Tab tab) {
-		this.tab=tab;
+		this.tab=tab; 
 	}
 	
 	public void open() {
@@ -247,6 +247,19 @@ public class GUIFertigungsverwaltung {
 		try {
 			for (Auftrag a :  Fertigungsverwaltung.getInstance().getAllAuftrag()) {
 				resultAuftrag.add(a);
+			}
+		} catch (DatabaseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return resultAuftrag;
+	}
+	
+	public ObservableList<Auftrag> getDruckAuftraege() throws SQLException{
+		ObservableList<Auftrag> resultAuftrag = FXCollections.observableArrayList();
+		try {
+			for (Auftrag a :  Fertigungsverwaltung.getInstance().getAllAuftrag()) {
+				if(a.getART().equals("3D-Druck"))resultAuftrag.add(a);
 			}
 		} catch (DatabaseException e) {
 			// TODO Auto-generated catch block

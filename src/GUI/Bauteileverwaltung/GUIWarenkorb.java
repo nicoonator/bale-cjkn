@@ -37,6 +37,7 @@ public class GUIWarenkorb {
 		this.nutzer=nutzer;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void open() {
 		BorderPane bp = new BorderPane();
 		

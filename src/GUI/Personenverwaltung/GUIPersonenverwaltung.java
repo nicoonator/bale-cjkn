@@ -272,12 +272,6 @@ public class GUIPersonenverwaltung {
 	}
 	
 
-	/**
-	 * @param eMailInput
-	 * @return
-	 */
-
-
 	public ObservableList<Person> getPersonen() throws SQLException{
 		ObservableList<Person> result = FXCollections.observableArrayList();
 		for (Person p :  Personenverwaltung.getInstance().getAllPersons()) {
