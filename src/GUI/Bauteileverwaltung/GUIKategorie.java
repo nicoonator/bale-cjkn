@@ -61,8 +61,6 @@ public class GUIKategorie {
 		
 		// End of Center
 		
-		//TODO: CENTER: Content, labels checkboxes etc.
-		
 		//Events:
 		
 

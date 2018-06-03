@@ -79,7 +79,6 @@ public class GUIPersonenverwaltung {
 		//erstelltColumn.setMinWidth(150);
 		erstelltColumn.setCellValueFactory(new PropertyValueFactory<>("zuerst_erstellt"));
 
-		//TODO: DEBUG Zuletzt geaendert
 		TableColumn<Person, Date> geaendertColumn = new TableColumn<>("Zuletzt geaendert");
 		//erstelltColumn.setMinWidth(150);
 		geaendertColumn.setCellValueFactory(new PropertyValueFactory<>("zuletzt_geaendert"));
@@ -170,8 +169,6 @@ public class GUIPersonenverwaltung {
 		bp.setCenter(grid);
 		
 		// End of Center
-		
-		//TODO: CENTER: Content, labels checkboxes etc.
 		
 		//Events:
 		

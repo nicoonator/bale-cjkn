@@ -59,7 +59,7 @@ public class SQLManager {
 		stmt.close();		
 		rs.close();
 	}
-	
+
 	/**
 	 * @author Nico Rychlik
 	 * @return returns all Persons currently in Database as a List<Person>
@@ -73,15 +73,15 @@ public class SQLManager {
 		while (rs.next()) {
 			switch (rs.getInt("rolle")) {
 			case 0:
-				tempPerson=new Mitglied(rs.getInt("PERSON_ID"), rs.getString("vorname"), rs.getString("nachname"),  rs.getString("strasse"),  rs.getString("hausnr"),  rs.getInt("PLZ"), rs.getString("email"), new Date((rs.getLong("zuerst_erstellt"))*1000L), new Date((rs.getLong("zuletzt_geaendert"))*1000L), rs.getString("nutzername"), rs.getString("passwort"), rs.getInt("bauteilschulden"), new ArrayList<Bauteil>(), true);
+				tempPerson=new Mitglied(rs.getInt("PERSON_ID"), rs.getString("vorname"), rs.getString("nachname"),  rs.getString("strasse"),  rs.getString("hausnr"),  rs.getInt("PLZ"), rs.getString("email"), new Date((rs.getLong("zuerst_erstellt"))*1000L), new Date((rs.getLong("zuletzt_geaendert"))*1000L), rs.getString("nutzername"), rs.getString("passwort"), rs.getDouble("bauteilschulden"), new ArrayList<Bauteil>(), true);
 				break;
 			
 			case 1:
-				tempPerson=new Kunde(rs.getInt("PERSON_ID"), rs.getString("vorname"), rs.getString("nachname"),  rs.getString("strasse"),  rs.getString("hausnr"),  rs.getInt("PLZ"), rs.getString("email"), new Date((rs.getLong("zuerst_erstellt"))*1000L), new Date((rs.getLong("zuletzt_geaendert"))*1000L), rs.getString("nutzername"), rs.getString("passwort"), rs.getInt("bauteilschulden"), new ArrayList<Bauteil>(), false);
+				tempPerson=new Kunde(rs.getInt("PERSON_ID"), rs.getString("vorname"), rs.getString("nachname"),  rs.getString("strasse"),  rs.getString("hausnr"),  rs.getInt("PLZ"), rs.getString("email"), new Date((rs.getLong("zuerst_erstellt"))*1000L), new Date((rs.getLong("zuletzt_geaendert"))*1000L), rs.getString("nutzername"), rs.getString("passwort"), rs.getDouble("bauteilschulden"), new ArrayList<Bauteil>(), false);
 				break;
 			
 			case 2:
-				tempPerson=new Lehrstuhlperson(rs.getInt("PERSON_ID"), rs.getString("vorname"), rs.getString("nachname"),  rs.getString("strasse"),  rs.getString("hausnr"),  rs.getInt("PLZ"), rs.getString("email"), new Date((rs.getLong("zuerst_erstellt"))*1000L), new Date((rs.getLong("zuletzt_geaendert"))*1000L), rs.getString("nutzername"), rs.getString("passwort"), rs.getInt("bauteilschulden"), new ArrayList<Bauteil>(), false);
+				tempPerson=new Lehrstuhlperson(rs.getInt("PERSON_ID"), rs.getString("vorname"), rs.getString("nachname"),  rs.getString("strasse"),  rs.getString("hausnr"),  rs.getInt("PLZ"), rs.getString("email"), new Date((rs.getLong("zuerst_erstellt"))*1000L), new Date((rs.getLong("zuletzt_geaendert"))*1000L), rs.getString("nutzername"), rs.getString("passwort"), rs.getDouble("bauteilschulden"), new ArrayList<Bauteil>(), false);
 				break;
 			}
 			result.add(tempPerson);
@@ -209,15 +209,15 @@ public class SQLManager {
 		if(rs.next()) {
 			switch (rs.getInt("rolle")) {
 			case 0:
-				result=new Mitglied(rs.getInt("PERSON_ID"), rs.getString("vorname"), rs.getString("nachname"),  rs.getString("strasse"),  rs.getString("hausnr"),  rs.getInt("PLZ"), rs.getString("email"), new Date((rs.getLong("zuerst_erstellt"))*1000L), new Date((rs.getLong("zuletzt_geaendert"))*1000L), rs.getString("nutzername"), rs.getString("passwort"), rs.getInt("bauteilschulden"), new ArrayList<Bauteil>(), true);
+				result=new Mitglied(rs.getInt("PERSON_ID"), rs.getString("vorname"), rs.getString("nachname"),  rs.getString("strasse"),  rs.getString("hausnr"),  rs.getInt("PLZ"), rs.getString("email"), new Date((rs.getLong("zuerst_erstellt"))*1000L), new Date((rs.getLong("zuletzt_geaendert"))*1000L), rs.getString("nutzername"), rs.getString("passwort"), rs.getDouble("bauteilschulden"), new ArrayList<Bauteil>(), true);
 				break;
 			
 			case 1:
-				result=new Kunde(rs.getInt("PERSON_ID"), rs.getString("vorname"), rs.getString("nachname"),  rs.getString("strasse"),  rs.getString("hausnr"),  rs.getInt("PLZ"), rs.getString("email"), new Date((rs.getLong("zuerst_erstellt"))*1000L), new Date((rs.getLong("zuletzt_geaendert"))*1000L), rs.getString("nutzername"), rs.getString("passwort"), rs.getInt("bauteilschulden"), new ArrayList<Bauteil>(), false);
+				result=new Kunde(rs.getInt("PERSON_ID"), rs.getString("vorname"), rs.getString("nachname"),  rs.getString("strasse"),  rs.getString("hausnr"),  rs.getInt("PLZ"), rs.getString("email"), new Date((rs.getLong("zuerst_erstellt"))*1000L), new Date((rs.getLong("zuletzt_geaendert"))*1000L), rs.getString("nutzername"), rs.getString("passwort"), rs.getDouble("bauteilschulden"), new ArrayList<Bauteil>(), false);
 				break;
 			
 			case 2:
-				result=new Lehrstuhlperson(rs.getInt("PERSON_ID"), rs.getString("vorname"), rs.getString("nachname"),  rs.getString("strasse"),  rs.getString("hausnr"),  rs.getInt("PLZ"), rs.getString("email"), new Date((rs.getLong("zuerst_erstellt"))*1000L), new Date((rs.getLong("zuletzt_geaendert"))*1000L), rs.getString("nutzername"), rs.getString("passwort"), rs.getInt("bauteilschulden"), new ArrayList<Bauteil>(), false);
+				result=new Lehrstuhlperson(rs.getInt("PERSON_ID"), rs.getString("vorname"), rs.getString("nachname"),  rs.getString("strasse"),  rs.getString("hausnr"),  rs.getInt("PLZ"), rs.getString("email"), new Date((rs.getLong("zuerst_erstellt"))*1000L), new Date((rs.getLong("zuletzt_geaendert"))*1000L), rs.getString("nutzername"), rs.getString("passwort"), rs.getDouble("bauteilschulden"), new ArrayList<Bauteil>(), false);
 				break;
 			}
 		}
@@ -354,46 +354,6 @@ public class SQLManager {
 	 * @param anzahl
 	 * @param person
 	 * @throws SQLException
-	 * @throws BauteilNichtImWarenkorbException 
-	 * @throws ZuWenigBauteileImWarenkorbException 
-	 */
-	// Aus dem Warenkorb IN dem Bestand
-	// TODO: debug
-	public void addBauteil(int id, int anzahl, int person) throws SQLException, BauteilNichtImWarenkorbException, ZuWenigBauteileImWarenkorbException {
-		Statement stmt = c.createStatement();
-		String sql = "UPDATE Bauteil SET gelagert = gelagert + "+anzahl+" WHERE BAUTEIL_ID = "+id+";";
-		stmt.executeUpdate(sql);
-		sql ="SELECT * FROM Bauteilwarenkorb WHERE PERSON_ID = "+person+" AND BAUTEIL_ID = "+id+";";
-		ResultSet rs = stmt.executeQuery(sql);
-		if(!rs.next()) {
-			throw new BauteilNichtImWarenkorbException();
-		}
-		else {
-			if(rs.getInt("anzahl")!=0) {
-				if(rs.getInt("anzahl")>=anzahl) {
-					sql="UPDATE Bauteilwarenkorb SET anzahl= anzahl - "+Integer.toString(anzahl)+" WHERE PERSON_ID = '"+person+"' AND BAUTEIL_ID = '"+id+"';";
-					stmt.executeUpdate(sql);
-					double preis;
-					double anz=anzahl;
-					sql="SELECT preis FROM Bauteil WHERE BAUTEIL_ID ="+id+";";
-					preis = stmt.executeQuery(sql).getDouble(1);
-					sql="UPDATE Person SET bauteilschulden = bauteilschulden - "+(preis*anz)+";";
-					stmt.executeUpdate(sql);
-				}
-				else throw new ZuWenigBauteileImWarenkorbException(rs.getInt("anzahl"));
-			}
-			else throw new BauteilNichtImWarenkorbException();
-		}
-		rs.close();
-		stmt.close();	
-	}
-	
-	/**
-	 * @author Nico Rychlik
-	 * @param id
-	 * @param anzahl
-	 * @param person
-	 * @throws SQLException
 	 * @throws BauteilAnzahlZuKleinException
 	 */
 	
@@ -427,6 +387,45 @@ public class SQLManager {
 		stmt.close();	
 	}
 	
+	/**
+	 * @author Nico Rychlik
+	 * @param id
+	 * @param anzahl
+	 * @param person
+	 * @throws SQLException
+	 * @throws BauteilNichtImWarenkorbException 
+	 * @throws ZuWenigBauteileImWarenkorbException 
+	 */
+	// Aus dem Warenkorb IN dem Bestand
+	public void addBauteil(int id, int anzahl, int person) throws SQLException, BauteilNichtImWarenkorbException, ZuWenigBauteileImWarenkorbException {
+		Statement stmt = c.createStatement();
+		String sql = "UPDATE Bauteil SET gelagert = gelagert + "+anzahl+" WHERE BAUTEIL_ID = "+id+";";
+		stmt.executeUpdate(sql);
+		sql ="SELECT * FROM Bauteilwarenkorb WHERE PERSON_ID = "+person+" AND BAUTEIL_ID = "+id+";";
+		ResultSet rs = stmt.executeQuery(sql);
+		if(!rs.next()) {
+			throw new BauteilNichtImWarenkorbException();
+		}
+		else {
+			if(rs.getInt("anzahl")!=0) {
+				if(rs.getInt("anzahl")>=anzahl) {
+					sql="UPDATE Bauteilwarenkorb SET anzahl= anzahl - "+Integer.toString(anzahl)+" WHERE PERSON_ID = '"+person+"' AND BAUTEIL_ID = '"+id+"';";
+					stmt.executeUpdate(sql);
+					double preis;
+					double anz=anzahl;
+					sql="SELECT preis FROM Bauteil WHERE BAUTEIL_ID ="+id+";";
+					preis = stmt.executeQuery(sql).getDouble(1);
+					sql="UPDATE Person SET bauteilschulden = bauteilschulden - "+(preis*anz)+";";
+					stmt.executeUpdate(sql);
+				}
+				else throw new ZuWenigBauteileImWarenkorbException(rs.getInt("anzahl"));
+			}
+			else throw new BauteilNichtImWarenkorbException();
+		}
+		rs.close();
+		stmt.close();	
+	}
+
 	public Bauteil getBauteilByID (int id) throws SQLException {
 		Bauteil result = null;
 		Statement stmt = c.createStatement();
@@ -922,9 +921,10 @@ public class SQLManager {
 		String sql= "SELECT * FROM Bauteilwarenkorb WHERE PERSON_ID = "+person_ID+";";
 		ResultSet rs = stmt.executeQuery(sql);
 		while (rs.next()) {
-			result.add(new Bauteilwarenkorbelement(rs.getInt("BAUTEIL_ID"), rs.getInt("anzahl")));
+			result.add(new Bauteilwarenkorbelement(this.getBauteilByID(rs.getInt("BAUTEIL_ID")), rs.getInt("anzahl")));
 		}
 		stmt.close();
+		rs.close();
 		return result;
 	}
 	
