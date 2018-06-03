@@ -46,6 +46,7 @@ public class GUIPersonenverwaltung {
 	public void open() {
 		
 		BorderPane bp = new BorderPane();
+		bp.setPadding(new Insets(10,10,10,10));
 		
 		// Start of TOP
 		

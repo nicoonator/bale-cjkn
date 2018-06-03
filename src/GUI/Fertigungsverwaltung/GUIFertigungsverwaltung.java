@@ -51,7 +51,7 @@ public class GUIFertigungsverwaltung {
 	public void open() {
 		
 		BorderPane bp = new BorderPane();
-		
+		bp.setPadding(new Insets(10,10,10,10));
 		
 		//Oben
 		HBox top = new HBox();
