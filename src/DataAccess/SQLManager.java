@@ -499,11 +499,11 @@ public class SQLManager {
 		Statement stmt = c.createStatement();
 		String sql = "SELECT * FROM Auftrag WHERE AUFTRAG_ID = "+ID+";";
 		ResultSet rs = stmt.executeQuery(sql);
-		String sql2 ="SELECT PERSON_ID FROM Verbindung_Auftrag_Person WHERE AUFTRAG_ID = "+ID+" AND rolle = 0;";
+		String sql2 ="SELECT PERSON_ID FROM Verbindung_Person_Auftrag WHERE AUFTRAG_ID = "+ID+" AND rolle = 0;";
 		Person auftraggeber = this.getPersonByID(stmt.executeQuery(sql2).getInt(1));
-		sql2 ="SELECT PERSON_ID FROM Verbindung_Auftrag_Person WHERE AUFTRAG_ID = "+ID+" AND rolle = 1;";
+		sql2 ="SELECT PERSON_ID FROM Verbindung_Person_Auftrag WHERE AUFTRAG_ID = "+ID+" AND rolle = 1;";
 		Person verwalter = this.getPersonByID(stmt.executeQuery(sql2).getInt(1));
-		sql2 ="SELECT PERSON_ID FROM Verbindung_Auftrag_Person WHERE AUFTRAG_ID = "+ID+" AND rolle = 2;";
+		sql2 ="SELECT PERSON_ID FROM Verbindung_Person_Auftrag WHERE AUFTRAG_ID = "+ID+" AND rolle = 2;";
 		List<Person> vertreter= new ArrayList<Person>();
 		ResultSet rs2 = stmt.executeQuery(sql2);
 		while(rs2.next()) {

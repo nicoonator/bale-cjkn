@@ -68,6 +68,20 @@ public class Validation {
 		return result;
 	}
 	
+	public static boolean StringInputohneBoxValidation(TextField tf) {
+		boolean result=false;
+		if (!(tf.getText()==null || tf.getText().trim().isEmpty())) {
+			if (!(Pattern.compile( "[0-9]" ).matcher( tf.getText() ).find())) result = true;
+			else result = false;	
+		}
+		else result =  false;
+
+		if (!result) tf.setStyle("-fx-text-fill: red;");
+		else tf.setStyle(null);
+		
+		return result;
+	}
+	
 	public static boolean nutzernameInputValidation(TextField tf) {
 		boolean result=false;
 		if (!(tf.getText()==null || tf.getText().trim().isEmpty())) {
@@ -92,6 +106,64 @@ public class Validation {
 			}
 		}
 		else AlertBox.display("Fehler", "Kein Textfeld darf leer sein!");
+
+		if (!result) tf.setStyle("-fx-text-fill: red;");
+		else tf.setStyle(null);
+		
+		return result;
+	}
+	
+	public static boolean IntegerInputohneBoxValidation(TextField tf) {
+		boolean result=false;
+		if (!(tf.getText()==null || tf.getText().trim().isEmpty())) {
+			try {
+				Integer.parseInt(tf.getText());
+				result = true;
+			} catch (NumberFormatException e) {
+				result = false;
+			}
+		}
+		else result = false;
+
+		if (!result) tf.setStyle("-fx-text-fill: red;");
+		else tf.setStyle(null);
+		
+		return result;
+	}
+	
+	
+	
+	
+	
+	public static boolean DoubleInputValidation(TextField tf) {
+		boolean result=false;
+		if (!(tf.getText()==null || tf.getText().trim().isEmpty())) {
+			try {
+				Double.parseDouble(tf.getText());
+				result = true;
+			} catch (NumberFormatException e) {
+				AlertBox.display("Fehler", "Es wurde eine Zahl erwartet!");
+			}
+		}
+		else AlertBox.display("Fehler", "Kein Textfeld darf leer sein!");
+
+		if (!result) tf.setStyle("-fx-text-fill: red;");
+		else tf.setStyle(null);
+		
+		return result;
+	}
+	
+	public static boolean DoubleInputohneBoxValidation(TextField tf) {
+		boolean result=false;
+		if (!(tf.getText()==null || tf.getText().trim().isEmpty())) {
+			try {
+				Double.parseDouble(tf.getText());
+				result = true;
+			} catch (NumberFormatException e) {
+				result = false;
+			}
+		}
+		else result = false;
 
 		if (!result) tf.setStyle("-fx-text-fill: red;");
 		else tf.setStyle(null);

@@ -23,7 +23,8 @@ public class GUICreatePerson {
 
     public static void display() {
         Stage window = new Stage();
-
+        window.setTitle("Person Erstellen");
+        
         GridPane grid = new GridPane();
 		grid.setPadding(new Insets(10,10,10,10));
 		grid.setVgap(8);
@@ -86,6 +87,8 @@ public class GUICreatePerson {
 		Button btn = new Button("Erstellen");
 		GridPane.setConstraints(btn, 1, 9);
 		
+		Button btnClose = new Button ("Schlieﬂen");
+		GridPane.setConstraints(btnClose, 1, 10);
 		
 		ComboBox<String> comboBox;
 		comboBox = new ComboBox<>();
@@ -98,7 +101,7 @@ public class GUICreatePerson {
         GridPane.setConstraints(comboBox, 0, 9);
 		
 		grid.getChildren().addAll(vornameLabel, vornameInput, nachnameLabel, nachnameInput, strasseLabel, strasseInput, hausnummerLabel, hausnummerInput, 
-				PLZLabel, PLZInput, EMailLabel, EMailInput, nutzernameLabel, nutzernameInput, passwortLabel, passwortInput, btn, comboBox, passwortconfirmInput, passwortconfirmLabel);
+				PLZLabel, PLZInput, EMailLabel, EMailInput, nutzernameLabel, nutzernameInput, passwortLabel, passwortInput, btn, comboBox, passwortconfirmInput, passwortconfirmLabel,btnClose);
 		
 		btn.setOnMouseClicked(e -> {
 			
@@ -116,9 +119,17 @@ public class GUICreatePerson {
 			}
 			}});
 		
+		btnClose.setOnMouseClicked(e -> {
+			window.close();
+		});
+		
+		
+		
         Scene scene = new Scene(grid);
         window.setScene(scene);
+        window.initModality(Modality.APPLICATION_MODAL);
         window.showAndWait();
+       
         
         
         
