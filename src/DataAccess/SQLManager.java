@@ -36,6 +36,23 @@ public class SQLManager {
 
 	/**
 	 * @author Nico Rychlik
+	 * @return returns List of all Kategories
+	 * @throws SQLException
+	 */
+	public List<Kategorie> getAllKategorie() throws SQLException {
+		List<Kategorie> result = new ArrayList<Kategorie>();
+		Statement stmt = c.createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT * FROM Kategorie;");
+		while(rs.next()) {
+			result.add(new Kategorie (rs.getInt("KATEGORIE_ID"),rs.getString("name")));
+		}
+		stmt.close();		
+		rs.close();
+		return result;
+	}
+
+	/**
+	 * @author Nico Rychlik
 	 * @param vname
 	 * @param nname
 	 * @param strasse
@@ -246,24 +263,6 @@ public class SQLManager {
 	}
 	
 	/**
-	 * @author Nico Rychlik
-	 * @return returns List of all Kategories
-	 * @throws SQLException
-	 */
-	public List<Kategorie> getAllKategorie() throws SQLException {
-		List<Kategorie> result = new ArrayList<Kategorie>();
-		Statement stmt = c.createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT * FROM Kategorie;");
-		while(rs.next()) {
-			result.add(new Kategorie (rs.getInt("KATEGORIE_ID"),rs.getString("name")));
-		}
-		stmt.close();		
-		rs.close();
-		return result;
-	}
-	
-	
-	/**
 	 * loescht die Kategorie und weist Bauteilen die dieser Kategorie angehoeren die Trash Kategorie zu und erstellt sie ggf.
 	 * @author Nico Rychlik
 	 * @param id
@@ -469,9 +468,9 @@ public class SQLManager {
 
 	
 	
-	public void createAuftrag(String titel, String art, double prog_kosten, double reele_kosten, int person_ID, int verwalter_ID, List<Person> vertreter) throws SQLException{
+	public void createAuftrag(String titel, String art, double prog_kosten, double reelle_kosten, int person_ID, int verwalter_ID, List<Person> vertreter) throws SQLException{
 		Statement stmt = c.createStatement();
-		String sql ="INSERT INTO Auftrag (titel, art, prognostizierte_kosten, reele_kosten,angenommen, gefertigt, kalkuliert, abgeholt, abgerechnet, warten, unterbrochen, defekt, date_angenommen, date_gefertigt, date_kalkuliert, date_abgeholt, date_abgerechnet, date_warten, date_unterbrochen, date_defekt) VALUES ('"+titel+"','"+art+"','"+prog_kosten+"','"+reele_kosten+"',1,0,0,0,0,0,0,0,"+new Date().getTime()/1000L+","+new Date().getTime()/1000L+","+new Date().getTime()/1000L+","+new Date().getTime()/1000L+","+new Date().getTime()/1000L+","+new Date().getTime()/1000L+","+new Date().getTime()/1000L+","+new Date().getTime()/1000L+");";
+		String sql ="INSERT INTO Auftrag (titel, art, prognostizierte_kosten, reelle_kosten,angenommen, gefertigt, kalkuliert, abgeholt, abgerechnet, warten, unterbrochen, defekt, date_angenommen, date_gefertigt, date_kalkuliert, date_abgeholt, date_abgerechnet, date_warten, date_unterbrochen, date_defekt) VALUES ('"+titel+"','"+art+"','"+prog_kosten+"','"+reelle_kosten+"',1,0,0,0,0,0,0,0,"+new Date().getTime()/1000L+","+new Date().getTime()/1000L+","+new Date().getTime()/1000L+","+new Date().getTime()/1000L+","+new Date().getTime()/1000L+","+new Date().getTime()/1000L+","+new Date().getTime()/1000L+","+new Date().getTime()/1000L+");";
 		stmt.executeUpdate(sql);
 		int auftrag_id=stmt.executeQuery("SELECT * FROM Auftrag WHERE AUFTRAG_ID = (SELECT MAX(AUFTRAG_ID)  FROM Auftrag);").getInt(1);
 		sql ="INSERT INTO Verbindung_Person_Auftrag (PERSON_ID, AUFTRAG_ID, rolle) values ("+person_ID+","+auftrag_id+",0);";
