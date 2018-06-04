@@ -189,7 +189,7 @@ public class GUIWarenkorb {
 		
 		warenkorb.getColumns().addAll(kategoriewColumn, namewColumn, linkwColumn, preiswColumn, anzahlColumn);
 		
-		warenkorb.setPrefWidth(350);
+		warenkorb.setPrefWidth(400);
 		bp.setRight(warenkorb);
 		
 		// END of RIGHT
@@ -214,7 +214,6 @@ public class GUIWarenkorb {
 		bauteillager.setOnMouseClicked(e -> {
 			Bauteil tempBauteil = bauteillager.getSelectionModel().getSelectedItem();
 			bp.setCenter(grid);
-			schulden.setText(Double.toString(nutzer.getBauteilschulden()) +" €");
 			bauteilnameLabel.setText(tempBauteil.getName());
 		});
 		
@@ -230,11 +229,13 @@ public class GUIWarenkorb {
 				try {
 					Bauteileverwaltung.getInstance().removeBauteil(bauteillager.getSelectionModel().getSelectedItem().getID(), Integer.parseInt(anzahlInput.getText()), nutzer.getPERSON_ID());
 					bauteillager.setItems(getBauteile());
+					warenkorb.setItems(getBauteilewarenkorb());
 					schulden.setText(Double.toString(Personenverwaltung.getInstance().getPersonByID(nutzer.getPERSON_ID()).getBauteilschulden()) +" €");
 				} catch (NumberFormatException | DatabaseException | SQLException e1) {
 					AlertBox.display("Fehler", e1.getMessage());
 				} finally {	
 					bauteillager.getSelectionModel().select(tempBauteil);
+					
 				}
 			}
 		});
@@ -245,6 +246,7 @@ public class GUIWarenkorb {
 				try {
 					Bauteileverwaltung.getInstance().addBauteil(warenkorb.getSelectionModel().getSelectedItem().getBauteil().getID(), Integer.parseInt(anzahl2Input.getText()), nutzer.getPERSON_ID());
 					warenkorb.setItems(getBauteilewarenkorb());
+					bauteillager.setItems(getBauteile());
 					schulden.setText(Double.toString(Personenverwaltung.getInstance().getPersonByID(nutzer.getPERSON_ID()).getBauteilschulden()) +" €");
 				} catch (NumberFormatException | DatabaseException | SQLException e1) {
 					AlertBox.display("Fehler", e1.getMessage());
@@ -272,7 +274,9 @@ public class GUIWarenkorb {
 	public ObservableList<Bauteilwarenkorbelement> getBauteilewarenkorb() throws SQLException{
 		ObservableList<Bauteilwarenkorbelement> result = FXCollections.observableArrayList();
 		for (Bauteilwarenkorbelement b :  Bauteileverwaltung.getInstance().getBauteilwarenkorbByID(nutzer.getPERSON_ID())) {
-			result.add(b);
+			if (b.getAnzahl()>0) {
+				result.add(b);
+			}
 		}
 		return result;
 	}

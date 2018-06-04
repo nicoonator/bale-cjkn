@@ -371,15 +371,14 @@ public class SQLManager {
 				sql="INSERT INTO Bauteilwarenkorb (PERSON_ID, BAUTEIL_ID, anzahl) VALUES ("+person+", "+id+", "+anzahl+");";
 				stmt.executeUpdate(sql);
 			}
-			else {
-				sql="UPDATE Bauteilwarenkorb SET anzahl = anzahl + "+anzahl+" WHERE BAUTEIL_ID="+id+" AND PERSON_ID = "+person+";";
-			}
+			sql="UPDATE Bauteilwarenkorb SET anzahl = anzahl + "+anzahl+" WHERE BAUTEIL_ID="+id+" AND PERSON_ID = "+person+";";
+			stmt.executeUpdate(sql);
 			rs2.close();
 			double preis;
 			double anz=anzahl;
 			sql="SELECT preis FROM Bauteil WHERE BAUTEIL_ID ="+id+";";
 			preis = stmt.executeQuery(sql).getDouble(1);
-			sql="UPDATE Person SET bauteilschulden = bauteilschulden + "+(preis*anz)+";";
+			sql="UPDATE Person SET bauteilschulden = bauteilschulden + "+(preis*anz)+" WHERE PERSON_ID ="+person+";";
 			stmt.executeUpdate(sql);
 		}
 		else throw new BauteilAnzahlZuKleinException(rs.getInt(1));
@@ -415,7 +414,7 @@ public class SQLManager {
 					double anz=anzahl;
 					sql="SELECT preis FROM Bauteil WHERE BAUTEIL_ID ="+id+";";
 					preis = stmt.executeQuery(sql).getDouble(1);
-					sql="UPDATE Person SET bauteilschulden = bauteilschulden - "+(preis*anz)+";";
+					sql="UPDATE Person SET bauteilschulden = bauteilschulden - "+(preis*anz)+" WHERE PERSON_ID ="+person+";";
 					stmt.executeUpdate(sql);
 				}
 				else throw new ZuWenigBauteileImWarenkorbException(rs.getInt("anzahl"));
