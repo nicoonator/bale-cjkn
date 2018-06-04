@@ -201,7 +201,7 @@ public class GUIWarenkorb {
 		bot.setSpacing(10);
 		bot.setPadding(new Insets(10,10,10,20));
 		
-		Label schulden = new Label();
+		Label schulden = new Label("Aktuelle Schulden in Euro: "+String.valueOf(nutzer.getBauteilschulden()));
 		
 		bot.getChildren().addAll(schulden);
 		
@@ -212,15 +212,19 @@ public class GUIWarenkorb {
 		//Events:
 		
 		bauteillager.setOnMouseClicked(e -> {
-			Bauteil tempBauteil = bauteillager.getSelectionModel().getSelectedItem();
-			bp.setCenter(grid);
-			bauteilnameLabel.setText(tempBauteil.getName());
+			if(!(bauteillager.getSelectionModel().isEmpty())) {
+				Bauteil tempBauteil = bauteillager.getSelectionModel().getSelectedItem();
+				bp.setCenter(grid);
+				bauteilnameLabel.setText(tempBauteil.getName());
+			}
 		});
 		
 		warenkorb.setOnMouseClicked(e -> {
-			Bauteilwarenkorbelement tempBauteilelement = warenkorb.getSelectionModel().getSelectedItem();
-			bp.setCenter(grid2);
-			bauteil2nameLabel.setText(tempBauteilelement.getName());
+			if(!(warenkorb.getSelectionModel().isEmpty())) {
+				Bauteilwarenkorbelement tempBauteilelement = warenkorb.getSelectionModel().getSelectedItem();
+				bp.setCenter(grid2);
+				bauteil2nameLabel.setText(tempBauteilelement.getName());
+			}
 		});
 		
 		takeOut.setOnMouseClicked(e -> {
@@ -230,7 +234,7 @@ public class GUIWarenkorb {
 					Bauteileverwaltung.getInstance().removeBauteil(bauteillager.getSelectionModel().getSelectedItem().getID(), Integer.parseInt(anzahlInput.getText()), nutzer.getPERSON_ID());
 					bauteillager.setItems(getBauteile());
 					warenkorb.setItems(getBauteilewarenkorb());
-					schulden.setText(Double.toString(Personenverwaltung.getInstance().getPersonByID(nutzer.getPERSON_ID()).getBauteilschulden()) +" €");
+					schulden.setText(Double.toString(Personenverwaltung.getInstance().getPersonByID(nutzer.getPERSON_ID()).getBauteilschulden()) +" Euro");
 				} catch (NumberFormatException | DatabaseException | SQLException e1) {
 					AlertBox.display("Fehler", e1.getMessage());
 				} finally {	
@@ -247,7 +251,7 @@ public class GUIWarenkorb {
 					Bauteileverwaltung.getInstance().addBauteil(warenkorb.getSelectionModel().getSelectedItem().getBauteil().getID(), Integer.parseInt(anzahl2Input.getText()), nutzer.getPERSON_ID());
 					warenkorb.setItems(getBauteilewarenkorb());
 					bauteillager.setItems(getBauteile());
-					schulden.setText(Double.toString(Personenverwaltung.getInstance().getPersonByID(nutzer.getPERSON_ID()).getBauteilschulden()) +" €");
+					schulden.setText(Double.toString(Personenverwaltung.getInstance().getPersonByID(nutzer.getPERSON_ID()).getBauteilschulden()) +" Euro");
 				} catch (NumberFormatException | DatabaseException | SQLException e1) {
 					AlertBox.display("Fehler", e1.getMessage());
 				} finally {	
