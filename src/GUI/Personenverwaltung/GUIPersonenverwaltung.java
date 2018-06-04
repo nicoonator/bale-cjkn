@@ -67,6 +67,8 @@ public class GUIPersonenverwaltung {
 		
 		// End of TOP
 		
+		// Left
+		
 		TableColumn<Person, String> vornameColumn = new TableColumn<>("Vorname");
 		//vornameColumn.setMinWidth(100);
 		vornameColumn.setCellValueFactory(new PropertyValueFactory<>("vorname"));

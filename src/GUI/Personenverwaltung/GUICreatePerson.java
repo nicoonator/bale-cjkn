@@ -109,7 +109,7 @@ public class GUICreatePerson {
 					
 				try{
 				
-					Personenverwaltung.getInstance().createPerson(vornameInput.getText(), nachnameInput.getText(), strasseInput.getText(), Integer.parseInt(hausnummerInput.getText()), Integer.parseInt(PLZInput.getText()), EMailInput.getText(), nutzernameInput.getText(), passwortInput.getText(), comboBox.getSelectionModel().getSelectedIndex());
+					Personenverwaltung.getInstance().createPerson(vornameInput.getText(), nachnameInput.getText(), strasseInput.getText(), hausnummerInput.getText(), Integer.parseInt(PLZInput.getText()), EMailInput.getText(), nutzernameInput.getText(), passwortInput.getText(), comboBox.getSelectionModel().getSelectedIndex());
 					AlertBox.display("Erfolg!", "Person erzeugt!");
 					window.close();
 				}
