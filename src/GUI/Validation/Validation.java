@@ -7,6 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import GUI.AlertBox;
+import Logic.Person;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -68,19 +69,6 @@ public class Validation {
 		return result;
 	}
 	
-	public static boolean StringInputohneBoxValidation(TextField tf) {
-		boolean result=false;
-		if (!(tf.getText()==null || tf.getText().trim().isEmpty())) {
-			if (!(Pattern.compile( "[0-9]" ).matcher( tf.getText() ).find())) result = true;
-			else result = false;	
-		}
-		else result =  false;
-
-		if (!result) tf.setStyle("-fx-text-fill: red;");
-		else tf.setStyle(null);
-		
-		return result;
-	}
 	
 	public static boolean nutzernameInputValidation(TextField tf) {
 		boolean result=false;
@@ -113,26 +101,6 @@ public class Validation {
 		return result;
 	}
 	
-	public static boolean IntegerInputohneBoxValidation(TextField tf) {
-		boolean result=false;
-		if (!(tf.getText()==null || tf.getText().trim().isEmpty())) {
-			try {
-				Integer.parseInt(tf.getText());
-				result = true;
-			} catch (NumberFormatException e) {
-				result = false;
-			}
-		}
-		else result = false;
-
-		if (!result) tf.setStyle("-fx-text-fill: red;");
-		else tf.setStyle(null);
-		
-		return result;
-	}
-	
-	
-	
 	
 	
 	public static boolean DoubleInputValidation(TextField tf) {
@@ -153,23 +121,9 @@ public class Validation {
 		return result;
 	}
 	
-	public static boolean DoubleInputohneBoxValidation(TextField tf) {
-		boolean result=false;
-		if (!(tf.getText()==null || tf.getText().trim().isEmpty())) {
-			try {
-				Double.parseDouble(tf.getText());
-				result = true;
-			} catch (NumberFormatException e) {
-				result = false;
-			}
-		}
-		else result = false;
 
-		if (!result) tf.setStyle("-fx-text-fill: red;");
-		else tf.setStyle(null);
 		
-		return result;
-	}
+	
 	
 	public static boolean passwordInputValidation(PasswordField passwortInput, PasswordField passwortconfirmInput) {
 	    	boolean result=false;
@@ -182,14 +136,26 @@ public class Validation {
 	    	return result;
 	    }
 	
-	public static boolean ComboBoxValidation(ComboBox<String> comboBox) {
+	public static boolean ComboBoxValidationString(ComboBox<String> comboBox) {
 		boolean result=false;
 		if (!(comboBox.getSelectionModel().isEmpty())) {
 			result=true;
 		}
-		else AlertBox.display("Fehler", "Ein Typ muss ausgewahlt werden!");
+		else AlertBox.display("Fehler", "Ein Fertigungstyp muss ausgewahlt werden!");
 		
 		return result;
 	}
+	
+	public static boolean ComboBoxValidationPerson(ComboBox<Person> comboBox) {
+		boolean result=false;
+		if (!(comboBox.getSelectionModel().isEmpty())) {
+			result=true;
+		}
+		else AlertBox.display("Fehler", "Ein Fertigungstyp muss ausgewahlt werden!");
+		
+		return result;
+	}
+	
+	
 }
 
