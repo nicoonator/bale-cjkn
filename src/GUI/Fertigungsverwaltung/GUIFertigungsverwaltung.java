@@ -4,6 +4,7 @@
 package GUI.Fertigungsverwaltung;
 
 import java.sql.SQLException;
+import java.util.Iterator;
 import java.util.List;
 
 import Exceptions.DatabaseException;
@@ -21,6 +22,7 @@ import javafx.geometry.Side;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
@@ -100,7 +102,7 @@ public class GUIFertigungsverwaltung {
 		}
 		auftragTable.getColumns().addAll(titel, art, auftrag_id, auftraggeber, verwalter, prognostKosten, reellKosten);
 		
-		auftragTable.setPrefWidth(620);
+		auftragTable.setPrefWidth(650);
 		bp.setLeft(auftragTable);
 	
 		
@@ -117,68 +119,75 @@ public class GUIFertigungsverwaltung {
 		Label l1 = new Label("Auftragsersteller");
 		GridPane.setConstraints(l1, 0, 0);
 		int counter1 = 0;
-		ChoiceBox<String> choiceBoxPersonen = new ChoiceBox<>();
+		ComboBox<String> comboBoxPersonen = new ComboBox<>();
+		comboBoxPersonen.setPromptText("Ersteller");
 		try {
 			List<Person> personen = Personenverwaltung.getInstance().getAllPersons();
 			try {
 				while(personen.listIterator().hasNext()) {
-					choiceBoxPersonen.getItems().addAll(personen.listIterator(counter1).next().getVorname() +" "+ personen.listIterator(counter1).next().getNachname()+ personen.listIterator(counter1).next().getPERSON_ID() );
+					comboBoxPersonen.getItems().addAll(personen.listIterator(counter1).next().getVorname() +" "+ personen.listIterator(counter1).next().getNachname()+ personen.listIterator(counter1).next().getPERSON_ID() );
 					counter1++;
 				}
 			} catch (Exception e) {
-				choiceBoxPersonen.setValue(personen.get(0).getVorname()+ " " +personen.get(0).getNachname() );
 			}
 			
 		} catch (SQLException e) {			
 		}
-		GridPane.setConstraints(choiceBoxPersonen, 0, 1);
+		comboBoxPersonen.setDisable(true);
+		GridPane.setConstraints(comboBoxPersonen, 0, 1);
 		
 		//Dropdown Admins
 		Label l2 = new Label("Admins");
 		GridPane.setConstraints(l2, 2, 0);
 		int counter2 = 0;
-		ChoiceBox<Person> choiceBoxAdmins = new ChoiceBox<>();
+		ComboBox<String> comboBoxAdmins = new ComboBox<>();
+		comboBoxAdmins.setPromptText("Verwalter");
 		try {
 			List<Person> admins = Personenverwaltung.getInstance().getAllAdmins();
 			try {
 				
 					
-					choiceBoxAdmins.getItems().addAll(admins);
-					
-					//choiceBoxAdmins.getItems().addAll(admins.listIterator(counter2).next().getVorname()+ " " + admins.listIterator(counter2).next().getNachname() + admins.listIterator(counter2).next().getPERSON_ID());
+					while(admins.listIterator().hasNext()) {
+					comboBoxAdmins.getItems().addAll(admins.listIterator(counter2).next().getVorname()+ " " + admins.listIterator(counter2).next().getNachname() + admins.listIterator(counter2).next().getPERSON_ID());
+					counter2++;
+					}
 					
 			}catch(Exception e) {
-				//choiceBoxAdmins.setValue(admins.get(0).getVorname()+ " " +admins.get(0).getNachname() );
 			}
 		} catch (SQLException e) {
 		} catch (DatabaseException e) {
 		}
-		choiceBoxAdmins.getItems().indexOf(choiceBoxAdmins.getValue());
-		GridPane.setConstraints(choiceBoxAdmins, 2, 1);
+		comboBoxAdmins.setDisable(true);
+		GridPane.setConstraints(comboBoxAdmins, 2, 1);
 		
 		//Auftragstitel und Feld
 		Label l3 = new Label("Auftragstitel");
 		GridPane.setConstraints(l3 , 0 , 3);
 		TextField auftragsTitel = new TextField();
+		auftragsTitel.setDisable(true);
 		GridPane.setConstraints(auftragsTitel, 0, 4);
 		
 		//Art der Fertigung
 		Label l4 = new Label("Fertigungsart");
 		GridPane.setConstraints(l4 , 2 , 3);
-		ChoiceBox<String> choiceBoxArt = new ChoiceBox<>();
-		choiceBoxArt.getItems().addAll("Leiterplatte", "3D-Druck" , "Sonstiges");
-		GridPane.setConstraints(choiceBoxArt, 2, 4);
+		ComboBox<String> comboBoxArt = new ComboBox<>();
+		comboBoxArt.setPromptText("Fertigungsart");
+		comboBoxArt.getItems().addAll("Leiterplatte", "3D-Druck" , "Sonstiges");
+		comboBoxArt.setDisable(true);
+		GridPane.setConstraints(comboBoxArt, 2, 4);
 		
 		//Prognostizierte Kosten
 		Label l5 = new Label("Prognostizierte Kosten");
 		GridPane.setConstraints(l5 , 0 , 6);
 		TextField prognoKosten = new TextField();
+		prognoKosten.setDisable(true);
 		GridPane.setConstraints(prognoKosten, 0, 7);
 		
-		//Reele Kosten
-		Label l6 = new Label("Prognostizierte Kosten");
+		//Reelle Kosten
+		Label l6 = new Label("Reelle Kosten");
 		GridPane.setConstraints(l6 , 2 , 6);
 		TextField reelleKosten = new TextField();
+		reelleKosten.setDisable(true);
 		GridPane.setConstraints(reelleKosten, 2, 7);
 		
 		
@@ -187,50 +196,49 @@ public class GUIFertigungsverwaltung {
 		CheckBox angenommen = new CheckBox("Angenommen");
 		angenommen.setDisable(true);
 		GridPane.setConstraints(angenommen, 0, 9);
-		Label angenommenLabel = new Label();
+		Label angenommenLabel = new Label("Zeitangabe Angenommen");
 		GridPane.setConstraints(angenommenLabel, 1, 9);
-		
 		
 		CheckBox gefertigt = new CheckBox("Gefertigt");
 		gefertigt.setDisable(true);
 		GridPane.setConstraints(gefertigt, 0, 10);
-		Label gefertigtLabel = new Label();
+		Label gefertigtLabel = new Label("Zeitangabe Gefertigt");
 		GridPane.setConstraints(gefertigtLabel, 1, 10);
 		
 		CheckBox kalkuliert = new CheckBox("Kalkuliert");
 		kalkuliert.setDisable(true);
 		GridPane.setConstraints(kalkuliert, 0, 11);
-		Label kalkuliertLabel = new Label();
+		Label kalkuliertLabel = new Label("Zeitangabe Kalkuliert");
 		GridPane.setConstraints(kalkuliertLabel, 1, 11);
 		
 		CheckBox abgeholt = new CheckBox("Abgeholt");
 		abgeholt.setDisable(true);
 		GridPane.setConstraints(abgeholt, 0, 12);
-		Label abgeholtLabel = new Label();
+		Label abgeholtLabel = new Label("Zeitangabe Abgeholt");
 		GridPane.setConstraints(abgeholtLabel, 1, 12);
 		
 		CheckBox abgerechnet = new CheckBox("Abgerechnet");
 		abgerechnet.setDisable(true);
 		GridPane.setConstraints(abgerechnet, 0, 13);
-		Label abgerechnetLabel = new Label();
+		Label abgerechnetLabel = new Label("Zeitangabe Abgerechnet");
 		GridPane.setConstraints(abgerechnetLabel, 1, 13);
 		
 		CheckBox warten = new CheckBox("Warten");
 		warten.setDisable(true);
 		GridPane.setConstraints(warten, 0, 14);
-		Label wartenLabel = new Label();
+		Label wartenLabel = new Label("Zeitangabe Warten");
 		GridPane.setConstraints(wartenLabel, 1, 14);
 		
 		CheckBox unterbrochen = new CheckBox("Unterbrochen");
 		unterbrochen.setDisable(true);
 		GridPane.setConstraints(unterbrochen, 0, 15);
-		Label unterbrochenLabel = new Label();
+		Label unterbrochenLabel = new Label("Zeitangabe Unterbrochen");
 		GridPane.setConstraints(unterbrochenLabel, 1, 15);
 		
 		CheckBox defekt = new CheckBox("Defekt");
 		defekt.setDisable(true);
 		GridPane.setConstraints(defekt, 0, 16);
-		Label defektLabel = new Label();
+		Label defektLabel = new Label("Zeitangabe Defekt");
 		GridPane.setConstraints(defektLabel, 1, 16);
 		
 		Button btn = new Button("Auftrag Exportieren");
@@ -246,36 +254,176 @@ public class GUIFertigungsverwaltung {
 		
 		create.setOnMouseClicked(e -> {
 			GUIAuftragErstellen.display();
+			try {
+				auftragTable.setItems(getAuftraege());
+			} catch (SQLException e1) {
+				AlertBox.display("Fehler", e1.getMessage());
+			}
+			
+			modify.setDisable(true);
+			delete.setDisable(true);
+		});
+		
+		modify.setOnMouseClicked(e -> {
+			
+			
+			
+			Auftrag tempAuftragMod = auftragTable.getSelectionModel().getSelectedItem();
+			
+			if(Validation.StringInputValidation(auftragsTitel) && Validation.DoubleInputValidation(prognoKosten) && Validation.DoubleInputValidation(reelleKosten)) {
+				try {
+					
+					Fertigungsverwaltung.getInstance().modifyAuftrag(tempAuftragMod.getAUFTRAG_ID(),"PERSON_ID" , comboBoxPersonen.getValue());
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				
+			}
+		});
+		
+		delete.setOnMouseClicked(e ->{
+			Auftrag tempAuftragDel = auftragTable.getSelectionModel().getSelectedItem();
+			try {
+				Fertigungsverwaltung.getInstance().deleteAuftrag(tempAuftragDel.getAUFTRAG_ID());
+				auftragTable.setItems(getAuftraege());
+				comboBoxPersonen.setValue("Ersteller");
+				comboBoxAdmins.setValue("Verwalter");
+				comboBoxArt.setValue("Fertigungsart");
+				auftragsTitel.setDisable(true);
+				auftragsTitel.clear();
+				prognoKosten.clear();
+				prognoKosten.setDisable(true);
+				reelleKosten.clear();
+				reelleKosten.setDisable(true);
+				angenommen.setSelected(false);
+				angenommenLabel.setText("Zeitangabe Angenommen");
+				gefertigt.setSelected(false);
+				gefertigt.setDisable(true);
+				gefertigtLabel.setText("Zeitangabe Gefertigt");
+				kalkuliert.setSelected(false);
+				kalkuliert.setDisable(true);
+				kalkuliertLabel.setText("Zeitangabe Kalkuliert");
+				abgeholt.setSelected(false);
+				abgeholt.setDisable(true);
+				abgeholtLabel.setText("Zeitangabe Abgeholt");
+				abgerechnet.setSelected(false);
+				abgerechnet.setDisable(true);
+				abgerechnetLabel.setText("Zeitangabe Abgerechnet");
+				warten.setSelected(false);
+				warten.setDisable(true);
+				wartenLabel.setText("Zeitangabe Warten");
+				unterbrochen.setSelected(false);
+				unterbrochen.setDisable(true);
+				unterbrochenLabel.setText("Zeitangabe Unterbrochen");
+				defekt.setSelected(false);
+				defekt.setDisable(true);
+				defektLabel.setText("Zeitangabe Defekt");
+				
+				
+			} catch (SQLException | DatabaseException e1) {
+				AlertBox.display("Fehler", e1.getMessage());
+			}
 			
 		});
+		
+		
+		
+		
 		
 		
 		auftragTable.setOnMouseClicked(e -> {
 			delete.setDisable(false);
 			modify.setDisable(false);
-			Auftrag tempAuftrag = auftragTable.getSelectionModel().getSelectedItem();
 			
-			//TODO Choicebox Auswahl aus Tabelle holen und einfuegen
-			/*
-			choiceBoxPersonen.setStyle(null);
-			choiceBoxPersonen.setValue((tempAuftrag.getAuftraggeber().toString()));
-			choiceBoxAdmins.setStyle(null);
-			choiceBoxAdmins.setValue(choiceBoxAdmins.getItems().get(tempAuftrag.getVerwalter().getPERSON_ID()));
-			choiceBoxAdmins.setValue(tempAuftrag.getVerwalter());
-			choiceBoxAdmins.getSelectionModel().select(choiceBoxAdmins.getItems().indexOf(tempAuftrag.getVerwalter()));
-			*/
+			Auftrag tempAuftragTable = auftragTable.getSelectionModel().getSelectedItem();
 			
 			auftragsTitel.setStyle(null);
-			auftragsTitel.setText(tempAuftrag.getTitel());
-			choiceBoxArt.setStyle(null);
-			choiceBoxArt.setValue(tempAuftrag.getART());
+			auftragsTitel.setText(tempAuftragTable.getTitel());
+			auftragsTitel.setDisable(false);
+			comboBoxArt.setStyle(null);
+			comboBoxArt.setValue(tempAuftragTable.getART());
+			comboBoxPersonen.setStyle(null);
+			comboBoxPersonen.setValue(tempAuftragTable.getAuftraggeber().getVorname() + " "+tempAuftragTable.getAuftraggeber().getNachname() + tempAuftragTable.getAuftraggeber().getPERSON_ID());
+			comboBoxAdmins.setStyle(null);
+			comboBoxAdmins.setValue(tempAuftragTable.getVerwalter().getVorname()+ " " + tempAuftragTable.getVerwalter().getNachname()+tempAuftragTable.getVerwalter().getPERSON_ID());
 			prognoKosten.setStyle(null);
-			prognoKosten.setText(Double.toString(tempAuftrag.getProgno_cost()));
+			prognoKosten.setText(Double.toString(tempAuftragTable.getProgno_cost()));
+			prognoKosten.setDisable(false);
 			reelleKosten.setStyle(null);
-			reelleKosten.setText(Double.toString(tempAuftrag.getReelle_kosten()));
+			reelleKosten.setText(Double.toString(tempAuftragTable.getReelle_kosten()));
+			reelleKosten.setDisable(false);
 			
-
-		});
+			
+			
+			
+			
+			if(tempAuftragTable.isAngenommen()==true) {
+				angenommen.setSelected(true);
+			}else {
+				angenommen.setSelected(false);
+			}
+			angenommenLabel.setText(tempAuftragTable.getDate_angenommen().toString());
+			
+			if(tempAuftragTable.isGefertigt()==true) {
+				gefertigt.setSelected(true);
+				
+			}else {
+				gefertigt.setSelected(false);
+			}
+			gefertigt.setDisable(false);
+			gefertigtLabel.setText(tempAuftragTable.getDate_gefertigt().toString());
+			
+			if(tempAuftragTable.isKalkuliert()==true) {
+				kalkuliert.setSelected(true);
+			}else {
+				kalkuliert.setSelected(false);
+			}
+			kalkuliert.setDisable(false);
+			kalkuliertLabel.setText(tempAuftragTable.getDate_kalkuliert().toString());
+			
+			if(tempAuftragTable.isAbgeholt()==true) {
+				abgeholt.setSelected(true);
+			}else {
+				abgeholt.setSelected(false);
+			}
+			abgeholt.setDisable(false);
+			abgeholtLabel.setText(tempAuftragTable.getDate_abgeholt().toString());
+						
+			if(tempAuftragTable.isAbgerechnet()==true) {
+				abgerechnet.setSelected(true);
+			}else {
+				abgerechnet.setSelected(false);
+			}
+			abgerechnet.setDisable(false);
+			abgerechnetLabel.setText(tempAuftragTable.getDate_abgerechnet().toString());
+			
+			if(tempAuftragTable.isWarten()==true) {
+				warten.setSelected(true);
+			}else {
+				warten.setSelected(false);
+			}
+			warten.setDisable(false);
+			wartenLabel.setText(tempAuftragTable.getDate_warten().toString());
+			
+			if(tempAuftragTable.isUnterbrochen()==true) {
+				unterbrochen.setSelected(true);
+			}else {
+				unterbrochen.setSelected(false);
+			}
+			unterbrochen.setDisable(false);
+			unterbrochenLabel.setText(tempAuftragTable.getDate_unterbrochen().toString());
+			
+			if(tempAuftragTable.isDefekt()==true) {
+				defekt.setSelected(true);
+			}else {
+				defekt.setSelected(false);
+			}
+			defekt.setDisable(false);
+			defektLabel.setText(tempAuftragTable.getDate_defekt().toString());
+			
+			});
 		
 		
 		
@@ -289,7 +437,7 @@ public class GUIFertigungsverwaltung {
 		});
 		
 		bp.setCenter(grid);
-		grid.getChildren().addAll(l1,choiceBoxPersonen, l2, choiceBoxAdmins,l3, auftragsTitel, l4, choiceBoxArt, l5, prognoKosten , l6, reelleKosten, btn, angenommen,gefertigt, kalkuliert, abgeholt, abgerechnet, warten, unterbrochen, defekt
+		grid.getChildren().addAll(l1,comboBoxPersonen, l2, comboBoxAdmins,l3, auftragsTitel, l4, comboBoxArt, l5, prognoKosten , l6, reelleKosten, btn, angenommen,gefertigt, kalkuliert, abgeholt, abgerechnet, warten, unterbrochen, defekt
 				,angenommenLabel,gefertigtLabel,kalkuliertLabel,abgeholtLabel,abgerechnetLabel,wartenLabel,unterbrochenLabel,defektLabel);
 		
 		
@@ -321,4 +469,7 @@ public class GUIFertigungsverwaltung {
 		}
 		return resultAuftrag;
 	}
+	
+	
+	
 }
