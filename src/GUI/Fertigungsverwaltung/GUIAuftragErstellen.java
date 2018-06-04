@@ -6,8 +6,13 @@ import java.util.List;
 import Exceptions.DatabaseException;
 import GUI.AlertBox;
 import GUI.Validation.Validation;
+import Logic.Auftrag;
+import Logic.Fertigungsverwaltung;
 import Logic.Person;
 import Logic.Personenverwaltung;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -15,7 +20,10 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -30,47 +38,48 @@ public class GUIAuftragErstellen {
 			grid.setVgap(8);
 			grid.setHgap(10); 
 			
+			
+			//Von Oben nach Unten
+			
 			//0,0 | 1,0
 			Label l1 = new Label("Auftragsersteller");
 			GridPane.setConstraints(l1, 0, 0);
-			int counter1 = 0;
-			ChoiceBox<String> choiceBoxPersonen = new ChoiceBox<>();
+			ComboBox<Person> comboBoxPersonen = new ComboBox<>();
+			comboBoxPersonen.setPromptText("Person auswaehlen");
 			try {
 				List<Person> personen = Personenverwaltung.getInstance().getAllPersons();
 				try {
-					while(personen.listIterator().hasNext()) {
-						choiceBoxPersonen.getItems().addAll(personen.listIterator(counter1).next().getVorname() +" "+ personen.listIterator(counter1).next().getNachname()+ personen.listIterator(counter1).next().getPERSON_ID() );
-						counter1++;
-					}
+						comboBoxPersonen.getItems().addAll(personen);
 				} catch (Exception e) {
-					choiceBoxPersonen.setValue(personen.get(0).getVorname()+ " " +personen.get(0).getNachname() );
+					comboBoxPersonen.setPromptText("Person auswaehlen");
+					System.out.println(comboBoxPersonen.getValue());
 				}
 				
 			} catch (SQLException e) {			
 			}
-			GridPane.setConstraints(choiceBoxPersonen, 1, 0);
+			GridPane.setConstraints(comboBoxPersonen, 1, 0);
+			
+			
 			
 			//0,1 | 1,1
 			Label l2 = new Label("Admins");
 			GridPane.setConstraints(l2, 0, 1);
 			int counter2 = 0;
-			ChoiceBox<String> choiceBoxAdmins = new ChoiceBox<>();
+			ComboBox<Person> comboBoxAdmins = new ComboBox<>();
+			comboBoxAdmins.setPromptText("Admin auswaehlen");
 			try {
 				List<Person> admins = Personenverwaltung.getInstance().getAllAdmins();
 				try {
-					while(admins.listIterator().hasNext()) {
-						choiceBoxAdmins.getItems().addAll(admins.listIterator(counter2).next().getVorname()+ " " + admins.listIterator(counter2).next().getNachname() + admins.listIterator(counter2).next().getPERSON_ID());
-					
-						counter2++;
-					}
+						comboBoxAdmins.getItems().addAll(admins);
 				}catch(Exception e) {
-					choiceBoxAdmins.setValue(admins.get(0).getVorname()+ " " +admins.get(0).getNachname() );
+					comboBoxAdmins.setPromptText("Admin auswaehlen");
 				}
 			} catch (SQLException e) {
 			} catch (DatabaseException e) {
 			}
-			choiceBoxAdmins.getItems().indexOf(choiceBoxAdmins.getValue());
-			GridPane.setConstraints(choiceBoxAdmins, 1, 1);
+			GridPane.setConstraints(comboBoxAdmins, 1, 1);
+			
+			
 			
 			//0,2|1,2
 			Label l3 = new Label("Auftragstitel");
@@ -78,53 +87,70 @@ public class GUIAuftragErstellen {
 			TextField auftragsTitel = new TextField();
 			GridPane.setConstraints(auftragsTitel, 1, 2);
 			
+			
 			//0,3 |1,3
 			Label l4 = new Label("Prognostizierte Kosten");
 			GridPane.setConstraints(l4 , 0 , 3);
 			TextField prognoKosten = new TextField();
 			GridPane.setConstraints(prognoKosten, 1, 3);
 			
-			//0,4|1,4
-			Label l5 = new Label("Prognostizierte Kosten");
-			GridPane.setConstraints(l5 , 0 , 4);
-			TextField reeleKosten = new TextField();
-			GridPane.setConstraints(reeleKosten, 1, 4);
 			
-			ComboBox<String> comboBox;
-			comboBox = new ComboBox<>();
-	        comboBox.getItems().addAll(
+			//0,4|1,4
+			Label l5 = new Label("Reelle Kosten");
+			GridPane.setConstraints(l5 , 0 , 4);
+			TextField reelleKosten = new TextField();
+			GridPane.setConstraints(reelleKosten, 1, 4);
+			
+			
+			ComboBox<String> comboBoxFertigung = new ComboBox<>();
+			comboBoxFertigung.getItems().addAll(
 	                "Leiterplatte",
 	                "3D-Druck",
 	                "Sonstiges"
 	        );
-	        comboBox.setPromptText("Fertigungsart");
-	        GridPane.setConstraints(comboBox, 0, 9);
+			comboBoxFertigung.setPromptText("Fertigungsart");
+	        GridPane.setConstraints(comboBoxFertigung, 0, 9);
 	        
 			Button btn = new Button("Erstellen");
 			GridPane.setConstraints(btn, 1, 9);
 			
+			Button btnClose = new Button ("Schließen");
+			GridPane.setConstraints(btnClose, 1, 9,1,1,HPos.RIGHT,null);
 			
 			
 			
-			grid.getChildren().addAll(l1, choiceBoxPersonen, l2, choiceBoxAdmins, btn, comboBox, l3, l4 , l5, reeleKosten, prognoKosten, auftragsTitel);
 			
-			/*
+			grid.getChildren().addAll(btnClose, l1, comboBoxPersonen, l2, comboBoxAdmins, btn, comboBoxFertigung, l3, l4 , l5, reelleKosten, prognoKosten, auftragsTitel);
+			
+			
+			
+			
+			//EVENTS
+			//Fenster schließen
+			btnClose.setOnMouseClicked(e -> {
+				window.close();
+			});
+			
+			//Auftrag erstellen
 			btn.setOnMouseClicked(e -> {
-				
-				if(Validation.passwordInputValidation(passwortInput, passwortconfirmInput) && Validation.IntegerInputValidation(PLZInput) && Validation.nutzernameInputValidation(nutzernameInput) && Validation.StringInputValidation(vornameInput) && Validation.StringInputValidation(nachnameInput) && Validation.HausNrInputValidation(hausnummerInput) && Validation.StringInputValidation(strasseInput) && Validation.ComboBoxValidation(comboBox)){
+				if(Validation.StringInputValidation(auftragsTitel)&& Validation.DoubleInputValidation(prognoKosten)&& Validation.DoubleInputValidation(reelleKosten)&& Validation.ComboBoxValidationPerson(comboBoxPersonen)&& Validation.ComboBoxValidationPerson(comboBoxAdmins)&& Validation.ComboBoxValidationString(comboBoxFertigung)) {
+					Double progKost = Double.parseDouble(prognoKosten.getText());
+					Double reelleKost = Double.parseDouble(reelleKosten.getText());
+					try {
 						
-				try{
+						
+						Fertigungsverwaltung.getInstance().createAuftrag(auftragsTitel.getText(), comboBoxFertigung.getValue(), progKost ,reelleKost, comboBoxPersonen.getValue().getPERSON_ID(), comboBoxAdmins.getValue().getPERSON_ID(), Personenverwaltung.getInstance().getAllPersons());
+						AlertBox.display("Erfolg!", "Auftrag erzeugt!");
+						window.close();
+						
+					} catch (SQLException e1) {
+						AlertBox.display("Fehler", e1.getMessage());
+					}
 					
-					Personenverwaltung.getInstance().createPerson(vornameInput.getText(), nachnameInput.getText(), strasseInput.getText(), Integer.parseInt(hausnummerInput.getText()), Integer.parseInt(PLZInput.getText()), EMailInput.getText(), nutzernameInput.getText(), passwortInput.getText(), comboBox.getSelectionModel().getSelectedIndex());
-					AlertBox.display("Erfolg!", "Person erzeugt!");
-					window.close();
 				}
 				
-				catch (SQLException | DatabaseException e1) {
-					AlertBox.display("Fehler", e1.getMessage());
-				}
-				}});
-				 */
+			});
+			
 			
 	        Scene scene = new Scene(grid);
 	        window.setScene(scene);
@@ -134,4 +160,18 @@ public class GUIAuftragErstellen {
 	        
 	        
 	    }
+	 
+	 public static ObservableList<Auftrag> getAuftraege() throws SQLException{
+			ObservableList<Auftrag> resultAuftrag = FXCollections.observableArrayList();
+			try {
+				for (Auftrag a :  Fertigungsverwaltung.getInstance().getAllAuftrag()) {
+					resultAuftrag.add(a);
+				}
+			} catch (DatabaseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return resultAuftrag;
+		}
+	 
 }
