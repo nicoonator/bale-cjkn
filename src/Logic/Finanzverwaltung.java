@@ -49,8 +49,6 @@ public class Finanzverwaltung {
 		Rechnung tempRechnung = SQLManager.getInstance().getRechnungByID(rechnung_id);
 		Auftrag tempAuftrag = SQLManager.getInstance().getAuftragByID(tempRechnung.getAuftrag_ID());
 		
-		//TODO Druckdatum, Name/Anschrift von Auftraggeber, ausdruckender Admin
-		
 		String path = "Rechnungen/Rechnung_" + rechnung_id + ".pdf";
 		
 		PDDocument document = new PDDocument();
