@@ -3,6 +3,8 @@ package Logic;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+
 import java.util.List;
 
 import org.apache.pdfbox.pdmodel.*;
@@ -35,6 +37,7 @@ public class Finanzverwaltung {
 	/**
 	 * This method exports an invoice to PDF.
 	 * 
+	 * @author Joel Wolf
 	 * @param rechnung_id the ID of the selected invoice
 	 * @throws SQLException
 	 * @throws DatabaseException
@@ -42,6 +45,7 @@ public class Finanzverwaltung {
 	 */
 	public void exportRechnung(int rechnung_id) throws SQLException, DatabaseException, IOException {
 		Rechnung tempRechnung = SQLManager.getInstance().getRechnungByID(rechnung_id);
+		Auftrag tempAuftrag = SQLManager.getInstance().getAuftragByID(tempRechnung.getAuftrag_ID());
 		
 		//TODO Druckdatum, Name/Anschrift von Auftraggeber, ausdruckender Admin
 		
@@ -59,14 +63,33 @@ public class Finanzverwaltung {
 		contentStream.setLeading(29.0f);
 		
 		contentStream.showText("Rechnung");
-		contentStream.newLine();
-		contentStream.newLine();
+		
 		contentStream.setFont(PDType1Font.TIMES_ROMAN, 20);
+		
+		contentStream.showText("                                         ");
+		contentStream.showText(new SimpleDateFormat("dd.MM.yyyy").format(System.currentTimeMillis()));
+		contentStream.newLine();
+		contentStream.newLine();
+		contentStream.showText(tempAuftrag.getAuftraggeber().getVorname() + " " 
+				+ tempAuftrag.getAuftraggeber().getNachname());
+		contentStream.newLine();
+		contentStream.showText(tempAuftrag.getAuftraggeber().getStrasse() + " " 
+				+ tempAuftrag.getAuftraggeber().getHausnr());
+		contentStream.newLine();
+		contentStream.showText(String.valueOf(tempAuftrag.getAuftraggeber().getPLZ()));
+		contentStream.newLine();
+		contentStream.showText("E-Mail: " + tempAuftrag.getAuftraggeber().getEmail());
+		contentStream.newLine();
+		contentStream.newLine();
 		contentStream.showText("Rechnungsname: " + tempRechnung.getRechnungsname());
 		contentStream.newLine();
-		contentStream.showText("ID: " + rechnung_id);
+		contentStream.showText("Rechnungs-ID: " + rechnung_id + " / Auftrags-ID: " 
+				+ tempAuftrag.getAUFTRAG_ID());
 		contentStream.newLine();
-		contentStream.showText("Datum: " + tempRechnung.getRECHNUNGSDATUM());
+		contentStream.showText("Rechnungsdatum: " 
+				+ new SimpleDateFormat("dd.MM.yyyy").format(tempRechnung.getRECHNUNGSDATUM()));
+		contentStream.newLine();
+		contentStream.showText("Betreuender Admin: " + tempAuftrag.getVerwalter());
 		contentStream.newLine();
 		contentStream.showText("Betrag: " + tempRechnung.getBetrag() + " €");
 		contentStream.newLine();
