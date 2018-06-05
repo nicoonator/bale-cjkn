@@ -267,7 +267,7 @@ public class GUIWarenkorb {
 	
 	// methoden
 	
-	public ObservableList<Bauteil> getBauteile() throws SQLException{
+	public static ObservableList<Bauteil> getBauteile() throws SQLException{
 		ObservableList<Bauteil> result = FXCollections.observableArrayList();
 		for (Bauteil b :  Bauteileverwaltung.getInstance().getAllBauteile()) {
 			result.add(b);

@@ -342,7 +342,7 @@ public class SQLManager {
 	 */
 	public void modifyBauteil(int id, String attribut, String newData) throws SQLException{
 		Statement stmt = c.createStatement();
-		String sql = "UPDATE Bauteil SET "+attribut+" = "+newData+" WHERE BAUTEIL_ID = "+id+";";
+		String sql = "UPDATE Bauteil SET "+attribut+" = '"+newData+"' WHERE BAUTEIL_ID = "+id+";";
 		stmt.executeUpdate(sql);
 		stmt.close();	
 	}
