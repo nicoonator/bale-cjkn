@@ -3,9 +3,11 @@ package Logic;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.pdfbox.pdmodel.*;
 import org.apache.pdfbox.pdmodel.font.*;
@@ -66,7 +68,7 @@ public class Finanzverwaltung {
 		
 		contentStream.setFont(PDType1Font.TIMES_ROMAN, 20);
 		
-		contentStream.showText("                                         ");
+		contentStream.showText("                                                    ");
 		contentStream.showText(new SimpleDateFormat("dd.MM.yyyy").format(System.currentTimeMillis()));
 		contentStream.newLine();
 		contentStream.newLine();
@@ -91,7 +93,8 @@ public class Finanzverwaltung {
 		contentStream.newLine();
 		contentStream.showText("Betreuender Admin: " + tempAuftrag.getVerwalter());
 		contentStream.newLine();
-		contentStream.showText("Betrag: " + tempRechnung.getBetrag() + " €");
+		contentStream.showText("Betrag: " 
+				+ NumberFormat.getCurrencyInstance(new Locale("de", "DE")).format(tempRechnung.getBetrag()));
 		contentStream.newLine();
 		contentStream.showText("Bezahlart: " + tempRechnung.getBezahlart());
 		contentStream.newLine();
