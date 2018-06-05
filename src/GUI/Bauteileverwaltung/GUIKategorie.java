@@ -6,7 +6,10 @@ package GUI.Bauteileverwaltung;
 import java.sql.SQLException;
 import java.util.Date;
 
+import Exceptions.DatabaseException;
 import GUI.AlertBox;
+import GUI.Personenverwaltung.GUICreatePerson;
+import GUI.Validation.Validation;
 import Logic.Bauteil;
 import Logic.Bauteileverwaltung;
 import Logic.Kategorie;
@@ -105,7 +108,50 @@ public class GUIKategorie {
 		
 		//Events:
 		
+		create.setOnMouseClicked(e -> {
+			GUICreateKategorie.display();
+			try {
+				table.setItems(getKategorien());
+			} catch (SQLException e1) {
+				AlertBox.display("Fehler", e1.getMessage());
+			}
+			finally {
+				modify.setDisable(true);
+				delete.setDisable(true);
+			}
+		});
+		
+		modify.setOnMouseClicked(e -> {
+			Kategorie tempKategorie = table.getSelectionModel().getSelectedItem();
+			try {
+				if(Validation.StringInputValidation(tfKatName)) {
+					Bauteileverwaltung.getInstance().renameKategorie(tempKategorie.getID(), tfKatName.getText());
+					table.setItems(getKategorien());
+				}
+			} catch (SQLException | DatabaseException e1) {
+			AlertBox.display("Fehler", e1.getMessage());
+			} finally {
+				table.getSelectionModel().select(tempKategorie);
+			}
+			
+		});
+		
+		delete.setOnMouseClicked(e-> {
+			Kategorie tempKategorie = table.getSelectionModel().getSelectedItem();
+			try {
+				Bauteileverwaltung.getInstance().deleteKategorie(tempKategorie.getID());
+				table.setItems(getKategorien());
+				tfKatName.clear();
+				modify.setDisable(true);
+				delete.setDisable(true);
+			} catch (SQLException | DatabaseException e1) {
+				AlertBox.display("Fehler", e1.getMessage());
+			}
+		});
+		
 		table.setOnMouseClicked(e -> {
+			delete.setDisable(false);
+			modify.setDisable(false);
 			if(!(table.getSelectionModel().isEmpty())) {
 				Kategorie tempKategorie = table.getSelectionModel().getSelectedItem();
 				bp.setCenter(grid);
