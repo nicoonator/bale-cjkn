@@ -274,18 +274,18 @@ public class SQLManager {
 		String sql = "SELECT * FROM Bauteil WHERE KATEGORIE_ID = "+id+";";
 		if (stmt.executeQuery(sql).next()) {
 			/** Kategorie 3 --> Trash Kategorie */
-			if (!(stmt.executeQuery("SELECT KATEGORIE_ID FROM Kategorie WHERE name = trash;").next())) {
+			if (!(stmt.executeQuery("SELECT KATEGORIE_ID FROM Kategorie WHERE name = 'trash';").next())) {
 				this.addKategorie("trash");
 			}
-			sql = "SELECT KATEGORIE_ID FROM Kategorie WHERE name = trash";
+			sql = "SELECT KATEGORIE_ID FROM Kategorie WHERE name = 'trash'";
 			ResultSet rs = stmt.executeQuery(sql);
 			int trash = rs.getInt(1);
 			if (trash == id) throw new DeleteTrashException();
-			sql = "UPDATE Bauteil SET KATEGORIE_ID = "+trash+" WHERE KATEGORIE ID = "+id+";";
+			sql = "UPDATE Bauteil SET KATEGORIE_ID = "+trash+" WHERE KATEGORIE_ID = "+id+";";
 			stmt.executeUpdate(sql);
 			rs.close();
 		}
-		sql ="DELETE FROM Kategorie WHERE KATEGORIE_ID="+id+";";
+		sql ="DELETE FROM Kategorie WHERE KATEGORIE_ID = "+id+";";
 		stmt.executeUpdate(sql);
 		stmt.close();	
 	}
@@ -301,7 +301,7 @@ public class SQLManager {
 		Statement stmt = c.createStatement();
 		ResultSet rs = stmt.executeQuery("SELECT * FROM Kategorie WHERE name = '"+name+"';");
 		if(!rs.next()) {
-			String sql = "UPDATE Kategorie SET name = "+name+" WHERE KATEGORIE_ID="+id+";";
+			String sql = "UPDATE Kategorie SET name = '"+name+"' WHERE KATEGORIE_ID="+id+";";
 			stmt.executeUpdate(sql);
 		}
 		else throw new KategorieBereitsVorhandenException();
