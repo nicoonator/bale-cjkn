@@ -223,6 +223,7 @@ public class GUIPersonenverwaltung {
 			}
 			
 			finally {
+				AlertBox.display("Erfolg!", "Person bearbeitet!");
 				table.getSelectionModel().select(tempPerson);
 			}
 			
