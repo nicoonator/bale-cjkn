@@ -36,6 +36,23 @@ public class SQLManager {
 
 	/**
 	 * @author Nico Rychlik
+	 * @return returns List of all Kategories
+	 * @throws SQLException
+	 */
+	public List<Kategorie> getAllKategorie() throws SQLException {
+		List<Kategorie> result = new ArrayList<Kategorie>();
+		Statement stmt = c.createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT * FROM Kategorie;");
+		while(rs.next()) {
+			result.add(new Kategorie (rs.getInt("KATEGORIE_ID"),rs.getString("name")));
+		}
+		stmt.close();		
+		rs.close();
+		return result;
+	}
+
+	/**
+	 * @author Nico Rychlik
 	 * @param vname
 	 * @param nname
 	 * @param strasse
@@ -48,7 +65,7 @@ public class SQLManager {
 	 * @throws SQLException
 	 * @throws NutzernameVorhandenException 
 	 */
-	public void createPerson (String vname, String nname, String strasse, int hausnummer, int PLZ, String email, String nutzername, String passwort, int rolle) throws SQLException, NutzernameVorhandenException{
+	public void createPerson (String vname, String nname, String strasse, String hausnummer, int PLZ, String email, String nutzername, String passwort, int rolle) throws SQLException, NutzernameVorhandenException{
 		Statement stmt = c.createStatement();
 		ResultSet rs = stmt.executeQuery("SELECT * FROM Person WHERE nutzername = '"+nutzername+"';");
 		if(!rs.next()) {
@@ -59,7 +76,7 @@ public class SQLManager {
 		stmt.close();		
 		rs.close();
 	}
-	
+
 	/**
 	 * @author Nico Rychlik
 	 * @return returns all Persons currently in Database as a List<Person>
@@ -73,15 +90,15 @@ public class SQLManager {
 		while (rs.next()) {
 			switch (rs.getInt("rolle")) {
 			case 0:
-				tempPerson=new Mitglied(rs.getInt("PERSON_ID"), rs.getString("vorname"), rs.getString("nachname"),  rs.getString("strasse"),  rs.getString("hausnr"),  rs.getInt("PLZ"), rs.getString("email"), new Date((rs.getLong("zuerst_erstellt"))*1000L), new Date((rs.getLong("zuletzt_geaendert"))*1000L), rs.getString("nutzername"), rs.getString("passwort"), rs.getInt("bauteilschulden"), new ArrayList<Bauteil>(), true);
+				tempPerson=new Mitglied(rs.getInt("PERSON_ID"), rs.getString("vorname"), rs.getString("nachname"),  rs.getString("strasse"),  rs.getString("hausnr"),  rs.getInt("PLZ"), rs.getString("email"), new Date((rs.getLong("zuerst_erstellt"))*1000L), new Date((rs.getLong("zuletzt_geaendert"))*1000L), rs.getString("nutzername"), rs.getString("passwort"), rs.getDouble("bauteilschulden"), new ArrayList<Bauteil>(), true);
 				break;
 			
 			case 1:
-				tempPerson=new Kunde(rs.getInt("PERSON_ID"), rs.getString("vorname"), rs.getString("nachname"),  rs.getString("strasse"),  rs.getString("hausnr"),  rs.getInt("PLZ"), rs.getString("email"), new Date((rs.getLong("zuerst_erstellt"))*1000L), new Date((rs.getLong("zuletzt_geaendert"))*1000L), rs.getString("nutzername"), rs.getString("passwort"), rs.getInt("bauteilschulden"), new ArrayList<Bauteil>(), false);
+				tempPerson=new Kunde(rs.getInt("PERSON_ID"), rs.getString("vorname"), rs.getString("nachname"),  rs.getString("strasse"),  rs.getString("hausnr"),  rs.getInt("PLZ"), rs.getString("email"), new Date((rs.getLong("zuerst_erstellt"))*1000L), new Date((rs.getLong("zuletzt_geaendert"))*1000L), rs.getString("nutzername"), rs.getString("passwort"), rs.getDouble("bauteilschulden"), new ArrayList<Bauteil>(), false);
 				break;
 			
 			case 2:
-				tempPerson=new Lehrstuhlperson(rs.getInt("PERSON_ID"), rs.getString("vorname"), rs.getString("nachname"),  rs.getString("strasse"),  rs.getString("hausnr"),  rs.getInt("PLZ"), rs.getString("email"), new Date((rs.getLong("zuerst_erstellt"))*1000L), new Date((rs.getLong("zuletzt_geaendert"))*1000L), rs.getString("nutzername"), rs.getString("passwort"), rs.getInt("bauteilschulden"), new ArrayList<Bauteil>(), false);
+				tempPerson=new Lehrstuhlperson(rs.getInt("PERSON_ID"), rs.getString("vorname"), rs.getString("nachname"),  rs.getString("strasse"),  rs.getString("hausnr"),  rs.getInt("PLZ"), rs.getString("email"), new Date((rs.getLong("zuerst_erstellt"))*1000L), new Date((rs.getLong("zuletzt_geaendert"))*1000L), rs.getString("nutzername"), rs.getString("passwort"), rs.getDouble("bauteilschulden"), new ArrayList<Bauteil>(), false);
 				break;
 			}
 			result.add(tempPerson);
@@ -209,15 +226,15 @@ public class SQLManager {
 		if(rs.next()) {
 			switch (rs.getInt("rolle")) {
 			case 0:
-				result=new Mitglied(rs.getInt("PERSON_ID"), rs.getString("vorname"), rs.getString("nachname"),  rs.getString("strasse"),  rs.getString("hausnr"),  rs.getInt("PLZ"), rs.getString("email"), new Date((rs.getLong("zuerst_erstellt"))*1000L), new Date((rs.getLong("zuletzt_geaendert"))*1000L), rs.getString("nutzername"), rs.getString("passwort"), rs.getInt("bauteilschulden"), new ArrayList<Bauteil>(), true);
+				result=new Mitglied(rs.getInt("PERSON_ID"), rs.getString("vorname"), rs.getString("nachname"),  rs.getString("strasse"),  rs.getString("hausnr"),  rs.getInt("PLZ"), rs.getString("email"), new Date((rs.getLong("zuerst_erstellt"))*1000L), new Date((rs.getLong("zuletzt_geaendert"))*1000L), rs.getString("nutzername"), rs.getString("passwort"), rs.getDouble("bauteilschulden"), new ArrayList<Bauteil>(), true);
 				break;
 			
 			case 1:
-				result=new Kunde(rs.getInt("PERSON_ID"), rs.getString("vorname"), rs.getString("nachname"),  rs.getString("strasse"),  rs.getString("hausnr"),  rs.getInt("PLZ"), rs.getString("email"), new Date((rs.getLong("zuerst_erstellt"))*1000L), new Date((rs.getLong("zuletzt_geaendert"))*1000L), rs.getString("nutzername"), rs.getString("passwort"), rs.getInt("bauteilschulden"), new ArrayList<Bauteil>(), false);
+				result=new Kunde(rs.getInt("PERSON_ID"), rs.getString("vorname"), rs.getString("nachname"),  rs.getString("strasse"),  rs.getString("hausnr"),  rs.getInt("PLZ"), rs.getString("email"), new Date((rs.getLong("zuerst_erstellt"))*1000L), new Date((rs.getLong("zuletzt_geaendert"))*1000L), rs.getString("nutzername"), rs.getString("passwort"), rs.getDouble("bauteilschulden"), new ArrayList<Bauteil>(), false);
 				break;
 			
 			case 2:
-				result=new Lehrstuhlperson(rs.getInt("PERSON_ID"), rs.getString("vorname"), rs.getString("nachname"),  rs.getString("strasse"),  rs.getString("hausnr"),  rs.getInt("PLZ"), rs.getString("email"), new Date((rs.getLong("zuerst_erstellt"))*1000L), new Date((rs.getLong("zuletzt_geaendert"))*1000L), rs.getString("nutzername"), rs.getString("passwort"), rs.getInt("bauteilschulden"), new ArrayList<Bauteil>(), false);
+				result=new Lehrstuhlperson(rs.getInt("PERSON_ID"), rs.getString("vorname"), rs.getString("nachname"),  rs.getString("strasse"),  rs.getString("hausnr"),  rs.getInt("PLZ"), rs.getString("email"), new Date((rs.getLong("zuerst_erstellt"))*1000L), new Date((rs.getLong("zuletzt_geaendert"))*1000L), rs.getString("nutzername"), rs.getString("passwort"), rs.getDouble("bauteilschulden"), new ArrayList<Bauteil>(), false);
 				break;
 			}
 		}
@@ -246,24 +263,6 @@ public class SQLManager {
 	}
 	
 	/**
-	 * @author Nico Rychlik
-	 * @return returns List of all Kategories
-	 * @throws SQLException
-	 */
-	public List<Kategorie> getAllKategorie() throws SQLException {
-		List<Kategorie> result = new ArrayList<Kategorie>();
-		Statement stmt = c.createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT * FROM Kategorie;");
-		while(rs.next()) {
-			result.add(new Kategorie (rs.getInt("KATEGORIE_ID"),rs.getString("name")));
-		}
-		stmt.close();		
-		rs.close();
-		return result;
-	}
-	
-	
-	/**
 	 * loescht die Kategorie und weist Bauteilen die dieser Kategorie angehoeren die Trash Kategorie zu und erstellt sie ggf.
 	 * @author Nico Rychlik
 	 * @param id
@@ -275,18 +274,18 @@ public class SQLManager {
 		String sql = "SELECT * FROM Bauteil WHERE KATEGORIE_ID = "+id+";";
 		if (stmt.executeQuery(sql).next()) {
 			/** Kategorie 3 --> Trash Kategorie */
-			if (!(stmt.executeQuery("SELECT KATEGORIE_ID FROM Kategorie WHERE name = trash;").next())) {
+			if (!(stmt.executeQuery("SELECT KATEGORIE_ID FROM Kategorie WHERE name = 'trash';").next())) {
 				this.addKategorie("trash");
 			}
-			sql = "SELECT KATEGORIE_ID FROM Kategorie WHERE name = trash";
+			sql = "SELECT KATEGORIE_ID FROM Kategorie WHERE name = 'trash'";
 			ResultSet rs = stmt.executeQuery(sql);
 			int trash = rs.getInt(1);
 			if (trash == id) throw new DeleteTrashException();
-			sql = "UPDATE Bauteil SET KATEGORIE_ID = "+trash+" WHERE KATEGORIE ID = "+id+";";
+			sql = "UPDATE Bauteil SET KATEGORIE_ID = "+trash+" WHERE KATEGORIE_ID = "+id+";";
 			stmt.executeUpdate(sql);
 			rs.close();
 		}
-		sql ="DELETE FROM Kategorie WHERE KATEGORIE_ID="+id+";";
+		sql ="DELETE FROM Kategorie WHERE KATEGORIE_ID = "+id+";";
 		stmt.executeUpdate(sql);
 		stmt.close();	
 	}
@@ -302,7 +301,7 @@ public class SQLManager {
 		Statement stmt = c.createStatement();
 		ResultSet rs = stmt.executeQuery("SELECT * FROM Kategorie WHERE name = '"+name+"';");
 		if(!rs.next()) {
-			String sql = "UPDATE Kategorie SET name = "+name+" WHERE KATEGORIE_ID="+id+";";
+			String sql = "UPDATE Kategorie SET name = '"+name+"' WHERE KATEGORIE_ID="+id+";";
 			stmt.executeUpdate(sql);
 		}
 		else throw new KategorieBereitsVorhandenException();
@@ -343,48 +342,8 @@ public class SQLManager {
 	 */
 	public void modifyBauteil(int id, String attribut, String newData) throws SQLException{
 		Statement stmt = c.createStatement();
-		String sql = "UPDATE Bauteil SET "+attribut+" = "+newData+" WHERE BAUTEIL_ID = "+id+";";
+		String sql = "UPDATE Bauteil SET "+attribut+" = '"+newData+"' WHERE BAUTEIL_ID = "+id+";";
 		stmt.executeUpdate(sql);
-		stmt.close();	
-	}
-	
-	/**
-	 * @author Nico Rychlik
-	 * @param id
-	 * @param anzahl
-	 * @param person
-	 * @throws SQLException
-	 * @throws BauteilNichtImWarenkorbException 
-	 * @throws ZuWenigBauteileImWarenkorbException 
-	 */
-	// Aus dem Warenkorb IN dem Bestand
-	// TODO: debug
-	public void addBauteil(int id, int anzahl, int person) throws SQLException, BauteilNichtImWarenkorbException, ZuWenigBauteileImWarenkorbException {
-		Statement stmt = c.createStatement();
-		String sql = "UPDATE Bauteil SET gelagert = gelagert + "+anzahl+" WHERE BAUTEIL_ID = "+id+";";
-		stmt.executeUpdate(sql);
-		sql ="SELECT * FROM Bauteilwarenkorb WHERE PERSON_ID = "+person+" AND BAUTEIL_ID = "+id+";";
-		ResultSet rs = stmt.executeQuery(sql);
-		if(!rs.next()) {
-			throw new BauteilNichtImWarenkorbException();
-		}
-		else {
-			if(rs.getInt("anzahl")!=0) {
-				if(rs.getInt("anzahl")>=anzahl) {
-					sql="UPDATE Bauteilwarenkorb SET anzahl= anzahl - "+Integer.toString(anzahl)+" WHERE PERSON_ID = '"+person+"' AND BAUTEIL_ID = '"+id+"';";
-					stmt.executeUpdate(sql);
-					double preis;
-					double anz=anzahl;
-					sql="SELECT preis FROM Bauteil WHERE BAUTEIL_ID ="+id+";";
-					preis = stmt.executeQuery(sql).getDouble(1);
-					sql="UPDATE Person SET bauteilschulden = bauteilschulden - "+(preis*anz)+";";
-					stmt.executeUpdate(sql);
-				}
-				else throw new ZuWenigBauteileImWarenkorbException(rs.getInt("anzahl"));
-			}
-			else throw new BauteilNichtImWarenkorbException();
-		}
-		rs.close();
 		stmt.close();	
 	}
 	
@@ -411,15 +370,14 @@ public class SQLManager {
 				sql="INSERT INTO Bauteilwarenkorb (PERSON_ID, BAUTEIL_ID, anzahl) VALUES ("+person+", "+id+", "+anzahl+");";
 				stmt.executeUpdate(sql);
 			}
-			else {
-				sql="UPDATE Bauteilwarenkorb SET anzahl = anzahl + "+anzahl+" WHERE BAUTEIL_ID="+id+" AND PERSON_ID = "+person+";";
-			}
+			sql="UPDATE Bauteilwarenkorb SET anzahl = anzahl + "+anzahl+" WHERE BAUTEIL_ID="+id+" AND PERSON_ID = "+person+";";
+			stmt.executeUpdate(sql);
 			rs2.close();
 			double preis;
 			double anz=anzahl;
 			sql="SELECT preis FROM Bauteil WHERE BAUTEIL_ID ="+id+";";
 			preis = stmt.executeQuery(sql).getDouble(1);
-			sql="UPDATE Person SET bauteilschulden = bauteilschulden + "+(preis*anz)+";";
+			sql="UPDATE Person SET bauteilschulden = bauteilschulden + "+(preis*anz)+" WHERE PERSON_ID ="+person+";";
 			stmt.executeUpdate(sql);
 		}
 		else throw new BauteilAnzahlZuKleinException(rs.getInt(1));
@@ -427,6 +385,45 @@ public class SQLManager {
 		stmt.close();	
 	}
 	
+	/**
+	 * @author Nico Rychlik
+	 * @param id
+	 * @param anzahl
+	 * @param person
+	 * @throws SQLException
+	 * @throws BauteilNichtImWarenkorbException 
+	 * @throws ZuWenigBauteileImWarenkorbException 
+	 */
+	// Aus dem Warenkorb IN dem Bestand
+	public void addBauteil(int id, int anzahl, int person) throws SQLException, BauteilNichtImWarenkorbException, ZuWenigBauteileImWarenkorbException {
+		Statement stmt = c.createStatement();
+		String sql = "UPDATE Bauteil SET gelagert = gelagert + "+anzahl+" WHERE BAUTEIL_ID = "+id+";";
+		stmt.executeUpdate(sql);
+		sql ="SELECT * FROM Bauteilwarenkorb WHERE PERSON_ID = "+person+" AND BAUTEIL_ID = "+id+";";
+		ResultSet rs = stmt.executeQuery(sql);
+		if(!rs.next()) {
+			throw new BauteilNichtImWarenkorbException();
+		}
+		else {
+			if(rs.getInt("anzahl")!=0) {
+				if(rs.getInt("anzahl")>=anzahl) {
+					sql="UPDATE Bauteilwarenkorb SET anzahl= anzahl - "+Integer.toString(anzahl)+" WHERE PERSON_ID = '"+person+"' AND BAUTEIL_ID = '"+id+"';";
+					stmt.executeUpdate(sql);
+					double preis;
+					double anz=anzahl;
+					sql="SELECT preis FROM Bauteil WHERE BAUTEIL_ID ="+id+";";
+					preis = stmt.executeQuery(sql).getDouble(1);
+					sql="UPDATE Person SET bauteilschulden = bauteilschulden - "+(preis*anz)+" WHERE PERSON_ID ="+person+";";
+					stmt.executeUpdate(sql);
+				}
+				else throw new ZuWenigBauteileImWarenkorbException(rs.getInt("anzahl"));
+			}
+			else throw new BauteilNichtImWarenkorbException();
+		}
+		rs.close();
+		stmt.close();	
+	}
+
 	public Bauteil getBauteilByID (int id) throws SQLException {
 		Bauteil result = null;
 		Statement stmt = c.createStatement();
@@ -471,9 +468,9 @@ public class SQLManager {
 
 	
 	
-	public void createAuftrag(String titel, String art, double prog_kosten, double reele_kosten, int person_ID, int verwalter_ID, List<Person> vertreter) throws SQLException{
+	public void createAuftrag(String titel, String art, double prog_kosten, double reelle_kosten, int person_ID, int verwalter_ID, List<Person> vertreter) throws SQLException{
 		Statement stmt = c.createStatement();
-		String sql ="INSERT INTO Auftrag (titel, art, prognostizierte_kosten, reele_kosten,angenommen, gefertigt, kalkuliert, abgeholt, abgerechnet, warten, unterbrochen, defekt, date_angenommen, date_gefertigt, date_kalkuliert, date_abgeholt, date_abgerechnet, date_warten, date_unterbrochen, date_defekt) VALUES ('"+titel+"','"+art+"','"+prog_kosten+"','"+reele_kosten+"',1,0,0,0,0,0,0,0,"+new Date().getTime()/1000L+","+new Date().getTime()/1000L+","+new Date().getTime()/1000L+","+new Date().getTime()/1000L+","+new Date().getTime()/1000L+","+new Date().getTime()/1000L+","+new Date().getTime()/1000L+","+new Date().getTime()/1000L+");";
+		String sql ="INSERT INTO Auftrag (titel, art, prognostizierte_kosten, reelle_kosten,angenommen, gefertigt, kalkuliert, abgeholt, abgerechnet, warten, unterbrochen, defekt, date_angenommen, date_gefertigt, date_kalkuliert, date_abgeholt, date_abgerechnet, date_warten, date_unterbrochen, date_defekt) VALUES ('"+titel+"','"+art+"','"+prog_kosten+"','"+reelle_kosten+"',1,0,0,0,0,0,0,0,"+new Date().getTime()/1000L+","+new Date().getTime()/1000L+","+new Date().getTime()/1000L+","+new Date().getTime()/1000L+","+new Date().getTime()/1000L+","+new Date().getTime()/1000L+","+new Date().getTime()/1000L+","+new Date().getTime()/1000L+");";
 		stmt.executeUpdate(sql);
 		int auftrag_id=stmt.executeQuery("SELECT * FROM Auftrag WHERE AUFTRAG_ID = (SELECT MAX(AUFTRAG_ID)  FROM Auftrag);").getInt(1);
 		sql ="INSERT INTO Verbindung_Person_Auftrag (PERSON_ID, AUFTRAG_ID, rolle) values ("+person_ID+","+auftrag_id+",0);";
@@ -489,7 +486,7 @@ public class SQLManager {
 	
 	public void modifyAuftrag(int AUFTRAG_ID, String attribut, String newData) throws SQLException{
 		Statement stmt = c.createStatement();
-		String sql = "UPDATE Auftrag SET "+attribut+" = "+newData+" WHERE AUFTRAG_ID="+AUFTRAG_ID+";";
+		String sql = "UPDATE Auftrag SET "+attribut+" = '"+newData+"' WHERE AUFTRAG_ID="+AUFTRAG_ID+";";
 		stmt.executeUpdate(sql);
 		stmt.close();	
 	}
@@ -497,23 +494,36 @@ public class SQLManager {
 	public Auftrag getAuftragByID(int ID) throws SQLException, DatabaseException {
 		Auftrag result = null;
 		Statement stmt = c.createStatement();
-		String sql = "SELECT * FROM Auftrag WHERE AUFTRAG_ID = "+ID+";";
-		ResultSet rs = stmt.executeQuery(sql);
-		String sql2 ="SELECT PERSON_ID FROM Verbindung_Auftrag_Person WHERE AUFTRAG_ID = "+ID+" AND rolle = 0;";
-		Person auftraggeber = this.getPersonByID(stmt.executeQuery(sql2).getInt(1));
-		sql2 ="SELECT PERSON_ID FROM Verbindung_Auftrag_Person WHERE AUFTRAG_ID = "+ID+" AND rolle = 1;";
-		Person verwalter = this.getPersonByID(stmt.executeQuery(sql2).getInt(1));
-		sql2 ="SELECT PERSON_ID FROM Verbindung_Auftrag_Person WHERE AUFTRAG_ID = "+ID+" AND rolle = 2;";
+		String sql2 ="SELECT PERSON_ID FROM Verbindung_Person_Auftrag WHERE AUFTRAG_ID = "+ID+" AND rolle = 0;";
+		ResultSet rs3 = stmt.executeQuery(sql2);
+		Person auftraggeber = this.getPersonByID(rs3.getInt(1));
+		sql2 ="SELECT PERSON_ID FROM Verbindung_Person_Auftrag WHERE AUFTRAG_ID = "+ID+" AND rolle = 1;";
+		rs3 = stmt.executeQuery(sql2);
+		Person verwalter = this.getPersonByID(rs3.getInt(1));
+		sql2 ="SELECT PERSON_ID FROM Verbindung_Person_Auftrag WHERE AUFTRAG_ID = "+ID+" AND rolle = 2;";
 		List<Person> vertreter= new ArrayList<Person>();
 		ResultSet rs2 = stmt.executeQuery(sql2);
 		while(rs2.next()) {
 			vertreter.add(this.getPersonByID(rs2.getInt(1)));
 		}
-		if (rs.next()) result = new Auftrag(rs.getInt("AUFTRAG_ID"),rs.getString("TITEL"),rs.getString("ART"),rs.getDouble("prognostizierte_kosten"),rs.getDouble("reelle_kosten"),this.convertIntToBoolean(rs.getInt("angenommen")),this.convertIntToBoolean(rs.getInt("gefertigt")),this.convertIntToBoolean(rs.getInt("kalkuliert")),this.convertIntToBoolean(rs.getInt("abgeholt")),this.convertIntToBoolean(rs.getInt("abgerechnet")),this.convertIntToBoolean(rs.getInt("warten")),this.convertIntToBoolean(rs.getInt("unterbrochen")),this.convertIntToBoolean(rs.getInt("defekt")),new Date(rs.getLong("date_angenommen")*1000L),new Date(rs.getLong("date_gefertigt")*1000L),new Date(rs.getLong("date_kalkuliert")*1000L),new Date(rs.getLong("date_abgeholt")*1000L),new Date(rs.getLong("date_abgerechnet")*1000L),new Date(rs.getLong("date_warten")*1000L),new Date(rs.getLong("date_unterbrochen")*1000L),new Date(rs.getLong("date_defekt")*1000L),auftraggeber,verwalter,vertreter);
-		stmt.close();
-		rs.close();
-		if (result!=null) return result;
-		else throw new AuftragNichtVorhandenException();
+		String sql = "SELECT * FROM Auftrag WHERE AUFTRAG_ID = '"+ID+"';";
+		ResultSet apfel = stmt.executeQuery(sql);
+		if (apfel.next()) {
+			result = new Auftrag(apfel.getInt("AUFTRAG_ID"),apfel.getString("TITEL"),apfel.getString("ART"),apfel.getDouble("prognostizierte_kosten"),apfel.getDouble("reelle_kosten"),this.convertIntToBoolean(apfel.getInt("angenommen")),this.convertIntToBoolean(apfel.getInt("gefertigt")),this.convertIntToBoolean(apfel.getInt("kalkuliert")),this.convertIntToBoolean(apfel.getInt("abgeholt")),this.convertIntToBoolean(apfel.getInt("abgerechnet")),this.convertIntToBoolean(apfel.getInt("warten")),this.convertIntToBoolean(apfel.getInt("unterbrochen")),this.convertIntToBoolean(apfel.getInt("defekt")),new Date(apfel.getLong("date_angenommen")*1000L),new Date(apfel.getLong("date_gefertigt")*1000L),new Date(apfel.getLong("date_kalkuliert")*1000L),new Date(apfel.getLong("date_abgeholt")*1000L),new Date(apfel.getLong("date_abgerechnet")*1000L),new Date(apfel.getLong("date_warten")*1000L),new Date(apfel.getLong("date_unterbrochen")*1000L),new Date(apfel.getLong("date_defekt")*1000L),auftraggeber,verwalter,vertreter);
+			stmt.close();
+			apfel.close();
+			rs2.close();
+			rs3.close();
+			return result;
+		}
+		else {
+			stmt.close();
+			apfel.close();
+			rs2.close();
+			rs3.close();
+			throw new AuftragNichtVorhandenException();
+			
+		}
 	}
 
 	public void changeAuftragStatus (int id, String Status) throws SQLException {
@@ -526,7 +536,7 @@ public class SQLManager {
 			sql="UPDATE Auftrag SET "+Status+" = 1 WHERE AUFTRAG_ID = "+id+";";
 		}
 		stmt.executeUpdate(sql);
-		sql="UPDATE Auftrag SET date_"+Status+" = "+(new Date().getTime()/1000)+" WHERE PERSON_ID = "+id+";";
+		sql="UPDATE Auftrag SET date_"+Status+" = "+(new Date().getTime()/1000)+" WHERE AUFTRAG_ID = "+id+";";
 		stmt.executeUpdate(sql);
 		stmt.close();	
 	}
@@ -909,9 +919,10 @@ public class SQLManager {
 		String sql= "SELECT * FROM Bauteilwarenkorb WHERE PERSON_ID = "+person_ID+";";
 		ResultSet rs = stmt.executeQuery(sql);
 		while (rs.next()) {
-			result.add(new Bauteilwarenkorbelement(rs.getInt("BAUTEIL_ID"), rs.getInt("anzahl")));
+			result.add(new Bauteilwarenkorbelement(this.getBauteilByID(rs.getInt("BAUTEIL_ID")), rs.getInt("anzahl")));
 		}
 		stmt.close();
+		rs.close();
 		return result;
 	}
 	

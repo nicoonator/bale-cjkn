@@ -78,7 +78,7 @@ public class GUIBauteileverwaltung {
 			tb4.disableProperty().set(true);
 			tb2.disableProperty().set(true);
 			tb3.disableProperty().set(true);
-			selectionModel.select(1);
+			selectionModel.select(0);
 		}
 		
 		VBox v1 =new VBox();

@@ -9,8 +9,12 @@ package Logic;
  */
 public class Bauteilwarenkorbelement {
 	
-	private int bauteil_ID;
+	private Bauteil bauteil;
 	private int anzahl;
+	private String name;
+	private String link; 
+	private String kategorie;
+	private Double preis;
 	
 	
 	
@@ -18,23 +22,19 @@ public class Bauteilwarenkorbelement {
 	 * @param bauteil_ID
 	 * @param anzahl
 	 */
-	public Bauteilwarenkorbelement(int bauteil_ID, int anzahl) {
+	public Bauteilwarenkorbelement(Bauteil bauteil, int anzahl) {
 		super();
-		this.bauteil_ID = bauteil_ID;
+		this.bauteil = bauteil;
 		this.anzahl = anzahl;
+		this.name=bauteil.getName();
+		this.link=bauteil.getLink();
+		this.kategorie=bauteil.getKategorie_name();
+		this.preis=bauteil.getPreis();
 	}
 	/**
 	 * @return the bauteil_ID
 	 */
-	public int getBauteil_ID() {
-		return bauteil_ID;
-	}
-	/**
-	 * @param bauteil_ID the bauteil_ID to set
-	 */
-	public void setBauteil_ID(int bauteil_ID) {
-		this.bauteil_ID = bauteil_ID;
-	}
+
 	/**
 	 * @return the anzahl
 	 */
@@ -46,6 +46,76 @@ public class Bauteilwarenkorbelement {
 	 */
 	public void setAnzahl(int anzahl) {
 		this.anzahl = anzahl;
+	}
+
+	/**
+	 * @return the bauteil
+	 */
+	public Bauteil getBauteil() {
+		return bauteil;
+	}
+
+	/**
+	 * @param bauteil the bauteil to set
+	 */
+	public void setBauteil(Bauteil bauteil) {
+		this.bauteil = bauteil;
+	}
+
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * @return the link
+	 */
+	public String getLink() {
+		return link;
+	}
+
+	/**
+	 * @param link the link to set
+	 */
+	public void setLink(String link) {
+		this.link = link;
+	}
+
+	/**
+	 * @return the kategorie
+	 */
+	public String getKategorie() {
+		return kategorie;
+	}
+
+	/**
+	 * @param kategorie the kategorie to set
+	 */
+	public void setKategorie(String kategorie) {
+		this.kategorie = kategorie;
+	}
+
+	/**
+	 * @return the preis
+	 */
+	public Double getPreis() {
+		return preis;
+	}
+
+	/**
+	 * @param preis the preis to set
+	 */
+	public void setPreis(Double preis) {
+		this.preis = preis;
 	}
 	
 }

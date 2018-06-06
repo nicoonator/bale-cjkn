@@ -84,12 +84,13 @@ public class MainGUI extends Application {
 			v1.getChildren().addAll(tp);
 			
 				
-			Scene scene = new Scene(v1,600,500);
+			Scene scene = new Scene(v1,1300,600);
 			
 		    tp.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
 			
 			primaryStage.setScene(scene);
-			primaryStage.setMaximized(true);
+			//primaryStage.setMaximized(true);
+			//primaryStage.centerOnScreen();
 			primaryStage.show();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

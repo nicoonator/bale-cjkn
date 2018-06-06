@@ -9,6 +9,7 @@ import java.util.Date;
 import Exceptions.DatabaseException;
 import GUI.AlertBox;
 import GUI.Validation.Validation;
+import Logic.Auftrag;
 import Logic.Person;
 import Logic.Personenverwaltung;
 import javafx.collections.FXCollections;
@@ -45,6 +46,7 @@ public class GUIPersonenverwaltung {
 	public void open() {
 		
 		BorderPane bp = new BorderPane();
+		bp.setPadding(new Insets(10,10,10,10));
 		
 		// Start of TOP
 		
@@ -65,29 +67,28 @@ public class GUIPersonenverwaltung {
 		
 		// End of TOP
 		
-		// Start of LEFT
+		// Left
 		
 		TableColumn<Person, String> vornameColumn = new TableColumn<>("Vorname");
 		//vornameColumn.setMinWidth(100);
 		vornameColumn.setCellValueFactory(new PropertyValueFactory<>("vorname"));
-		
+
 		TableColumn<Person, String> nachnameColumn = new TableColumn<>("Nachname");
 		nachnameColumn.setMinWidth(100);
 		nachnameColumn.setCellValueFactory(new PropertyValueFactory<>("nachname"));
-		
+
 		TableColumn<Person, Date> erstelltColumn = new TableColumn<>("Erstellt");
 		//erstelltColumn.setMinWidth(150);
 		erstelltColumn.setCellValueFactory(new PropertyValueFactory<>("zuerst_erstellt"));
-		
-		//TODO: DEBUG Zuletzt geaendert
+
 		TableColumn<Person, Date> geaendertColumn = new TableColumn<>("Zuletzt geaendert");
 		//erstelltColumn.setMinWidth(150);
 		geaendertColumn.setCellValueFactory(new PropertyValueFactory<>("zuletzt_geaendert"));
-		
+
 		TableColumn<Person, Boolean> rolleColumn = new TableColumn<>("Admin?");
 		//rolleColumn.setMinWidth(50);
 		rolleColumn.setCellValueFactory(new PropertyValueFactory<>("admin"));
-		
+
 		table = new TableView<>();
 		try {
 			table.setItems(getPersonen());
@@ -95,11 +96,10 @@ public class GUIPersonenverwaltung {
 			AlertBox.display("Fehler", e2.getMessage());
 		}
 		table.getColumns().addAll(vornameColumn, nachnameColumn, erstelltColumn, geaendertColumn, rolleColumn);
-		
+
 		table.setPrefWidth(620);
 		bp.setLeft(table);
-	
-		
+
 		// End of LEFT
 		
 		// Start of Center
@@ -172,8 +172,6 @@ public class GUIPersonenverwaltung {
 		
 		// End of Center
 		
-		//TODO: CENTER: Content, labels checkboxes etc.
-		
 		//Events:
 		
 		create.setOnMouseClicked(e -> {
@@ -225,29 +223,32 @@ public class GUIPersonenverwaltung {
 			}
 			
 			finally {
+				AlertBox.display("Erfolg!", "Person bearbeitet!");
 				table.getSelectionModel().select(tempPerson);
 			}
 			
 		});
 		
 		table.setOnMouseClicked(e -> {
-			delete.setDisable(false);
-			modify.setDisable(false);
-			Person tempPerson = table.getSelectionModel().getSelectedItem();
-			vornameInput.setStyle(null);
-			vornameInput.setText(tempPerson.getVorname());
-			nachnameInput.setStyle(null);
-			nachnameInput.setText(tempPerson.getNachname());
-			strasseInput.setStyle(null);
-			strasseInput.setText(tempPerson.getStrasse());
-			hausnummerInput.setStyle(null);
-			hausnummerInput.setText(tempPerson.getHausnr());
-			PLZInput.setStyle(null);
-			PLZInput.setText(Integer.toString(tempPerson.getPLZ()));
-			EMailInput.setStyle(null);
-			EMailInput.setText(tempPerson.getEmail());
-			nutzernameInput.setStyle(null);
-			nutzernameInput.setText(tempPerson.getNutzername());
+			if(!(table.getSelectionModel().isEmpty())) {
+				delete.setDisable(false);
+				modify.setDisable(false);
+				Person tempPerson = table.getSelectionModel().getSelectedItem();
+				vornameInput.setStyle(null);
+				vornameInput.setText(tempPerson.getVorname());
+				nachnameInput.setStyle(null);
+				nachnameInput.setText(tempPerson.getNachname());
+				strasseInput.setStyle(null);
+				strasseInput.setText(tempPerson.getStrasse());
+				hausnummerInput.setStyle(null);
+				hausnummerInput.setText(tempPerson.getHausnr());
+				PLZInput.setStyle(null);
+				PLZInput.setText(Integer.toString(tempPerson.getPLZ()));
+				EMailInput.setStyle(null);
+				EMailInput.setText(tempPerson.getEmail());
+				nutzernameInput.setStyle(null);
+				nutzernameInput.setText(tempPerson.getNutzername());
+			}
 		});
 		
 		delete.setOnMouseClicked(e-> {
@@ -273,12 +274,6 @@ public class GUIPersonenverwaltung {
 		tab.setContent(bp);
 	}
 	
-
-	/**
-	 * @param eMailInput
-	 * @return
-	 */
-
 
 	public ObservableList<Person> getPersonen() throws SQLException{
 		ObservableList<Person> result = FXCollections.observableArrayList();

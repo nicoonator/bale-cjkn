@@ -50,9 +50,8 @@ public class GUINutzerverwaltung {
 		
 		// Start of LEFT
 		
-
+		// Nutzer
 	
-		
 		// End of LEFT
 		
 		// Start of Center
@@ -63,7 +62,11 @@ public class GUINutzerverwaltung {
 		
 		// End of Center
 		
-		//TODO: CENTER: Content, labels checkboxes etc.
+		// Right
+		
+		// Warenkorb
+		
+		// End Right
 		
 		//Events:
 		

@@ -7,6 +7,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import GUI.AlertBox;
+import Logic.Kategorie;
+import Logic.Person;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -68,6 +70,7 @@ public class Validation {
 		return result;
 	}
 	
+	
 	public static boolean nutzernameInputValidation(TextField tf) {
 		boolean result=false;
 		if (!(tf.getText()==null || tf.getText().trim().isEmpty())) {
@@ -99,6 +102,30 @@ public class Validation {
 		return result;
 	}
 	
+	
+	
+	public static boolean DoubleInputValidation(TextField tf) {
+		boolean result=false;
+		if (!(tf.getText()==null || tf.getText().trim().isEmpty())) {
+			try {
+				Double.parseDouble(tf.getText());
+				result = true;
+			} catch (NumberFormatException e) {
+				AlertBox.display("Fehler", "Es wurde eine Zahl erwartet!");
+			}
+		}
+		else AlertBox.display("Fehler", "Kein Textfeld darf leer sein!");
+
+		if (!result) tf.setStyle("-fx-text-fill: red;");
+		else tf.setStyle(null);
+		
+		return result;
+	}
+	
+
+		
+	
+	
 	public static boolean passwordInputValidation(PasswordField passwortInput, PasswordField passwortconfirmInput) {
 	    	boolean result=false;
 	    	if(passwortInput.getText().equals(passwortconfirmInput.getText())){
@@ -110,14 +137,36 @@ public class Validation {
 	    	return result;
 	    }
 	
-	public static boolean ComboBoxValidation(ComboBox<String> comboBox) {
+	public static boolean ComboBoxValidationString(ComboBox<String> comboBox) {
 		boolean result=false;
 		if (!(comboBox.getSelectionModel().isEmpty())) {
 			result=true;
 		}
-		else AlertBox.display("Fehler", "Ein Typ muss ausgewahlt werden!");
+		else AlertBox.display("Fehler", "Ein Fertigungstyp muss ausgewahlt werden!");
 		
 		return result;
 	}
+	
+	public static boolean ComboBoxValidationPerson(ComboBox<Person> comboBox) {
+		boolean result=false;
+		if (!(comboBox.getSelectionModel().isEmpty())) {
+			result=true;
+		}
+		else AlertBox.display("Fehler", "Eine Person muss ausgewahlt werden!");
+		
+		return result;
+	}
+	
+	public static boolean ComboBoxValidationKategorie(ComboBox<Kategorie> comboBox) {
+		boolean result=false;
+		if (!(comboBox.getSelectionModel().isEmpty())) {
+			result=true;
+		}
+		else AlertBox.display("Fehler", "Eine Kategorie muss ausgewahlt werden!");
+		
+		return result;
+	}
+	
+	
 }
 

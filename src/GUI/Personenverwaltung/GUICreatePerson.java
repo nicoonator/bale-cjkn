@@ -23,7 +23,8 @@ public class GUICreatePerson {
 
     public static void display() {
         Stage window = new Stage();
-
+        window.setTitle("Person Erstellen");
+        
         GridPane grid = new GridPane();
 		grid.setPadding(new Insets(10,10,10,10));
 		grid.setVgap(8);
@@ -86,6 +87,8 @@ public class GUICreatePerson {
 		Button btn = new Button("Erstellen");
 		GridPane.setConstraints(btn, 1, 9);
 		
+		Button btnClose = new Button ("Schlieﬂen");
+		GridPane.setConstraints(btnClose, 1, 9,1,1,HPos.RIGHT,null);
 		
 		ComboBox<String> comboBox;
 		comboBox = new ComboBox<>();
@@ -98,27 +101,35 @@ public class GUICreatePerson {
         GridPane.setConstraints(comboBox, 0, 9);
 		
 		grid.getChildren().addAll(vornameLabel, vornameInput, nachnameLabel, nachnameInput, strasseLabel, strasseInput, hausnummerLabel, hausnummerInput, 
-				PLZLabel, PLZInput, EMailLabel, EMailInput, nutzernameLabel, nutzernameInput, passwortLabel, passwortInput, btn, comboBox, passwortconfirmInput, passwortconfirmLabel);
+				PLZLabel, PLZInput, EMailLabel, EMailInput, nutzernameLabel, nutzernameInput, passwortLabel, passwortInput, btn, comboBox, passwortconfirmInput, passwortconfirmLabel,btnClose);
 		
 		btn.setOnMouseClicked(e -> {
 			
-			if(Validation.passwordInputValidation(passwortInput, passwortconfirmInput) && Validation.IntegerInputValidation(PLZInput) && Validation.nutzernameInputValidation(nutzernameInput) && Validation.StringInputValidation(vornameInput) && Validation.StringInputValidation(nachnameInput) && Validation.HausNrInputValidation(hausnummerInput) && Validation.StringInputValidation(strasseInput) && Validation.ComboBoxValidation(comboBox)){
+			if(Validation.passwordInputValidation(passwortInput, passwortconfirmInput) && Validation.IntegerInputValidation(PLZInput) && Validation.nutzernameInputValidation(nutzernameInput) && Validation.StringInputValidation(vornameInput) && Validation.StringInputValidation(nachnameInput) && Validation.HausNrInputValidation(hausnummerInput) && Validation.StringInputValidation(strasseInput) && Validation.ComboBoxValidationString(comboBox)){
 					
-			try{
+				try{
 				
-				Personenverwaltung.getInstance().createPerson(vornameInput.getText(), nachnameInput.getText(), strasseInput.getText(), Integer.parseInt(hausnummerInput.getText()), Integer.parseInt(PLZInput.getText()), EMailInput.getText(), nutzernameInput.getText(), passwortInput.getText(), comboBox.getSelectionModel().getSelectedIndex());
-				AlertBox.display("Erfolg!", "Person erzeugt!");
-				window.close();
-			}
+					Personenverwaltung.getInstance().createPerson(vornameInput.getText(), nachnameInput.getText(), strasseInput.getText(), hausnummerInput.getText(), Integer.parseInt(PLZInput.getText()), EMailInput.getText(), nutzernameInput.getText(), passwortInput.getText(), comboBox.getSelectionModel().getSelectedIndex());
+					AlertBox.display("Erfolg!", "Person erzeugt!");
+					window.close();
+				}
 			
 			catch (SQLException | DatabaseException e1) {
 				AlertBox.display("Fehler", e1.getMessage());
 			}
 			}});
 		
+		btnClose.setOnMouseClicked(e -> {
+			window.close();
+		});
+		
+		
+		
         Scene scene = new Scene(grid);
         window.setScene(scene);
+        window.initModality(Modality.APPLICATION_MODAL);
         window.showAndWait();
+       
         
         
         

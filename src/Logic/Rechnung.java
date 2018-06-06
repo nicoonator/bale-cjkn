@@ -33,8 +33,6 @@ public class Rechnung {
 	private int verwalter_ID;
 	private int topf_ID;
 	
-	//TODO RECHNUNG IM SQLMANAGER + Toepfe +auftraggeber(session?)
-	
 	//AUFTRAG_ID
 	
 	/**

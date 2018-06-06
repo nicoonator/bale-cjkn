@@ -16,7 +16,7 @@ public class Personenverwaltung {
 	}
 
 	public void createPerson(String vorname, String nachname, String strasse, 
-			int hausnr, int PLZ, String email, String nutzername, String passwort, int rolle) throws DatabaseException, SQLException {
+			String hausnr, int PLZ, String email, String nutzername, String passwort, int rolle) throws DatabaseException, SQLException {
 		
 		SQLManager.getInstance().createPerson(vorname, nachname, strasse, hausnr, PLZ, email, nutzername, passwort, rolle);
 	}
