@@ -20,6 +20,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -58,6 +59,8 @@ public class GUIAuftragErstellen {
 			}
 			personTable.getColumns().addAll(vorname, nachname, checks);
 			personTable.setPrefSize(220, 5);
+			personTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
 			
 			bp.setRight(personTable);
 			
@@ -150,7 +153,7 @@ public class GUIAuftragErstellen {
 			Button btn = new Button("Erstellen");
 			GridPane.setConstraints(btn, 1, 9);
 			
-			Button btnClose = new Button ("Schließen");
+			Button btnClose = new Button ("Schlieï¿½en");
 			GridPane.setConstraints(btnClose, 1, 9,1,1,HPos.RIGHT,null);
 			
 			
@@ -162,7 +165,7 @@ public class GUIAuftragErstellen {
 			
 			
 			//EVENTS
-			//Fenster schließen
+			//Fenster schlieï¿½en
 			btnClose.setOnMouseClicked(e -> {
 				window.close();
 			});

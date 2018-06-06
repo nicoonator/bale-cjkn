@@ -246,7 +246,8 @@ public class GUIFertigungsverwaltung {
 						tempAuftragMod.setGefertigt(true);
 					}
 					Fertigungsverwaltung.getInstance().changeStatus(tempAuftragMod.getAUFTRAG_ID(), "gefertigt");
-					//gefertigtLabel.setText(tempAuftragMod.getDate_gefertigt().toString());
+					
+					gefertigtLabel.setText(Fertigungsverwaltung.getInstance().getAuftragByID(tempAuftragMod.getAUFTRAG_ID()).getDate_gefertigt().toString());
 				}
 				
 				if(kalkuliert.isSelected() != tempAuftragMod.isKalkuliert()) {
@@ -311,9 +312,9 @@ public class GUIFertigungsverwaltung {
 
 				
 			
-				open();
+				//open();
 				AlertBox.display("Erfolg!", "Auftrag bearbeitet!");
-			} catch (SQLException e1) {
+			} catch (SQLException | DatabaseException e1) {
 				AlertBox.display("Fehler", e1.getMessage());
 			}
 			

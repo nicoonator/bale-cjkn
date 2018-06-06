@@ -90,6 +90,7 @@ public class MainGUI extends Application {
 			
 			primaryStage.setScene(scene);
 			//primaryStage.setMaximized(true);
+			//primaryStage.centerOnScreen();
 			primaryStage.show();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

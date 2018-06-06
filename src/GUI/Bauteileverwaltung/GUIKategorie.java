@@ -120,7 +120,6 @@ public class GUIKategorie {
 				delete.setDisable(true);
 			}
 		});
-		
 		modify.setOnMouseClicked(e -> {
 			Kategorie tempKategorie = table.getSelectionModel().getSelectedItem();
 			try {

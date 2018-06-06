@@ -87,7 +87,7 @@ public class Finanzverwaltung {
 				+ tempAuftrag.getAUFTRAG_ID());
 		contentStream.newLine();
 		contentStream.showText("Rechnungsdatum: " 
-				+ new SimpleDateFormat("dd.MM.yyyy").format(tempRechnung.getRECHNUNGSDATUM()));
+				+ (tempRechnung.getRECHNUNGSDATUM()));
 		contentStream.newLine();
 		contentStream.showText("Betreuender Admin: " + tempAuftrag.getVerwalter());
 		contentStream.newLine();
