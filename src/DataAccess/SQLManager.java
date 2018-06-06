@@ -35,6 +35,7 @@ public class SQLManager {
 	
 
 	/**
+	 * returns all Kategorien
 	 * @author Nico Rychlik
 	 * @return returns List of all Kategories
 	 * @throws SQLException
@@ -162,6 +163,7 @@ public class SQLManager {
 
 	
 	/**
+	 * 
 	 * @author Nico Rychlik
 	 * @param id
 	 * @param attribut

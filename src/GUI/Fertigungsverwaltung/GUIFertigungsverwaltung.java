@@ -32,6 +32,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -313,11 +314,14 @@ public class GUIFertigungsverwaltung {
 				
 			
 				//open();
-				AlertBox.display("Erfolg!", "Auftrag bearbeitet!");
+				auftragTable.setItems(getAuftraege());
 			} catch (SQLException | DatabaseException e1) {
 				AlertBox.display("Fehler", e1.getMessage());
 			}
-			
+			finally {
+				AlertBox.display("Erfolg!", "Auftrag bearbeitet!");
+				auftragTable.getSelectionModel().select(tempAuftragMod);
+			}
 			}
 			
 		});
