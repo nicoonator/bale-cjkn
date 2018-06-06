@@ -200,8 +200,14 @@ public class GUIWarenkorb {
 		bot.setAlignment(Pos.BOTTOM_CENTER);
 		bot.setSpacing(10);
 		bot.setPadding(new Insets(10,10,10,20));
-		
-		Label schulden = new Label("Aktuelle Schulden in Euro: "+String.valueOf(nutzer.getBauteilschulden()));
+		//TODO:
+		Label schulden =new Label();
+		try {
+			schulden.setText("Aktuelle Schulden in Euro: "+String.valueOf(Personenverwaltung.getInstance().getPersonByID(nutzer.getPERSON_ID()).getBauteilschulden()));
+		} catch (DatabaseException | SQLException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
 		
 		bot.getChildren().addAll(schulden);
 		
@@ -234,7 +240,7 @@ public class GUIWarenkorb {
 					Bauteileverwaltung.getInstance().removeBauteil(bauteillager.getSelectionModel().getSelectedItem().getID(), Integer.parseInt(anzahlInput.getText()), nutzer.getPERSON_ID());
 					bauteillager.setItems(getBauteile());
 					warenkorb.setItems(getBauteilewarenkorb());
-					schulden.setText(Double.toString(Personenverwaltung.getInstance().getPersonByID(nutzer.getPERSON_ID()).getBauteilschulden()) +" Euro");
+					schulden.setText("Aktuelle Schulden in Euro: "+Double.toString(Personenverwaltung.getInstance().getPersonByID(nutzer.getPERSON_ID()).getBauteilschulden()) +" Euro");
 				} catch (NumberFormatException | DatabaseException | SQLException e1) {
 					AlertBox.display("Fehler", e1.getMessage());
 				} finally {	
@@ -251,7 +257,7 @@ public class GUIWarenkorb {
 					Bauteileverwaltung.getInstance().addBauteil(warenkorb.getSelectionModel().getSelectedItem().getBauteil().getID(), Integer.parseInt(anzahl2Input.getText()), nutzer.getPERSON_ID());
 					warenkorb.setItems(getBauteilewarenkorb());
 					bauteillager.setItems(getBauteile());
-					schulden.setText(Double.toString(Personenverwaltung.getInstance().getPersonByID(nutzer.getPERSON_ID()).getBauteilschulden()) +" Euro");
+					schulden.setText("Aktuelle Schulden in Euro: "+Double.toString(Personenverwaltung.getInstance().getPersonByID(nutzer.getPERSON_ID()).getBauteilschulden()) +" Euro");
 				} catch (NumberFormatException | DatabaseException | SQLException e1) {
 					AlertBox.display("Fehler", e1.getMessage());
 				} finally {	

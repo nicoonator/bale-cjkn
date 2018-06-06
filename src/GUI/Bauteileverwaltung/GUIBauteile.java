@@ -37,11 +37,22 @@ import javafx.scene.layout.HBox;
 public class GUIBauteile {
 	Tab tab;
 	TableView<Bauteil> bauteillager;
+	List<Kategorie> kategorien = this.getKategorien();
 	
 	public GUIBauteile(Tab tab) {
 		this.tab=tab;
 	}
 	
+	private List<Kategorie> getKategorien() {
+		try {
+			return Bauteileverwaltung.getInstance().getAllKategorie();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 	public void open() {
 		BorderPane bp = new BorderPane();
 		bp.setPadding(new Insets(10,10,10,10));
@@ -153,11 +164,9 @@ public class GUIBauteile {
 		ComboBox<Kategorie> comboBoxKategorie = new ComboBox<>();
 		comboBoxKategorie.setPromptText("Kategorie");
 		
-		try {
-			comboBoxKategorie.getItems().addAll(Bauteileverwaltung.getInstance().getAllKategorie());
-		} catch (SQLException e2) {
-			AlertBox.display("Fehler", e2.getMessage());
-		}
+		
+		comboBoxKategorie.getItems().addAll(kategorien);
+		
 		
 		GridPane.setConstraints(comboBoxKategorie, 1, 7);
 		
@@ -220,16 +229,20 @@ public class GUIBauteile {
 				bestelltInput.setStyle(null);
 				ortInput.setText(tempBauteil.getOrt());
 				ortInput.setStyle(null);
-				try {
-					//TODO: DEBUG
-					comboBoxKategorie.getSelectionModel().select(Bauteileverwaltung.getInstance().getKategorieByID(tempBauteil.getKategorie_ID()));
-				} catch (SQLException e1) {
-					AlertBox.display("Fehler", e1.getMessage());
-				}
+				comboBoxKategorie.getSelectionModel().select(this.indexOf(tempBauteil.getKategorie_ID()));
 			}
 		});
 
 		tab.setContent(bp);
+	}
+
+	private int indexOf(int kategorie_ID) {
+		int i=0;
+		for(Kategorie k: kategorien){
+			if(k.getID()==kategorie_ID) return i;
+			i++;
+		}
+		return -1;
 	}
 
 	
