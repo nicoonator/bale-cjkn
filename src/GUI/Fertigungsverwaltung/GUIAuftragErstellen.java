@@ -23,7 +23,9 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -33,6 +35,40 @@ public class GUIAuftragErstellen {
 	        Stage window = new Stage();
 	        window.setTitle("Auftrag Erstellen");
 	        
+	        BorderPane bp = new BorderPane();
+			bp.setPadding(new Insets(10,10,10,10));
+			
+			TableView<Person> personTable;
+			TableColumn<Person, String> vorname = new TableColumn<>("Vorname");
+			vorname.setCellValueFactory(new PropertyValueFactory<>("vorname"));
+	
+			TableColumn<Person, String> nachname = new TableColumn<>("Nachname");
+			nachname.setCellValueFactory(new PropertyValueFactory<>("nachname"));
+			
+			TableColumn<Person, String> checks = new TableColumn<>("Auswahl");
+			//checks.setCellValueFactory();
+			checks.setCellFactory( tc -> new CheckBoxTableCell<>());
+			
+			personTable = new TableView<>();
+			try {
+				personTable.setItems(getPersonen());
+			} catch (SQLException e2) {
+				e2.printStackTrace();
+				AlertBox.display("Fehler", e2.getMessage() );
+			}
+			personTable.getColumns().addAll(vorname, nachname, checks);
+			personTable.setPrefSize(220, 5);
+			
+			bp.setRight(personTable);
+			
+			checks.setEditable(true);
+			
+			
+					
+			
+			
+			
+	        //LEFT
 	        GridPane grid = new GridPane();
 			grid.setPadding(new Insets(10,10,10,10));
 			grid.setVgap(8);
@@ -151,8 +187,8 @@ public class GUIAuftragErstellen {
 				
 			});
 			
-			
-	        Scene scene = new Scene(grid);
+			bp.setLeft(grid);
+	        Scene scene = new Scene(bp);
 	        window.setScene(scene);
 	        window.initModality(Modality.APPLICATION_MODAL);
 	        window.showAndWait();
@@ -172,6 +208,13 @@ public class GUIAuftragErstellen {
 				e.printStackTrace();
 			}
 			return resultAuftrag;
+		}
+	 public static ObservableList<Person> getPersonen() throws SQLException{
+			ObservableList<Person> result = FXCollections.observableArrayList();
+			for (Person p :  Personenverwaltung.getInstance().getAllPersons()) {
+				result.add(p);
+			}
+			return result;
 		}
 	 
 }

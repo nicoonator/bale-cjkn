@@ -486,7 +486,7 @@ public class SQLManager {
 	
 	public void modifyAuftrag(int AUFTRAG_ID, String attribut, String newData) throws SQLException{
 		Statement stmt = c.createStatement();
-		String sql = "UPDATE Auftrag SET "+attribut+" = "+newData+" WHERE AUFTRAG_ID="+AUFTRAG_ID+";";
+		String sql = "UPDATE Auftrag SET "+attribut+" = '"+newData+"' WHERE AUFTRAG_ID="+AUFTRAG_ID+";";
 		stmt.executeUpdate(sql);
 		stmt.close();	
 	}
@@ -536,7 +536,7 @@ public class SQLManager {
 			sql="UPDATE Auftrag SET "+Status+" = 1 WHERE AUFTRAG_ID = "+id+";";
 		}
 		stmt.executeUpdate(sql);
-		sql="UPDATE Auftrag SET date_"+Status+" = "+(new Date().getTime()/1000)+" WHERE PERSON_ID = "+id+";";
+		sql="UPDATE Auftrag SET date_"+Status+" = "+(new Date().getTime()/1000)+" WHERE AUFTRAG_ID = "+id+";";
 		stmt.executeUpdate(sql);
 		stmt.close();	
 	}
