@@ -25,8 +25,19 @@ public class TestClass {
 		//	System.out.println(new Date(1527061626L*1000L).toString());
 		//	SQLManager.getInstance().createAuftrag("test", "druck", 5, 10, null);
 		//	SQLManager.getInstance().createRechnung("test", "bar", 5, 1, 8, 8, 2);
-			Finanzverwaltung.getInstance().exportRechnung(1);
+		//	Finanzverwaltung.getInstance().exportRechnung(1);
 		//	Bauteileverwaltung.getInstance().addKategorie("Trash");
+			for(int i=0; i<15;i++) {
+				if(i<5) {
+					SQLManager.getInstance().createPerson("TestAdmin "+i , "TestAdmin "+i, "TestAdmin "+i, "12", 57072, "admin@admin.com", "admin"+i, "admin", 0);
+				}
+				if(i<10 && i>=5) {
+					SQLManager.getInstance().createPerson("TestKunde "+i , "TestKunde "+i, "TestKunde "+i, "12", 57072, "kunde@kunde.com", "TestKunde"+i, "TestKunde", 1);
+				}
+				if(i>=10) {
+					SQLManager.getInstance().createPerson("TestLehrstuhlmitglied "+i , "TestLehrstuhlmitglied "+i, "TestLehrstuhlmitglied "+i, "12", 57072, "lehrstuhl@uni.com", "TestLehrstuhlmitglied"+i, "TestLehrstuhlmitglied", 2);
+				}
+			}
 		}
 		catch (Exception e) {
 			e.printStackTrace();
