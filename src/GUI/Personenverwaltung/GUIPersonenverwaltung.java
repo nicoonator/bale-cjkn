@@ -329,7 +329,7 @@ public class GUIPersonenverwaltung {
 	}
 	
 
-	public ObservableList<Person> getPersonen() throws SQLException{
+	public static ObservableList<Person> getPersonen() throws SQLException{
 		ObservableList<Person> result = FXCollections.observableArrayList();
 		for (Person p :  Personenverwaltung.getInstance().getAllPersons()) {
 			result.add(p);
