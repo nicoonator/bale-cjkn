@@ -13,10 +13,6 @@ public class Kategorie {
 	
 	
 	
-	/**
-	 * @param iD
-	 * @param name
-	 */
 	public Kategorie(int iD, String name) {
 		super();
 		ID = iD;
@@ -33,6 +29,16 @@ public class Kategorie {
 	
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	/**
+	 * @param iD
+	 * @param name
+	 */
+	
+	@Override
+	public String toString() {
+		return name;
 	}
 
 }

@@ -150,12 +150,13 @@ public class GUIKategorie {
 		});
 		
 		table.setOnMouseClicked(e -> {
-			delete.setDisable(false);
-			modify.setDisable(false);
 			if(!(table.getSelectionModel().isEmpty())) {
+				delete.setDisable(false);
+				modify.setDisable(false);
 				Kategorie tempKategorie = table.getSelectionModel().getSelectedItem();
 				bp.setCenter(grid);
 				tfKatName.setText(tempKategorie.getName());
+				tfKatName.setStyle(null);
 			}
 		});
 
@@ -166,7 +167,7 @@ public class GUIKategorie {
 	 * @return
 	 * @throws SQLException 
 	 */
-	private ObservableList<Kategorie> getKategorien() throws SQLException {
+	public static ObservableList<Kategorie> getKategorien() throws SQLException {
 		ObservableList<Kategorie> result = FXCollections.observableArrayList();
 		for (Kategorie k :  Bauteileverwaltung.getInstance().getAllKategorie()) {
 			result.add(k);

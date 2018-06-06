@@ -7,6 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import GUI.AlertBox;
+import Logic.Kategorie;
 import Logic.Person;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
@@ -151,7 +152,17 @@ public class Validation {
 		if (!(comboBox.getSelectionModel().isEmpty())) {
 			result=true;
 		}
-		else AlertBox.display("Fehler", "Ein Fertigungstyp muss ausgewahlt werden!");
+		else AlertBox.display("Fehler", "Eine Person muss ausgewahlt werden!");
+		
+		return result;
+	}
+	
+	public static boolean ComboBoxValidationKategorie(ComboBox<Kategorie> comboBox) {
+		boolean result=false;
+		if (!(comboBox.getSelectionModel().isEmpty())) {
+			result=true;
+		}
+		else AlertBox.display("Fehler", "Eine Kategorie muss ausgewahlt werden!");
 		
 		return result;
 	}
