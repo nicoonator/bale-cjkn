@@ -138,22 +138,11 @@ public class SQLManager {
 		}
 		sql="SELECT * FROM Verbindung_Person_Auftrag WHERE PERSON_ID = "+id+";";
 		ResultSet rs2 = stmt.executeQuery(sql);
-		boolean auftraege=false;
-		ResultSet rs3;
-		while(rs2.next()) {
-			sql="SELECT AUFTRAG_ID FROM Verbindung_Person_Auftrag WHERE (rolle ='"+rs2.getString("rolle")+"' AND AUFTRAG_ID = "+rs2.getInt("AUFTRAG_ID")+") AND PERSON_ID != "+rs2.getInt("PERSON_ID")+";";
-			rs3 = stmt.executeQuery(sql);
-			while(rs3.next()) {
-				sql="SELECT * FROM AUFTRAG WHERE AUFTRAG_ID = "+rs3.getInt(1)+";";
-				if(stmt.executeQuery(sql).next()) auftraege = true;
-			}
-			rs3.close();
-		}
-		rs2.close();
-		if(auftraege) {
+		
+		if(rs2.next()) {
 			throw new PersonHatAuftraegeException();
 		}
-		
+		rs2.close();
 		
 		
 		sql= "DELETE FROM Person WHERE PERSON_ID="+id+";";

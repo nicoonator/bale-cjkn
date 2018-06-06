@@ -38,9 +38,10 @@ public class GUIPersonenverwaltung {
 	
 	Tab tab;
 	TableView<Person> table;
-
-	public GUIPersonenverwaltung(Tab tab) {
+	Person nutzer;
+	public GUIPersonenverwaltung(Tab tab, Person person) {
 		this.tab=tab;
+		this.nutzer = person;
 	}
 	
 	public void open() {
@@ -113,60 +114,86 @@ public class GUIPersonenverwaltung {
 		GridPane.setConstraints(vornameLabel, 0, 0);
 		
 		TextField vornameInput = new TextField();
+		vornameInput.setEditable(false);
+		vornameInput.setDisable(true);
 		GridPane.setConstraints(vornameInput, 1, 0);
 		
 		Label nachnameLabel = new Label("Nachname: ");
 		GridPane.setConstraints(nachnameLabel, 0, 1);
 		
 		TextField nachnameInput = new TextField();
+		nachnameInput.setEditable(false);
+		nachnameInput.setDisable(true);
 		GridPane.setConstraints(nachnameInput, 1, 1);
 		
 		Label strasseLabel = new Label("Strasse: ");
 		GridPane.setConstraints(strasseLabel, 0, 2);
 		
 		TextField strasseInput = new TextField();
+		strasseInput.setEditable(false);
+		strasseInput.setDisable(true);
 		GridPane.setConstraints(strasseInput, 1, 2);
 		
 		Label hausnummerLabel = new Label("Hausnummer: ");
 		GridPane.setConstraints(hausnummerLabel, 0, 3);
 		
 		TextField hausnummerInput = new TextField();
+		hausnummerInput.setEditable(false);
+		hausnummerInput.setDisable(true);
 		GridPane.setConstraints(hausnummerInput, 1, 3);
 		
 		Label PLZLabel = new Label("PLZ: ");
 		GridPane.setConstraints(PLZLabel, 0, 4);
 		
 		TextField PLZInput = new TextField();
+		PLZInput.setEditable(false);
+		PLZInput.setDisable(true);
 		GridPane.setConstraints(PLZInput, 1, 4);
 		
 		Label EMailLabel = new Label("E-Mail: ");
 		GridPane.setConstraints(EMailLabel, 0, 5);
 		
 		TextField EMailInput = new TextField();
+		EMailInput.setEditable(false);
+		EMailInput.setDisable(true);
 		GridPane.setConstraints(EMailInput, 1, 5);
 		
 		Label nutzernameLabel = new Label("Nutzername: ");
 		GridPane.setConstraints(nutzernameLabel, 0, 6);
 		
 		TextField nutzernameInput = new TextField();
+		nutzernameInput.setEditable(false);
+		nutzernameInput.setDisable(true);
 		GridPane.setConstraints(nutzernameInput, 1, 6);
 		
 		// passwort ohne whitespace vorne oder hinten!
 		
-		Label passwortLabel = new Label("Passwort: ");
-		GridPane.setConstraints(passwortLabel, 0, 7);
+		Label oldpasswortLabel = new Label("Altes Passwort: ");
+		GridPane.setConstraints(oldpasswortLabel, 0, 12);
+		
+		PasswordField oldpasswortconfirmInput = new PasswordField();
+		oldpasswortconfirmInput.setEditable(false);
+		oldpasswortconfirmInput.setDisable(true);
+		GridPane.setConstraints(oldpasswortconfirmInput, 1, 12);
+		
+		Label passwortLabel = new Label("Neues Passwort: ");
+		GridPane.setConstraints(passwortLabel, 0, 13);
 		
 		PasswordField passwortInput = new PasswordField();
-		GridPane.setConstraints(passwortInput, 1, 7);
+		passwortInput.setEditable(false);
+		passwortInput.setDisable(true);
+		GridPane.setConstraints(passwortInput, 1, 13);
 		
-		Label passwortconfirmLabel = new Label("Passwort bestaetigen: ");
-		GridPane.setConstraints(passwortconfirmLabel, 0, 8);
+		Label passwortconfirmLabel = new Label("Neues Passwort bestaetigen: ");
+		GridPane.setConstraints(passwortconfirmLabel, 0, 14);
 		
 		PasswordField passwortconfirmInput = new PasswordField();
-		GridPane.setConstraints(passwortconfirmInput, 1, 8);
+		passwortconfirmInput.setEditable(false);
+		passwortconfirmInput.setDisable(true);
+		GridPane.setConstraints(passwortconfirmInput, 1, 14);
 		
 		grid.getChildren().addAll(vornameLabel, vornameInput, nachnameLabel, nachnameInput, strasseLabel, strasseInput, hausnummerLabel, hausnummerInput, 
-				PLZLabel, PLZInput, EMailLabel, EMailInput, nutzernameLabel, nutzernameInput, passwortLabel, passwortInput, passwortconfirmLabel, passwortconfirmInput);
+				PLZLabel, PLZInput, EMailLabel, EMailInput, nutzernameLabel, nutzernameInput,oldpasswortLabel,oldpasswortconfirmInput ,passwortLabel, passwortInput, passwortconfirmLabel, passwortconfirmInput);
 		
 		bp.setCenter(grid);
 		
@@ -184,13 +211,14 @@ public class GUIPersonenverwaltung {
 			finally {
 				modify.setDisable(true);
 				delete.setDisable(true);
+				open();
 			}
 		});
 		
 		modify.setOnMouseClicked(e -> {
 			Person tempPerson = table.getSelectionModel().getSelectedItem();
 			try {
-				if((passwortInput.getText()==null || passwortInput.getText().trim().isEmpty())&&(passwortconfirmInput.getText()==null || passwortconfirmInput.getText().trim().isEmpty())) {
+				if((oldpasswortconfirmInput.getText()==null || oldpasswortconfirmInput.getText().trim().isEmpty()) &&(passwortInput.getText()==null || passwortInput.getText().trim().isEmpty())&&(passwortconfirmInput.getText()==null || passwortconfirmInput.getText().trim().isEmpty())) {
 					//Wenn kein passwort geandert werden soll
 					if(Validation.IntegerInputValidation(PLZInput) && Validation.nutzernameInputValidation(nutzernameInput) && Validation.StringInputValidation(vornameInput) && Validation.StringInputValidation(nachnameInput) && Validation.HausNrInputValidation(hausnummerInput) && Validation.StringInputValidation(strasseInput) && Validation.mailInputValidation(EMailInput)){
 						Personenverwaltung.getInstance().modifyPerson(tempPerson.getPERSON_ID(), "vorname", vornameInput.getText().trim());
@@ -200,11 +228,12 @@ public class GUIPersonenverwaltung {
 						Personenverwaltung.getInstance().modifyPerson(tempPerson.getPERSON_ID(), "nutzername", nutzernameInput.getText().trim());
 						Personenverwaltung.getInstance().modifyPerson(tempPerson.getPERSON_ID(), "hausnr", hausnummerInput.getText().trim());
 						Personenverwaltung.getInstance().modifyPerson(tempPerson.getPERSON_ID(), "PLZ", PLZInput.getText().trim());
+						AlertBox.display("Erfolg!", "Person bearbeitet!");
 					}		
 				}
 				else {
 					//Wenn passwort geandert werden soll
-					if(Validation.passwordInputValidation(passwortInput, passwortconfirmInput) && Validation.IntegerInputValidation(PLZInput) && Validation.nutzernameInputValidation(nutzernameInput) && Validation.StringInputValidation(vornameInput) && Validation.StringInputValidation(nachnameInput) && Validation.HausNrInputValidation(hausnummerInput) && Validation.mailInputValidation(EMailInput) && Validation.StringInputValidation(strasseInput)){
+					if(Validation.changePasswordInputValidation(oldpasswortconfirmInput, passwortInput, passwortconfirmInput, tempPerson) && Validation.IntegerInputValidation(PLZInput) && Validation.nutzernameInputValidation(nutzernameInput) && Validation.StringInputValidation(vornameInput) && Validation.StringInputValidation(nachnameInput) && Validation.HausNrInputValidation(hausnummerInput) && Validation.mailInputValidation(EMailInput) && Validation.StringInputValidation(strasseInput)){
 						Personenverwaltung.getInstance().modifyPerson(tempPerson.getPERSON_ID(), "passwort", passwortInput.getText().trim());
 						Personenverwaltung.getInstance().modifyPerson(tempPerson.getPERSON_ID(), "vorname", vornameInput.getText().trim());
 						Personenverwaltung.getInstance().modifyPerson(tempPerson.getPERSON_ID(), "nachname", nachnameInput.getText().trim());
@@ -213,9 +242,14 @@ public class GUIPersonenverwaltung {
 						Personenverwaltung.getInstance().modifyPerson(tempPerson.getPERSON_ID(), "nutzername", nutzernameInput.getText().trim());
 						Personenverwaltung.getInstance().modifyPerson(tempPerson.getPERSON_ID(), "hausnr", hausnummerInput.getText().trim());
 						Personenverwaltung.getInstance().modifyPerson(tempPerson.getPERSON_ID(), "PLZ", PLZInput.getText().trim());
+						oldpasswortconfirmInput.clear();
+						passwortconfirmInput.clear();
+						passwortInput.clear();
+						AlertBox.display("Erfolg!", "Person bearbeitet!");
 					}
 				}
 				table.setItems(getPersonen());
+				
 			}
 			
 			catch (SQLException e1) {
@@ -223,7 +257,6 @@ public class GUIPersonenverwaltung {
 			}
 			
 			finally {
-				AlertBox.display("Erfolg!", "Person bearbeitet!");
 				table.getSelectionModel().select(tempPerson);
 			}
 			
@@ -231,23 +264,44 @@ public class GUIPersonenverwaltung {
 		
 		table.setOnMouseClicked(e -> {
 			if(!(table.getSelectionModel().isEmpty())) {
+				
 				delete.setDisable(false);
 				modify.setDisable(false);
 				Person tempPerson = table.getSelectionModel().getSelectedItem();
 				vornameInput.setStyle(null);
 				vornameInput.setText(tempPerson.getVorname());
+				vornameInput.setDisable(false);
+				vornameInput.setEditable(true);
 				nachnameInput.setStyle(null);
 				nachnameInput.setText(tempPerson.getNachname());
+				nachnameInput.setDisable(false);
+				nachnameInput.setEditable(true);
 				strasseInput.setStyle(null);
 				strasseInput.setText(tempPerson.getStrasse());
+				strasseInput.setDisable(false);
+				strasseInput.setEditable(true);
 				hausnummerInput.setStyle(null);
 				hausnummerInput.setText(tempPerson.getHausnr());
+				hausnummerInput.setDisable(false);
+				hausnummerInput.setEditable(true);
 				PLZInput.setStyle(null);
 				PLZInput.setText(Integer.toString(tempPerson.getPLZ()));
+				PLZInput.setDisable(false);
+				PLZInput.setEditable(true);
 				EMailInput.setStyle(null);
 				EMailInput.setText(tempPerson.getEmail());
+				EMailInput.setDisable(false);
+				EMailInput.setEditable(true);
 				nutzernameInput.setStyle(null);
 				nutzernameInput.setText(tempPerson.getNutzername());
+				nutzernameInput.setDisable(false);
+				nutzernameInput.setEditable(true);
+				passwortInput.setDisable(false);
+				passwortInput.setEditable(true);
+				passwortconfirmInput.setDisable(false);
+				passwortconfirmInput.setEditable(true);
+				oldpasswortconfirmInput.setDisable(false);
+				oldpasswortconfirmInput.setEditable(true);
 			}
 		});
 		

@@ -87,7 +87,7 @@ public class GUICreatePerson {
 		Button btn = new Button("Erstellen");
 		GridPane.setConstraints(btn, 1, 9);
 		
-		Button btnClose = new Button ("Schlieﬂen");
+		Button btnClose = new Button ("Schliessen");
 		GridPane.setConstraints(btnClose, 1, 9,1,1,HPos.RIGHT,null);
 		
 		ComboBox<String> comboBox;
@@ -101,7 +101,7 @@ public class GUICreatePerson {
         GridPane.setConstraints(comboBox, 0, 9);
 		
 		grid.getChildren().addAll(vornameLabel, vornameInput, nachnameLabel, nachnameInput, strasseLabel, strasseInput, hausnummerLabel, hausnummerInput, 
-				PLZLabel, PLZInput, EMailLabel, EMailInput, nutzernameLabel, nutzernameInput, passwortLabel, passwortInput, btn, comboBox, passwortconfirmInput, passwortconfirmLabel,btnClose);
+				PLZLabel, PLZInput, EMailLabel, EMailInput, nutzernameLabel, nutzernameInput, passwortLabel, passwortInput,passwortconfirmInput, passwortconfirmLabel, comboBox, btn ,btnClose);
 		
 		btn.setOnMouseClicked(e -> {
 			

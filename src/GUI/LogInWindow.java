@@ -62,6 +62,7 @@ public class LogInWindow extends Application {
         
         
         Button btn = new Button("Bestaetigen");
+        btn.setDefaultButton(true);
         HBox hbBtn = new HBox(10);
         hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
         hbBtn.getChildren().add(btn);
@@ -112,7 +113,7 @@ public class LogInWindow extends Application {
         Scene scene = new Scene (grid, 400, 300);
         primaryStage.setScene(scene);
         primaryStage.show();
-        
+   
         //Bypass:
       new MainGUI(true, Personenverwaltung.getInstance().getIDByNutzername("nicoonator")).start(primaryStage);
     }

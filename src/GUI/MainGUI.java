@@ -54,13 +54,19 @@ public class MainGUI extends Application {
 			tp.getTabs().addAll(tb1, tb2, tb3, tb4);
 			tp.prefWidthProperty().bind(primaryStage.widthProperty());
 			
-			new GUIPersonenverwaltung(tb1).open();
+			new GUIPersonenverwaltung(tb1, Personenverwaltung.getInstance().getPersonByID(nutzerID)).open();
 			new GUIFertigungsverwaltung(tb2).open();
 			new GUIFinanzverwaltung(tb3).open();
 			new GUIBauteileverwaltung(tb4, admin, Personenverwaltung.getInstance().getPersonByID(nutzerID)).open();
 			
 			tp.getSelectionModel().selectedItemProperty().addListener((ov, oldTab, newTab) -> {
-				if(newTab.equals(tb1)) new GUIPersonenverwaltung(tb1).open();
+				if(newTab.equals(tb1))
+					try {
+						new GUIPersonenverwaltung(tb1,Personenverwaltung.getInstance().getPersonByID(nutzerID)).open();
+					} catch (DatabaseException | SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				if(newTab.equals(tb2)) new GUIFertigungsverwaltung(tb2).open();
 				if(newTab.equals(tb3)) new GUIFinanzverwaltung(tb3).open();
 				if(newTab.equals(tb4))
@@ -84,7 +90,7 @@ public class MainGUI extends Application {
 			v1.getChildren().addAll(tp);
 			
 				
-			Scene scene = new Scene(v1,1300,600);
+			Scene scene = new Scene(v1,1600,600);
 			
 		    tp.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
 			

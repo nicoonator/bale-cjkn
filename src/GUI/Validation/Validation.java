@@ -3,11 +3,13 @@
  */
 package GUI.Validation;
 
+import java.sql.SQLException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import GUI.AlertBox;
 import Logic.Kategorie;
+import Logic.LogIn;
 import Logic.Person;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
@@ -136,6 +138,25 @@ public class Validation {
 			
 	    	return result;
 	    }
+	
+	public static boolean changePasswordInputValidation(PasswordField oldPassword, PasswordField passwortInput, PasswordField passwortconfirmInput, Person nutzer) {
+    	boolean result=false;
+    	try {
+				if(LogIn.getInstance().login(nutzer.getNutzername(), oldPassword.getText().trim())){
+					if(passwordInputValidation(passwortInput, passwortconfirmInput)) result=true;
+				}else {
+					AlertBox.display("Fehler", "Das alte Passwort und die Eingabe stimmen nicht ueberein!");
+				}
+				
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+    	return result;
+    }
+	
+	
 	
 	public static boolean ComboBoxValidationString(ComboBox<String> comboBox) {
 		boolean result=false;

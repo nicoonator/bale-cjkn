@@ -42,29 +42,29 @@ public class GUIAuftragErstellen {
 			TableView<Person> personTable;
 			TableColumn<Person, String> vorname = new TableColumn<>("Vorname");
 			vorname.setCellValueFactory(new PropertyValueFactory<>("vorname"));
+			vorname.setMinWidth(110);
 	
 			TableColumn<Person, String> nachname = new TableColumn<>("Nachname");
 			nachname.setCellValueFactory(new PropertyValueFactory<>("nachname"));
-			
-			TableColumn<Person, String> checks = new TableColumn<>("Auswahl");
-			//checks.setCellValueFactory();
-			checks.setCellFactory( tc -> new CheckBoxTableCell<>());
+			nachname.setMinWidth(110);
 			
 			personTable = new TableView<>();
 			try {
-				personTable.setItems(getPersonen());
+				personTable.setItems(getAdmins());
 			} catch (SQLException e2) {
 				e2.printStackTrace();
 				AlertBox.display("Fehler", e2.getMessage() );
 			}
-			personTable.getColumns().addAll(vorname, nachname, checks);
+			personTable.getColumns().addAll(vorname, nachname);
 			personTable.setPrefSize(220, 5);
 			personTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+			
 
 			
-			bp.setRight(personTable);
+			bp.setCenter(personTable);
 			
-			checks.setEditable(true);
+			
+			
 			
 			
 					
@@ -153,9 +153,8 @@ public class GUIAuftragErstellen {
 			Button btn = new Button("Erstellen");
 			GridPane.setConstraints(btn, 1, 9);
 			
-			Button btnClose = new Button ("Schlie�en");
+			Button btnClose = new Button ("Schliessen");
 			GridPane.setConstraints(btnClose, 1, 9,1,1,HPos.RIGHT,null);
-			
 			
 			
 			
@@ -165,7 +164,7 @@ public class GUIAuftragErstellen {
 			
 			
 			//EVENTS
-			//Fenster schlie�en
+			//Fenster schliessen
 			btnClose.setOnMouseClicked(e -> {
 				window.close();
 			});
@@ -175,10 +174,8 @@ public class GUIAuftragErstellen {
 				if(Validation.StringInputValidation(auftragsTitel)&& Validation.DoubleInputValidation(prognoKosten)&& Validation.DoubleInputValidation(reelleKosten)&& Validation.ComboBoxValidationPerson(comboBoxPersonen)&& Validation.ComboBoxValidationPerson(comboBoxAdmins)&& Validation.ComboBoxValidationString(comboBoxFertigung)) {
 					Double progKost = Double.parseDouble(prognoKosten.getText());
 					Double reelleKost = Double.parseDouble(reelleKosten.getText());
-					try {
-						
-						
-						Fertigungsverwaltung.getInstance().createAuftrag(auftragsTitel.getText(), comboBoxFertigung.getValue(), progKost ,reelleKost, comboBoxPersonen.getValue().getPERSON_ID(), comboBoxAdmins.getValue().getPERSON_ID(), Personenverwaltung.getInstance().getAllPersons());
+					try {						
+						Fertigungsverwaltung.getInstance().createAuftrag(auftragsTitel.getText(), comboBoxFertigung.getValue(), progKost ,reelleKost, comboBoxPersonen.getValue().getPERSON_ID(), comboBoxAdmins.getValue().getPERSON_ID(), personTable.getSelectionModel().getSelectedItems());
 						AlertBox.display("Erfolg!", "Auftrag erzeugt!");
 						window.close();
 						
@@ -212,10 +209,15 @@ public class GUIAuftragErstellen {
 			}
 			return resultAuftrag;
 		}
-	 public static ObservableList<Person> getPersonen() throws SQLException{
+	 public static ObservableList<Person> getAdmins() throws SQLException{
 			ObservableList<Person> result = FXCollections.observableArrayList();
-			for (Person p :  Personenverwaltung.getInstance().getAllPersons()) {
-				result.add(p);
+			try {
+				for (Person p :  Personenverwaltung.getInstance().getAllAdmins()) {
+					result.add(p);
+				}
+			} catch (DatabaseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 			return result;
 		}

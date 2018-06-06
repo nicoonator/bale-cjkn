@@ -47,6 +47,7 @@ public class GUIFertigungsverwaltung {
 	
 	Tab tab;
 	TableView<Auftrag> auftragTable;
+	
 	public GUIFertigungsverwaltung(Tab tab) {
 		this.tab=tab; 
 	}
@@ -106,8 +107,29 @@ public class GUIFertigungsverwaltung {
 		auftragTable.setPrefWidth(675);
 		bp.setLeft(auftragTable);
 	
+		//RECHTS
+		
+		VBox rechts = new VBox();
+		rechts.setSpacing(10);
+		rechts.setPadding(new Insets(10,10,10,20));
+		Label tabellenLabel = new Label("Liste der Auftragsvertreter");
+		
+		TableColumn<Person, String> vorname = new TableColumn<>("Vorname");
+		vorname.setMinWidth(125);
+		vorname.setCellValueFactory(new PropertyValueFactory<>("vorname"));
+		
+		TableColumn<Person, String> nachname = new TableColumn<>("Nachname");
+		nachname.setMinWidth(125);
+		nachname.setCellValueFactory(new PropertyValueFactory<>("nachname"));
 		
 		
+		TableView<Person> vertretungTable = new TableView<>();
+		vertretungTable.getColumns().addAll(vorname,nachname);
+		vertretungTable.setPrefWidth(250);
+		
+		
+		rechts.getChildren().addAll(tabellenLabel, vertretungTable);
+		bp.setRight(rechts);
 		
 		//Start of CENTER
 		GridPane grid = new GridPane();
@@ -346,91 +368,100 @@ public class GUIFertigungsverwaltung {
 		
 		
 		auftragTable.setOnMouseClicked(e -> {
-			delete.setDisable(false);
-			modify.setDisable(false);
-			Auftrag tempAuftragTable = auftragTable.getSelectionModel().getSelectedItem();
-			auftragsTitel.setStyle(null);
-			auftragsTitel.setText(tempAuftragTable.getTitel());
-			auftragsTitel.setDisable(false);
-			fertigungsArt.setStyle(null);
-			fertigungsArt.setText(tempAuftragTable.getART());
-			erstellerLabel.setStyle(null);
-			erstellerLabel.setText(tempAuftragTable.getAuftraggeber().getVorname() + " "+tempAuftragTable.getAuftraggeber().getNachname());
-			verwalterLabel.setStyle(null);
-			verwalterLabel.setText(tempAuftragTable.getVerwalter().getVorname()+ " " + tempAuftragTable.getVerwalter().getNachname());
-			prognoKosten.setStyle(null);
-			prognoKosten.setText(Double.toString(tempAuftragTable.getProgno_cost()));
-			prognoKosten.setDisable(false);
-			reelleKosten.setStyle(null);
-			reelleKosten.setText(Double.toString(tempAuftragTable.getReelle_kosten()));
-			reelleKosten.setDisable(false);
-			
-			
-			//Logik zum Aktivieren / Deaktivieren der Checkboxen
-			if(tempAuftragTable.isAngenommen()==true) {
-				angenommen.setSelected(true);
-			}else {
-				angenommen.setSelected(false);
-			}
-			angenommenLabel.setText(tempAuftragTable.getDate_angenommen().toString());
-			
-			if(tempAuftragTable.isGefertigt()==true) {
-				gefertigt.setSelected(true);
+			if(!(auftragTable.getSelectionModel().isEmpty())) {
+				delete.setDisable(false);
+				modify.setDisable(false);
+				Auftrag tempAuftragTable = auftragTable.getSelectionModel().getSelectedItem();
 				
-			}else {
-				gefertigt.setSelected(false);
+				//Tabelle
+				vertretungTable.setItems(getVertretung(tempAuftragTable));
+				
+				
+				
+				//Textboxen
+				
+				auftragsTitel.setStyle(null);
+				auftragsTitel.setText(tempAuftragTable.getTitel());
+				auftragsTitel.setDisable(false);
+				fertigungsArt.setStyle(null);
+				fertigungsArt.setText(tempAuftragTable.getART());
+				erstellerLabel.setStyle(null);
+				erstellerLabel.setText(tempAuftragTable.getAuftraggeber().getVorname() + " "+tempAuftragTable.getAuftraggeber().getNachname());
+				verwalterLabel.setStyle(null);
+				verwalterLabel.setText(tempAuftragTable.getVerwalter().getVorname()+ " " + tempAuftragTable.getVerwalter().getNachname());
+				prognoKosten.setStyle(null);
+				prognoKosten.setText(Double.toString(tempAuftragTable.getProgno_cost()));
+				prognoKosten.setDisable(false);
+				reelleKosten.setStyle(null);
+				reelleKosten.setText(Double.toString(tempAuftragTable.getReelle_kosten()));
+				reelleKosten.setDisable(false);
+				
+				
+				//Logik zum Aktivieren / Deaktivieren der Checkboxen
+				if(tempAuftragTable.isAngenommen()==true) {
+					angenommen.setSelected(true);
+				}else {
+					angenommen.setSelected(false);
+				}
+				angenommenLabel.setText(tempAuftragTable.getDate_angenommen().toString());
+				
+				if(tempAuftragTable.isGefertigt()==true) {
+					gefertigt.setSelected(true);
+					
+				}else {
+					gefertigt.setSelected(false);
+				}
+				gefertigt.setDisable(false);
+				gefertigtLabel.setText(tempAuftragTable.getDate_gefertigt().toString());
+				
+				if(tempAuftragTable.isKalkuliert()==true) {
+					kalkuliert.setSelected(true);
+				}else {
+					kalkuliert.setSelected(false);
+				}
+				kalkuliert.setDisable(false);
+				kalkuliertLabel.setText(tempAuftragTable.getDate_kalkuliert().toString());
+				
+				if(tempAuftragTable.isAbgeholt()==true) {
+					abgeholt.setSelected(true);
+				}else {
+					abgeholt.setSelected(false);
+				}
+				abgeholt.setDisable(false);
+				abgeholtLabel.setText(tempAuftragTable.getDate_abgeholt().toString());
+							
+				if(tempAuftragTable.isAbgerechnet()==true) {
+					abgerechnet.setSelected(true);
+				}else {
+					abgerechnet.setSelected(false);
+				}
+				abgerechnet.setDisable(false);
+				abgerechnetLabel.setText(tempAuftragTable.getDate_abgerechnet().toString());
+				
+				if(tempAuftragTable.isWarten()==true) {
+					warten.setSelected(true);
+				}else {
+					warten.setSelected(false);
+				}
+				warten.setDisable(false);
+				wartenLabel.setText(tempAuftragTable.getDate_warten().toString());
+				
+				if(tempAuftragTable.isUnterbrochen()==true) {
+					unterbrochen.setSelected(true);
+				}else {
+					unterbrochen.setSelected(false);
+				}
+				unterbrochen.setDisable(false);
+				unterbrochenLabel.setText(tempAuftragTable.getDate_unterbrochen().toString());
+				
+				if(tempAuftragTable.isDefekt()==true) {
+					defekt.setSelected(true);
+				}else {
+					defekt.setSelected(false);
+				}
+				defekt.setDisable(false);
+				defektLabel.setText(tempAuftragTable.getDate_defekt().toString());
 			}
-			gefertigt.setDisable(false);
-			gefertigtLabel.setText(tempAuftragTable.getDate_gefertigt().toString());
-			
-			if(tempAuftragTable.isKalkuliert()==true) {
-				kalkuliert.setSelected(true);
-			}else {
-				kalkuliert.setSelected(false);
-			}
-			kalkuliert.setDisable(false);
-			kalkuliertLabel.setText(tempAuftragTable.getDate_kalkuliert().toString());
-			
-			if(tempAuftragTable.isAbgeholt()==true) {
-				abgeholt.setSelected(true);
-			}else {
-				abgeholt.setSelected(false);
-			}
-			abgeholt.setDisable(false);
-			abgeholtLabel.setText(tempAuftragTable.getDate_abgeholt().toString());
-						
-			if(tempAuftragTable.isAbgerechnet()==true) {
-				abgerechnet.setSelected(true);
-			}else {
-				abgerechnet.setSelected(false);
-			}
-			abgerechnet.setDisable(false);
-			abgerechnetLabel.setText(tempAuftragTable.getDate_abgerechnet().toString());
-			
-			if(tempAuftragTable.isWarten()==true) {
-				warten.setSelected(true);
-			}else {
-				warten.setSelected(false);
-			}
-			warten.setDisable(false);
-			wartenLabel.setText(tempAuftragTable.getDate_warten().toString());
-			
-			if(tempAuftragTable.isUnterbrochen()==true) {
-				unterbrochen.setSelected(true);
-			}else {
-				unterbrochen.setSelected(false);
-			}
-			unterbrochen.setDisable(false);
-			unterbrochenLabel.setText(tempAuftragTable.getDate_unterbrochen().toString());
-			
-			if(tempAuftragTable.isDefekt()==true) {
-				defekt.setSelected(true);
-			}else {
-				defekt.setSelected(false);
-			}
-			defekt.setDisable(false);
-			defektLabel.setText(tempAuftragTable.getDate_defekt().toString());
-			
 			});
 		
 		
@@ -454,6 +485,22 @@ public class GUIFertigungsverwaltung {
 		}
 		return resultAuftrag;
 	}
+	
+	public ObservableList<Person> getVertretung (Auftrag tempAuftragTable){
+		ObservableList<Person> resultVertretung = FXCollections.observableArrayList();
+		Iterator<Person> vertretungIterator = tempAuftragTable.getVertreter().iterator();
+		int count = 0;
+		while(vertretungIterator.hasNext()){
+			resultVertretung.add(tempAuftragTable.getVertreter().get(count));
+			count++;
+			vertretungIterator.next();
+		}
+		return resultVertretung;
+	}
+	
+	
+	
+	
 	
 	public ObservableList<Auftrag> getDruckAuftraege() throws SQLException{
 		ObservableList<Auftrag> resultAuftrag = FXCollections.observableArrayList();
