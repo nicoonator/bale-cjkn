@@ -299,6 +299,14 @@ public class SQLManager {
 		stmt.close();	
 	}
 	
+	public void deleteBauteilByID(int ID) throws SQLException{
+		Statement stmt = c.createStatement();
+		String sql = "DELETE FROM Bauteilwarenkorb WHERE Bauteil_ID = "+ID+";";
+		stmt.executeUpdate(sql);
+		sql="DELETE FROM Bauteil WHERE BAUTEIL_ID = "+ID+";";
+		stmt.close();
+	}
+	
 	/**
 	 * @author Nico Rychlik
 	 * @param name
@@ -348,6 +356,8 @@ public class SQLManager {
 	 */
 	
 	// IN den Warenkorb REIN 
+	
+	//TODO: BUGFIX
 	public void removeBauteil(int id, int anzahl, int person) throws SQLException, BauteilAnzahlZuKleinException {
 		Statement stmt = c.createStatement();
 		String sql = "SELECT gelagert FROM Bauteil WHERE BAUTEIL_ID = "+id+";";
@@ -386,6 +396,8 @@ public class SQLManager {
 	 * @throws ZuWenigBauteileImWarenkorbException 
 	 */
 	// Aus dem Warenkorb IN dem Bestand
+	
+	//TODO: BUGFIX
 	public void addBauteil(int id, int anzahl, int person) throws SQLException, BauteilNichtImWarenkorbException, ZuWenigBauteileImWarenkorbException {
 		Statement stmt = c.createStatement();
 		String sql = "UPDATE Bauteil SET gelagert = gelagert + "+anzahl+" WHERE BAUTEIL_ID = "+id+";";

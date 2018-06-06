@@ -64,10 +64,12 @@ public class GUIBauteile {
 		
 		Button create = new Button("Neu");
 		Button modify = new Button("Bearbeiten");
+		Button delete = new Button("Loeschen");
 		
 		modify.setDisable(true);
+		delete.setDisable(true);
 		
-		top.getChildren().addAll(create, modify);
+		top.getChildren().addAll(create, modify,delete);
 		
 		bp.setTop(top);
 		
@@ -186,6 +188,7 @@ public class GUIBauteile {
 			}
 			finally {
 				modify.setDisable(true);
+				delete.setDisable(true);
 			}
 		});
 		
@@ -210,9 +213,25 @@ public class GUIBauteile {
 			
 		});
 		
+		delete.setOnMouseClicked(e -> {
+			Bauteil tempBauteil = bauteillager.getSelectionModel().getSelectedItem();
+			try {
+				Bauteileverwaltung.getInstance().deleteBauteilByID(tempBauteil.getID());
+				bauteillager.setItems(GUIWarenkorb.getBauteile());
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} finally {
+				modify.setDisable(true);
+				delete.setDisable(true);
+			}
+			
+		});
+		
 		bauteillager.setOnMouseClicked(e -> {
 			if(!(bauteillager.getSelectionModel().isEmpty())) {
 				modify.setDisable(false);
+				delete.setDisable(false);
 				Bauteil tempBauteil = bauteillager.getSelectionModel().getSelectedItem();
 				bp.setCenter(grid);
 				btnameInput.setText(tempBauteil.getName());

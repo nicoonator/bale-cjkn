@@ -69,5 +69,9 @@ public class Bauteileverwaltung {
 	public void ClearBauteilwarenkorb(int id) throws SQLException {
 		SQLManager.getInstance().clearBauteilwarenkorb(id);
 	}
+	
+	public void deleteBauteilByID(int id) throws SQLException{
+		SQLManager.getInstance().deleteBauteilByID(id);
+	}
 }
 
