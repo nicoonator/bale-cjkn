@@ -257,7 +257,7 @@ public class GUIFertigungsverwaltung {
 						tempAuftragMod.setKalkuliert(true);
 					}
 					Fertigungsverwaltung.getInstance().changeStatus(tempAuftragMod.getAUFTRAG_ID(), "kalkuliert");
-					//kalkuliertLabel.setText(tempAuftragMod.getDate_kalkuliert().toString());
+					kalkuliertLabel.setText(Fertigungsverwaltung.getInstance().getAuftragByID(tempAuftragMod.getAUFTRAG_ID()).getDate_kalkuliert().toString());
 				}
 				
 				if(abgeholt.isSelected() != tempAuftragMod.isAbgeholt()) {
@@ -267,7 +267,7 @@ public class GUIFertigungsverwaltung {
 						tempAuftragMod.setAbgeholt(true);
 					}
 					Fertigungsverwaltung.getInstance().changeStatus(tempAuftragMod.getAUFTRAG_ID(), "abgeholt");
-					//abgeholtLabel.setText(tempAuftragMod.getDate_abgeholt().toString());
+					abgeholtLabel.setText(Fertigungsverwaltung.getInstance().getAuftragByID(tempAuftragMod.getAUFTRAG_ID()).getDate_abgeholt().toString());
 				}
 				
 				if(abgerechnet.isSelected() != tempAuftragMod.isAbgerechnet()) {
@@ -277,7 +277,7 @@ public class GUIFertigungsverwaltung {
 						tempAuftragMod.setAbgerechnet(true);
 					}
 					Fertigungsverwaltung.getInstance().changeStatus(tempAuftragMod.getAUFTRAG_ID(), "abgerechnet");
-					//abgerechnetLabel.setText(tempAuftragMod.getDate_abgerechnet().toString());
+					abgerechnetLabel.setText(Fertigungsverwaltung.getInstance().getAuftragByID(tempAuftragMod.getAUFTRAG_ID()).getDate_abgerechnet().toString());
 				}
 				
 				if(warten.isSelected() != tempAuftragMod.isWarten()) {
@@ -287,7 +287,7 @@ public class GUIFertigungsverwaltung {
 						tempAuftragMod.setWarten(true);
 					}
 					Fertigungsverwaltung.getInstance().changeStatus(tempAuftragMod.getAUFTRAG_ID(), "warten");
-					//wartenLabel.setText(tempAuftragMod.getDate_warten().toString());
+					wartenLabel.setText(Fertigungsverwaltung.getInstance().getAuftragByID(tempAuftragMod.getAUFTRAG_ID()).getDate_warten().toString());
 				}
 				
 				if(unterbrochen.isSelected() != tempAuftragMod.isUnterbrochen()) {
@@ -297,7 +297,7 @@ public class GUIFertigungsverwaltung {
 						tempAuftragMod.setUnterbrochen(true);
 					}
 					Fertigungsverwaltung.getInstance().changeStatus(tempAuftragMod.getAUFTRAG_ID(), "unterbrochen");
-					//unterbrochenLabel.setText(tempAuftragMod.getDate_unterbrochen().toString());
+					unterbrochenLabel.setText(Fertigungsverwaltung.getInstance().getAuftragByID(tempAuftragMod.getAUFTRAG_ID()).getDate_unterbrochen().toString());
 				}
 				
 				if(defekt.isSelected() != tempAuftragMod.isDefekt()) {
@@ -307,7 +307,7 @@ public class GUIFertigungsverwaltung {
 						tempAuftragMod.setDefekt(true);
 					}
 					Fertigungsverwaltung.getInstance().changeStatus(tempAuftragMod.getAUFTRAG_ID(), "defekt");
-					//defektLabel.setText(tempAuftragMod.getDate_defekt().toString());
+					defektLabel.setText(Fertigungsverwaltung.getInstance().getAuftragByID(tempAuftragMod.getAUFTRAG_ID()).getDate_defekt().toString());
 				}
 
 				
