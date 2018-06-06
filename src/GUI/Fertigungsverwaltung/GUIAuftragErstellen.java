@@ -1,6 +1,7 @@
 package GUI.Fertigungsverwaltung;
 
 import java.sql.SQLException;
+import java.util.Iterator;
 import java.util.List;
 
 import Exceptions.DatabaseException;
@@ -16,15 +17,12 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -32,7 +30,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class GUIAuftragErstellen {
-	 public static void display() {
+	 @SuppressWarnings("unchecked")
+	public static void display() {
 	        Stage window = new Stage();
 	        window.setTitle("Auftrag Erstellen");
 	        
@@ -49,12 +48,7 @@ public class GUIAuftragErstellen {
 			nachname.setMinWidth(110);
 			
 			personTable = new TableView<>();
-			try {
-				personTable.setItems(getAdmins());
-			} catch (SQLException e2) {
-				e2.printStackTrace();
-				AlertBox.display("Fehler", e2.getMessage() );
-			}
+			
 			personTable.getColumns().addAll(vorname, nachname);
 			personTable.setPrefSize(220, 5);
 			personTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
@@ -103,22 +97,13 @@ public class GUIAuftragErstellen {
 			//0,1 | 1,1
 			Label l2 = new Label("Admins");
 			GridPane.setConstraints(l2, 0, 1);
-			int counter2 = 0;
 			ComboBox<Person> comboBoxAdmins = new ComboBox<>();
 			comboBoxAdmins.setPromptText("Admin auswaehlen");
-			try {
-				List<Person> admins = Personenverwaltung.getInstance().getAllAdmins();
-				try {
-						comboBoxAdmins.getItems().addAll(admins);
-				}catch(Exception e) {
-					comboBoxAdmins.setPromptText("Admin auswaehlen");
-				}
-			} catch (SQLException e) {
-			} catch (DatabaseException e) {
-			}
+			comboBoxAdmins.setDisable(true);
+			
+			
 			GridPane.setConstraints(comboBoxAdmins, 1, 1);
-			
-			
+					
 			
 			//0,2|1,2
 			Label l3 = new Label("Auftragstitel");
@@ -162,9 +147,44 @@ public class GUIAuftragErstellen {
 			
 			
 			
-			
 			//EVENTS
 			//Fenster schliessen
+			
+			//TODO 
+			comboBoxPersonen.getSelectionModel().selectedItemProperty().addListener((v,oldValue,newValue) -> {
+				if(oldValue != newValue){
+					comboBoxAdmins.setDisable(false);
+					try {
+						List<Person> admins = Personenverwaltung.getInstance().getAllAdmins();
+						Iterator<Person> adminsIterator = admins.iterator();
+						try {
+							int counter = 0;
+							if((comboBoxPersonen.getSelectionModel().getSelectedItem().isAdmin()==true))
+							
+								while(adminsIterator.hasNext()){
+									System.out.println(comboBoxPersonen.getSelectionModel().getSelectedItem() + " a");
+									System.out.println(admins.get(counter) + " a");
+									if(comboBoxPersonen.getSelectionModel().getSelectedItem() != admins.get(counter)){
+										comboBoxAdmins.getItems().add(admins.get(counter));
+										
+									}
+									counter++;
+									adminsIterator.next();
+								}
+						}catch(Exception e) {
+							comboBoxAdmins.setPromptText("Admin auswaehlen");
+						}
+					} catch (SQLException e) {
+						//TODO
+					} catch (DatabaseException e) {
+						//TODO
+					}
+				}
+			});
+			
+			
+			
+			
 			btnClose.setOnMouseClicked(e -> {
 				window.close();
 			});
