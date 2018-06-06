@@ -144,7 +144,7 @@ public class SQLManager {
 			sql="SELECT AUFTRAG_ID FROM Verbindung_Person_Auftrag WHERE (rolle ='"+rs2.getString("rolle")+"' AND AUFTRAG_ID = "+rs2.getInt("AUFTRAG_ID")+") AND PERSON_ID != "+rs2.getInt("PERSON_ID")+";";
 			rs3 = stmt.executeQuery(sql);
 			while(rs3.next()) {
-				sql="SELECT * FROM AUFTRAG WHERE AUFTRAG_ID = "+rs3.getInt(1)+" AND abgerechnet = 1 AND abgeholt = 1 ;";
+				sql="SELECT * FROM AUFTRAG WHERE AUFTRAG_ID = "+rs3.getInt(1)+";";
 				if(stmt.executeQuery(sql).next()) auftraege = true;
 			}
 			rs3.close();
