@@ -15,7 +15,7 @@ public class TestClass {
 		//	Date testdate =new Date();
 		//	testdate.setTime(1526836286L*1000L);
 		//	System.out.println(testdate.toString());
-		//	SQLManager.getInstance().createPerson("Nico","Rychlik","Oststrasse",24,57234,"nico.rychlik@student.uni-siegen.de","nicoonator","admin",0);
+			SQLManager.getInstance().createPerson("Nico","Rychlik","Oststrasse","24",57234,"nico.rychlik@student.uni-siegen.de","nicoonator","admin",0);
 		//	SQLManager.getInstance().deletePerson(1);
 		//	SQLManager.getInstance().addKategorie("Test");
 		//	SQLManager.getInstance().createBauteil("Testbauteil", "link", 5.33, 10, 0, 0, "Regal", 1);
@@ -27,7 +27,7 @@ public class TestClass {
 		//	SQLManager.getInstance().createRechnung("test", "bar", 5, 1, 8, 8, 2);
 		//	Finanzverwaltung.getInstance().exportRechnung(1);
 		//	Bauteileverwaltung.getInstance().addKategorie("Trash");
-			for(int i=0; i<15;i++) {
+		/*	for(int i=0; i<15;i++) {
 				if(i<5) {
 					SQLManager.getInstance().createPerson("TestAdmin "+i , "TestAdmin "+i, "TestAdmin "+i, "12", 57072, "admin@admin.com", "admin"+i, "admin", 0);
 				}
@@ -38,6 +38,7 @@ public class TestClass {
 					SQLManager.getInstance().createPerson("TestLehrstuhlmitglied "+i , "TestLehrstuhlmitglied "+i, "TestLehrstuhlmitglied "+i, "12", 57072, "lehrstuhl@uni.com", "TestLehrstuhlmitglied"+i, "TestLehrstuhlmitglied", 2);
 				}
 			}
+		*/
 		}
 		catch (Exception e) {
 			e.printStackTrace();
