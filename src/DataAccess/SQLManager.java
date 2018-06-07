@@ -370,9 +370,10 @@ public class SQLManager {
 			if(!rs2.next()) {
 				sql="INSERT INTO Bauteilwarenkorb (PERSON_ID, BAUTEIL_ID, anzahl) VALUES ("+person+", "+id+", "+anzahl+");";
 				stmt.executeUpdate(sql);
+			} else {
+				sql="UPDATE Bauteilwarenkorb SET anzahl = anzahl + "+anzahl+" WHERE BAUTEIL_ID="+id+" AND PERSON_ID = "+person+";";
+				stmt.executeUpdate(sql);
 			}
-			sql="UPDATE Bauteilwarenkorb SET anzahl = anzahl + "+anzahl+" WHERE BAUTEIL_ID="+id+" AND PERSON_ID = "+person+";";
-			stmt.executeUpdate(sql);
 			rs2.close();
 			double preis;
 			double anz=anzahl;
