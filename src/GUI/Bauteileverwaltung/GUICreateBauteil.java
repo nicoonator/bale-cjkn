@@ -32,7 +32,7 @@ public class GUICreateBauteil {
 	
 	public static void display() {
         Stage window = new Stage();
-        window.setTitle("Kategorie Erstellen");
+        window.setTitle("Bauteil Erstellen");
         window.setMinWidth(300);
         window.setMinHeight(100);
         
@@ -44,7 +44,7 @@ public class GUICreateBauteil {
 		Button btn = new Button("Erstellen");
 		GridPane.setConstraints(btn, 1, 8);
 		
-		Button btnClose = new Button ("Schlieﬂen");
+		Button btnClose = new Button ("Schliessen");
 		GridPane.setConstraints(btnClose, 1, 8,1,1,HPos.RIGHT,null);
 		
 		Label btnameLabel = new Label("Name: ");

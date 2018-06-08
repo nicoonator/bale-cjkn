@@ -18,8 +18,18 @@ public abstract class Kasse {
 	private String name;
 	private double soll;
 	private double ist;
+	private String typ="Konto";
 	
 	
+	public String getTyp() {
+		return typ;
+	}
+	public void setTyp(String typ) {
+		this.typ = typ;
+	}
+	public int getKASSE_ID() {
+		return KASSE_ID;
+	}
 	public String getName() {
 		return name;
 	}

@@ -85,7 +85,6 @@ public class GUIAuftragErstellen {
 						comboBoxPersonen.getItems().addAll(personen);
 				} catch (Exception e) {
 					comboBoxPersonen.setPromptText("Person auswaehlen");
-					System.out.println(comboBoxPersonen.getValue());
 				}
 				
 			} catch (SQLException e) {			
@@ -143,34 +142,36 @@ public class GUIAuftragErstellen {
 			
 			
 			
-			grid.getChildren().addAll(btnClose, l1, comboBoxPersonen, l2, comboBoxAdmins, btn, comboBoxFertigung, l3, l4 , l5, reelleKosten, prognoKosten, auftragsTitel);
+			grid.getChildren().addAll(l1, comboBoxPersonen, l2, comboBoxAdmins, l3, auftragsTitel, l4, prognoKosten, l5, reelleKosten , comboBoxFertigung, btn, btnClose  );
 			
 			
 			
 			//EVENTS
-			//Fenster schliessen
 			
 			//TODO 
 			comboBoxPersonen.getSelectionModel().selectedItemProperty().addListener((v,oldValue,newValue) -> {
 				if(oldValue != newValue){
 					comboBoxAdmins.setDisable(false);
+					comboBoxAdmins.getItems().clear();
 					try {
 						List<Person> admins = Personenverwaltung.getInstance().getAllAdmins();
 						Iterator<Person> adminsIterator = admins.iterator();
+						
 						try {
 							int counter = 0;
 							if((comboBoxPersonen.getSelectionModel().getSelectedItem().isAdmin()==true))
-							
+			
 								while(adminsIterator.hasNext()){
-									System.out.println(comboBoxPersonen.getSelectionModel().getSelectedItem() + " a");
-									System.out.println(admins.get(counter) + " a");
-									if(comboBoxPersonen.getSelectionModel().getSelectedItem() != admins.get(counter)){
+									if(comboBoxPersonen.getSelectionModel().getSelectedItem().getPERSON_ID()  == (admins.get(counter).getPERSON_ID())){
+										adminsIterator.next();										
+									}else {
 										comboBoxAdmins.getItems().add(admins.get(counter));
-										
 									}
 									counter++;
-									adminsIterator.next();
 								}
+							else {
+								comboBoxAdmins.getItems().addAll(admins);
+							}
 						}catch(Exception e) {
 							comboBoxAdmins.setPromptText("Admin auswaehlen");
 						}
@@ -182,9 +183,44 @@ public class GUIAuftragErstellen {
 				}
 			});
 			
+			comboBoxAdmins.getSelectionModel().selectedItemProperty().addListener((v,oldValue,newValue) ->{
+				if(oldValue != newValue){
+					personTable.getItems().clear();
+					
+					List<Person> verwalter;
+					try {
+						verwalter = Personenverwaltung.getInstance().getAllAdmins();
+						Iterator<Person> verwalterIterator = verwalter.iterator();
+						
+						try {
+							int counter1 = 0;
+							while(verwalterIterator.hasNext()) {
+								
+								if(comboBoxPersonen.getSelectionModel().getSelectedItem().getPERSON_ID() == verwalter.get(counter1).getPERSON_ID() || comboBoxAdmins.getSelectionModel().getSelectedItem().getPERSON_ID() == verwalter.get(counter1).getPERSON_ID() ) {
+									verwalterIterator.next();
+								}
+								else {
+									personTable.getItems().add(verwalter.get(counter1));
+								}
+								counter1++;
+							}
+						}catch(Exception e) {
+							
+						}
+						
+						
+					} catch (SQLException | DatabaseException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					
+					
+				}
+			});
 			
 			
 			
+			//Fenster schliessen
 			btnClose.setOnMouseClicked(e -> {
 				window.close();
 			});

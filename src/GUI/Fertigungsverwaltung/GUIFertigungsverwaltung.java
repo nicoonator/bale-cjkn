@@ -76,24 +76,25 @@ public class GUIFertigungsverwaltung {
 		//Links
 		TableColumn<Auftrag, Integer> titel = new TableColumn<>("Auftragstitel");
 		titel.setCellValueFactory(new PropertyValueFactory<>("titel"));
-		
+		titel.setMinWidth(107);
 		TableColumn<Auftrag, String> art = new TableColumn<>("Auftragsart");
 		art.setCellValueFactory(new PropertyValueFactory<>("ART"));
-		
+		art.setMinWidth(107);
 		TableColumn<Auftrag, String> auftrag_id = new TableColumn<>("Auftragsid");
 		auftrag_id.setCellValueFactory(new PropertyValueFactory<>("AUFTRAG_ID"));
-		
+		auftrag_id.setMinWidth(107);
 		TableColumn<Auftrag, String> auftraggeber = new TableColumn<>("Auftragsgeber");
 		auftraggeber.setCellValueFactory(new PropertyValueFactory<>("auftraggeber"));
-		
+		auftraggeber.setMinWidth(107);
 		TableColumn<Auftrag, String> verwalter = new TableColumn<>("Verwalter");
 		verwalter.setCellValueFactory(new PropertyValueFactory<>("verwalter"));
-		
+		verwalter.setMinWidth(107);
 		TableColumn<Auftrag, Double> prognostKosten = new TableColumn<>("Prognost. Kosten");
 		prognostKosten.setCellValueFactory(new PropertyValueFactory<>("progno_cost"));
-		
+		prognostKosten.setMinWidth(107);
 		TableColumn<Auftrag, Double> reellKosten = new TableColumn<>("Reelle Kosten");
 		reellKosten.setCellValueFactory(new PropertyValueFactory<>("reelle_kosten"));
+		reellKosten.setMinWidth(107);
 		
 		auftragTable = new TableView<>();
 		try {
@@ -104,7 +105,7 @@ public class GUIFertigungsverwaltung {
 		}
 		auftragTable.getColumns().addAll(titel, art, auftrag_id, auftraggeber, verwalter, prognostKosten, reellKosten);
 		
-		auftragTable.setPrefWidth(675);
+		auftragTable.setPrefWidth(751);
 		bp.setLeft(auftragTable);
 	
 		//RECHTS
@@ -144,10 +145,15 @@ public class GUIFertigungsverwaltung {
 		Label erstellerLabel = new Label("- Auftragsersteller -");
 		GridPane.setConstraints(erstellerLabel, 0, 1);
 		
+		Label auftragsnrName = new Label("AuftragsID");
+		GridPane.setConstraints(auftragsnrName, 1, 0);
+		Label auftragsnrInt = new Label(" - Auftrags ID -");
+		GridPane.setConstraints(auftragsnrInt, 1, 1);
+		
 		//Admins
 		Label l2 = new Label("Auftragsverwalter");
 		GridPane.setConstraints(l2, 2, 0);
-		Label verwalterLabel = new Label("- Aufterwalter -");
+		Label verwalterLabel = new Label("- Auftragverwalter -");
 		GridPane.setConstraints(verwalterLabel, 2, 1);
 		
 		//Auftragstitel und Feld
@@ -246,7 +252,7 @@ public class GUIFertigungsverwaltung {
 			} catch (SQLException e1) {
 				AlertBox.display("Fehler", e1.getMessage());
 			}
-			
+			open();
 			modify.setDisable(true);
 			delete.setDisable(true);
 		});
@@ -376,6 +382,7 @@ public class GUIFertigungsverwaltung {
 				//Tabelle
 				vertretungTable.setItems(getVertretung(tempAuftragTable));
 				
+				auftragsnrInt.setText(Integer.toString(tempAuftragTable.getAUFTRAG_ID()));
 				
 				
 				//Textboxen
@@ -466,7 +473,7 @@ public class GUIFertigungsverwaltung {
 		
 		
 		bp.setCenter(grid);
-		grid.getChildren().addAll(l1,erstellerLabel, l2, verwalterLabel,l3, auftragsTitel, l4, fertigungsArt, l5, prognoKosten , l6, reelleKosten, export, angenommen,gefertigt, kalkuliert, abgeholt, abgerechnet, warten, unterbrochen, defekt
+		grid.getChildren().addAll(auftragsnrInt, auftragsnrName, l1,erstellerLabel, l2, verwalterLabel,l3, auftragsTitel, l4, fertigungsArt, l5, prognoKosten , l6, reelleKosten, export, angenommen,gefertigt, kalkuliert, abgeholt, abgerechnet, warten, unterbrochen, defekt
 				,angenommenLabel,gefertigtLabel,kalkuliertLabel,abgeholtLabel,abgerechnetLabel,wartenLabel,unterbrochenLabel,defektLabel);
 		
 		
