@@ -47,9 +47,9 @@ public class GUIFinanzverwaltung {
 		new GUIBauteile(tb3).open();
 		
 		tp.getSelectionModel().selectedItemProperty().addListener((ov, oldTab, newTab) -> {
-			if(newTab.equals(tb1)) new GUIWarenkorb(tb1, nutzer).open();
-			if(newTab.equals(tb2)) new GUIKategorie(tb2).open();
-			if(newTab.equals(tb3)) new GUIBauteile(tb3).open();
+			if(newTab.equals(tb1)) new GUIRechnungen(tb1).open();
+			if(newTab.equals(tb2)) new GUIToepfe(tb2).open();
+			if(newTab.equals(tb3)) new GUIKassen(tb3).open();
 	    });
 		
 		if(!admin) {

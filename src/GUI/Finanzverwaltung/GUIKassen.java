@@ -9,7 +9,11 @@ import GUI.Bauteileverwaltung.GUIWarenkorb;
 import GUI.Validation.Validation;
 import Logic.Bauteil;
 import Logic.Bauteileverwaltung;
+import Logic.Finanzverwaltung;
+import Logic.Kasse;
 import Logic.Kategorie;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -26,8 +30,8 @@ import javafx.scene.layout.HBox;
 
 public class GUIKassen {
 	Tab tab;
-	TableView<Bauteil> bauteillager;
-	List<Kategorie> kategorien = this.getKategorien();
+	TableView<Kasse> kassenTable;
+	List<Kasse> kassen = this.getKassen();
 	
 	public GUIKassen(Tab tab) {
 		this.tab=tab;
@@ -67,40 +71,30 @@ public class GUIKassen {
 		
 		// Start of LEFT
 		
-		TableColumn<Bauteil, String> kategorieColumn = new TableColumn<>("Kategorie");
-		kategorieColumn.setCellValueFactory(new PropertyValueFactory<>("kategorie_name"));
+		TableColumn<Kasse, String> kategorieColumn = new TableColumn<>("Name");
+		kategorieColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
 		
-		TableColumn<Bauteil, String> nameColumn = new TableColumn<>("Name");
-		nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+		TableColumn<Kasse, Integer> nameColumn = new TableColumn<>("Soll");
+		nameColumn.setCellValueFactory(new PropertyValueFactory<>("soll"));
 		
-		TableColumn<Bauteil, String> linkColumn = new TableColumn<>("link");
-		linkColumn.setCellValueFactory(new PropertyValueFactory<>("link"));
+		TableColumn<Kasse, Integer> linkColumn = new TableColumn<>("Ist");
+		linkColumn.setCellValueFactory(new PropertyValueFactory<>("ist"));
 		
-		TableColumn<Bauteil, Double> preisColumn = new TableColumn<>("Preis");
-		preisColumn.setCellValueFactory(new PropertyValueFactory<>("preis"));
+		TableColumn<Kasse, String> preisColumn = new TableColumn<>("Typ");
+		preisColumn.setCellValueFactory(new PropertyValueFactory<>("typ"));
 		
-		TableColumn<Bauteil, Integer> gelagertColumn = new TableColumn<>("Gelagert");
-		gelagertColumn.setCellValueFactory(new PropertyValueFactory<>("gelagert"));
+		kassenTable = new TableView<>();
+		kassenTable.setItems(this.getKassen());
 		
-		TableColumn<Bauteil, String> ortColumn = new TableColumn<>("Ort");
-		ortColumn.setCellValueFactory(new PropertyValueFactory<>("ort"));
+		kassenTable.getColumns().addAll(kategorieColumn, nameColumn, linkColumn, preisColumn);
 		
-		bauteillager = new TableView<>();
-		try {
-			bauteillager.setItems(GUIWarenkorb.getBauteile());
-		} catch (SQLException e2) {
-			AlertBox.display("Fehler", e2.getMessage());
-		}
-		
-		bauteillager.getColumns().addAll(kategorieColumn, nameColumn, linkColumn, preisColumn, gelagertColumn, ortColumn);
-		
-		bauteillager.setPrefWidth(350);
-		bp.setLeft(bauteillager);
+		kassenTable.setPrefWidth(350);
+		bp.setLeft(kassenTable);
 		
 		// End of LEFT
 		
 		// Start of Center
-		
+		/*
 		GridPane grid = new GridPane();
 		grid.setPadding(new Insets(10,10,10,10));
 		grid.setAlignment(Pos.BASELINE_CENTER);
@@ -157,22 +151,22 @@ public class GUIKassen {
 		comboBoxKategorie.setPromptText("Kategorie");
 		
 		
-		comboBoxKategorie.getItems().addAll(kategorien);
+		comboBoxKategorie.getItems().addAll(kassen);
 		
 		
 		GridPane.setConstraints(comboBoxKategorie, 1, 7);
 		
 		grid.getChildren().addAll(btnameLabel,btnameInput,linkLabel,linkInput,preisLabel,preisInput ,gelagertLabel,gelagertInput,geplantLabel,geplantInput,bestelltLabel,bestelltInput, ortLabel,ortInput,kategorieLabel,comboBoxKategorie);
 		bp.setCenter(grid);
-		
+		*/
 		// End of Center
 		
 		//Events:
-		
+		/*
 		create.setOnMouseClicked(e -> {
 			GUICreateBauteil.display();
 			try {
-				bauteillager.setItems(GUIWarenkorb.getBauteile());
+				kassenTable.setItems(GUIWarenkorb.getBauteile());
 			} catch (SQLException e1) {
 				AlertBox.display("Fehler", e1.getMessage());
 			}
@@ -183,7 +177,7 @@ public class GUIKassen {
 		});
 		
 		modify.setOnMouseClicked(e -> {
-			Bauteil tempBauteil = bauteillager.getSelectionModel().getSelectedItem();
+			Bauteil tempBauteil = kassenTable.getSelectionModel().getSelectedItem();
 			try {
 				if(Validation.StringInputValidation(btnameInput) && Validation.StringInputValidation(linkInput) &&Validation.IntegerInputValidation(gelagertInput) &&Validation.IntegerInputValidation(geplantInput) &&Validation.IntegerInputValidation(bestelltInput) &&Validation.StringInputValidation(ortInput)&&Validation.ComboBoxValidationKategorie(comboBoxKategorie)) {
 					Bauteileverwaltung.getInstance().modifyBauteil(tempBauteil.getID(), "name", btnameInput.getText());
@@ -193,21 +187,21 @@ public class GUIKassen {
 					Bauteileverwaltung.getInstance().modifyBauteil(tempBauteil.getID(), "bestellt", bestelltInput.getText());
 					Bauteileverwaltung.getInstance().modifyBauteil(tempBauteil.getID(), "ort", ortInput.getText());
 					Bauteileverwaltung.getInstance().modifyBauteil(tempBauteil.getID(), "KATEGORIE_ID", String.valueOf(comboBoxKategorie.getSelectionModel().getSelectedItem().getID()));
-					bauteillager.setItems(GUIWarenkorb.getBauteile());
+					kassenTable.setItems(GUIWarenkorb.getBauteile());
 				}
 			} catch (SQLException e1) {
 			AlertBox.display("Fehler", e1.getMessage());
 			} finally {
-				bauteillager.getSelectionModel().select(tempBauteil);
+				kassenTable.getSelectionModel().select(tempBauteil);
 			}
 			
 		});
 		
 		delete.setOnMouseClicked(e -> {
-			Bauteil tempBauteil = bauteillager.getSelectionModel().getSelectedItem();
+			Bauteil tempBauteil = kassenTable.getSelectionModel().getSelectedItem();
 			try {
 				Bauteileverwaltung.getInstance().deleteBauteilByID(tempBauteil.getID());
-				bauteillager.setItems(GUIWarenkorb.getBauteile());
+				kassenTable.setItems(GUIWarenkorb.getBauteile());
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -218,11 +212,11 @@ public class GUIKassen {
 			
 		});
 		
-		bauteillager.setOnMouseClicked(e -> {
-			if(!(bauteillager.getSelectionModel().isEmpty())) {
+		kassenTable.setOnMouseClicked(e -> {
+			if(!(kassenTable.getSelectionModel().isEmpty())) {
 				modify.setDisable(false);
 				delete.setDisable(false);
-				Bauteil tempBauteil = bauteillager.getSelectionModel().getSelectedItem();
+				Bauteil tempBauteil = kassenTable.getSelectionModel().getSelectedItem();
 				bp.setCenter(grid);
 				btnameInput.setText(tempBauteil.getName());
 				btnameInput.setStyle(null);
@@ -241,16 +235,20 @@ public class GUIKassen {
 				comboBoxKategorie.getSelectionModel().select(this.indexOf(tempBauteil.getKategorie_ID()));
 			}
 		});
-
+		*/
 		tab.setContent(bp);
 	}
 
-	private int indexOf(int kategorie_ID) {
-		int i=0;
-		for(Kategorie k: kategorien){
-			if(k.getID()==kategorie_ID) return i;
-			i++;
+	private ObservableList<Kasse> getKassen() {
+		ObservableList<Kasse> result = FXCollections.observableArrayList();
+		try {
+			for (Kasse k :  Finanzverwaltung.getInstance().getAllKasse()) {
+				result.add(k);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		return -1;
+		return result;
 	}
 }

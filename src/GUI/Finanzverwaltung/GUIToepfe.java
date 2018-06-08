@@ -238,19 +238,10 @@ public class GUIToepfe {
 				bestelltInput.setStyle(null);
 				ortInput.setText(tempBauteil.getOrt());
 				ortInput.setStyle(null);
-				comboBoxKategorie.getSelectionModel().select(this.indexOf(tempBauteil.getKategorie_ID()));
+				//comboBoxKategorie.getSelectionModel().select(this.indexOf(tempBauteil.getKategorie_ID()));
 			}
 		});
 
 		tab.setContent(bp);
-	}
-
-	private int indexOf(int kategorie_ID) {
-		int i=0;
-		for(Kategorie k: kategorien){
-			if(k.getID()==kategorie_ID) return i;
-			i++;
-		}
-		return -1;
 	}
 }
