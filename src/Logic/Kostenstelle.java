@@ -10,7 +10,7 @@ public class Kostenstelle extends Kasse{
 	 */
 	public Kostenstelle(int kASSE_ID, String name, double soll, double ist) {
 		super(kASSE_ID, name, soll, ist);
-		// TODO Auto-generated constructor stub
+		this.setTyp("Kostenstelle");
 	}
 
 	//TODO Kostenstellennummer
