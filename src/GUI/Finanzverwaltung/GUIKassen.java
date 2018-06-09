@@ -94,7 +94,7 @@ public class GUIKassen {
 		// End of LEFT
 		
 		// Start of Center
-		/*
+		
 		GridPane grid = new GridPane();
 		grid.setPadding(new Insets(10,10,10,10));
 		grid.setAlignment(Pos.BASELINE_CENTER);
@@ -106,65 +106,38 @@ public class GUIKassen {
 		
 		TextField btnameInput = new TextField();
 		GridPane.setConstraints(btnameInput, 1, 0);
+		btnameInput.setDisable(true);
 		
-		Label linkLabel = new Label("Link: ");
-		GridPane.setConstraints(linkLabel, 0, 1);
+		Label sollLabel = new Label("Soll: ");
+		GridPane.setConstraints(sollLabel, 0, 1);
 		
-		TextField linkInput = new TextField();
-		GridPane.setConstraints(linkInput, 1, 1);
+		TextField sollInput = new TextField();
+		GridPane.setConstraints(sollInput, 1, 1);
+		sollInput.setDisable(true);
 		
-		Label preisLabel = new Label("Preis: ");
-		GridPane.setConstraints(preisLabel, 0, 2);
+		Label istLabel = new Label("Ist: ");
+		GridPane.setConstraints(istLabel, 0, 2);
 		
-		TextField preisInput = new TextField();
-		GridPane.setConstraints(preisInput, 1, 2);
-		preisInput.setDisable(true);
+		TextField istInput = new TextField();
+		GridPane.setConstraints(istInput, 1, 2);
+		istInput.setDisable(true);
 		
-		Label gelagertLabel = new Label("gelagert: ");
-		GridPane.setConstraints(gelagertLabel, 0, 3);
+		Label typLabel = new Label("Typ: ");
+		GridPane.setConstraints(typLabel, 0, 3);
 		
-		TextField gelagertInput = new TextField();
-		GridPane.setConstraints(gelagertInput, 1, 3);
+		TextField typInput = new TextField();
+		GridPane.setConstraints(typInput, 1, 3);
+		typInput.setDisable(true);
 		
-		Label geplantLabel = new Label("geplant: ");
-		GridPane.setConstraints(geplantLabel, 0, 4);
-		
-		TextField geplantInput = new TextField();
-		GridPane.setConstraints(geplantInput, 1, 4);
-		
-		Label bestelltLabel = new Label("bestellt: ");
-		GridPane.setConstraints(bestelltLabel, 0, 5);
-		
-		TextField bestelltInput = new TextField();
-		GridPane.setConstraints(bestelltInput, 1, 5);
-		
-		Label ortLabel = new Label("Ort: ");
-		GridPane.setConstraints(ortLabel, 0, 6);
-		
-		TextField ortInput = new TextField();
-		GridPane.setConstraints(ortInput, 1, 6);
-		
-		Label kategorieLabel = new Label("Kategorie");
-		GridPane.setConstraints(kategorieLabel, 0, 7);
-		
-		ComboBox<Kategorie> comboBoxKategorie = new ComboBox<>();
-		comboBoxKategorie.setPromptText("Kategorie");
-		
-		
-		comboBoxKategorie.getItems().addAll(kassen);
-		
-		
-		GridPane.setConstraints(comboBoxKategorie, 1, 7);
-		
-		grid.getChildren().addAll(btnameLabel,btnameInput,linkLabel,linkInput,preisLabel,preisInput ,gelagertLabel,gelagertInput,geplantLabel,geplantInput,bestelltLabel,bestelltInput, ortLabel,ortInput,kategorieLabel,comboBoxKategorie);
+		grid.getChildren().addAll(btnameLabel,btnameInput,sollLabel,sollInput,istLabel,istInput ,typLabel,typInput);
 		bp.setCenter(grid);
-		*/
+		
 		// End of Center
 		
 		//Events:
-		/*
+		
 		create.setOnMouseClicked(e -> {
-			GUICreateBauteil.display();
+			GUICreateKasse.display();
 			try {
 				kassenTable.setItems(GUIWarenkorb.getBauteile());
 			} catch (SQLException e1) {
@@ -175,7 +148,7 @@ public class GUIKassen {
 				delete.setDisable(true);
 			}
 		});
-		
+		/*
 		modify.setOnMouseClicked(e -> {
 			Bauteil tempBauteil = kassenTable.getSelectionModel().getSelectedItem();
 			try {
@@ -211,31 +184,27 @@ public class GUIKassen {
 			}
 			
 		});
-		
+		*/
 		kassenTable.setOnMouseClicked(e -> {
 			if(!(kassenTable.getSelectionModel().isEmpty())) {
 				modify.setDisable(false);
 				delete.setDisable(false);
-				Bauteil tempBauteil = kassenTable.getSelectionModel().getSelectedItem();
+				Kasse tempKasse = kassenTable.getSelectionModel().getSelectedItem();
 				bp.setCenter(grid);
-				btnameInput.setText(tempBauteil.getName());
+				btnameInput.setText(tempKasse.getName());
 				btnameInput.setStyle(null);
-				linkInput.setText(tempBauteil.getLink());
-				linkInput.setStyle(null);
-				preisInput.setText(String.valueOf(tempBauteil.getPreis()));
-				preisInput.setStyle(null);
-				gelagertInput.setText(Integer.toString(tempBauteil.getGelagert()));
-				gelagertInput.setStyle(null);
-				geplantInput.setText(Integer.toString(tempBauteil.getGeplant()));
-				geplantInput.setStyle(null);
-				bestelltInput.setText(Integer.toString(tempBauteil.getBestellt()));
-				bestelltInput.setStyle(null);
-				ortInput.setText(tempBauteil.getOrt());
-				ortInput.setStyle(null);
-				comboBoxKategorie.getSelectionModel().select(this.indexOf(tempBauteil.getKategorie_ID()));
+				btnameInput.setDisable(false);
+				sollInput.setText(String.valueOf(tempKasse.getSoll()));
+				sollInput.setStyle(null);
+				sollInput.setDisable(false);
+				istInput.setText(String.valueOf(tempKasse.getIst()));
+				istInput.setStyle(null);
+				istInput.setDisable(false);
+				typInput.setText(tempKasse.getTyp());
+				typInput.setStyle(null);
 			}
 		});
-		*/
+		
 		tab.setContent(bp);
 	}
 
