@@ -19,19 +19,56 @@ public class Finanzverwaltung {
 	
 	private static Finanzverwaltung instance;
 	
+	/**
+	 * This method ensures that at most one instance of "Finanzverwaltung" exists.
+	 * 
+	 * @author 
+	 * @return an instance of "Finanzverwaltung"
+	 */
 	public static Finanzverwaltung getInstance(){
 		if (instance==null) instance = new Finanzverwaltung();
 		return instance;
 	}
 	
+	/**
+	 * This method tries to create an invoice.
+	 * 
+	 * @author 
+	 * @param name
+	 * @param bezahlart
+	 * @param betrag
+	 * @param auftrag_id
+	 * @param auftraggeber_id
+	 * @param verwalter_id
+	 * @param topf_id
+	 * @throws SQLException
+	 * @throws DatabaseException
+	 */
 	public void createRechnung(String name, String bezahlart, double betrag, int auftrag_id, int auftraggeber_id, int verwalter_id, int topf_id) throws SQLException, DatabaseException {
 		SQLManager.getInstance().createRechnung(name, bezahlart, betrag, auftrag_id, verwalter_id, topf_id);
 	}
 	
+	/**
+	 * This method tries to delete an invoice.
+	 * 
+	 * @author 
+	 * @param rechnung_id
+	 * @throws SQLException
+	 * @throws DatabaseException
+	 */
 	public void deleteRechnung(int rechnung_id) throws SQLException, DatabaseException {
 		SQLManager.getInstance().deleteRechnung(rechnung_id);
 	}
 	
+	/**
+	 * This method tries to modify an invoice.
+	 * 
+	 * @author 
+	 * @param rechnung_id
+	 * @param attribut
+	 * @param newData
+	 * @throws SQLException
+	 */
 	public void modifyRechnung (int rechnung_id, String attribut, String newData) throws SQLException {
 		SQLManager.getInstance().modifyRechnung(rechnung_id, attribut, newData);
 	}
@@ -116,30 +153,88 @@ public class Finanzverwaltung {
 		document.close();
 	}
 	
+	/**
+	 * This method tries to change a status.
+	 * 
+	 * @author 
+	 * @param id
+	 * @param status
+	 * @throws SQLException
+	 */
 	public void changeStatus (int id, String status) throws SQLException {
 		SQLManager.getInstance().changeRechnungStatus(id, status);
 	}
 	
+	/**
+	 * This method tries to get a "Topf" by ID.
+	 * 
+	 * @author 
+	 * @param id
+	 * @return
+	 * @throws SQLException
+	 * @throws DatabaseException
+	 */
 	public Topf getTopfByID(int id) throws SQLException, DatabaseException {
 		return SQLManager.getInstance().getTopfByID(id);
 	}
 	
+	/**
+	 * This method tries to get all "Toepfe".
+	 * 
+	 * @author 
+	 * @return
+	 * @throws SQLException
+	 */
 	public List<Topf> getAllTopf() throws SQLException {
 		return SQLManager.getInstance().getAllToepfe();
 	}
 	
+	/**
+	 * This method tries to modify a "Topf".
+	 * 
+	 * @author 
+	 * @param id
+	 * @param attribut
+	 * @param newData
+	 * @throws SQLException
+	 */
 	public void modifyTopf(int id, String attribut, String newData) throws SQLException {
 		SQLManager.getInstance().modifyTopf(id, attribut, newData);
 	}
 	
+	/**
+	 * This method tries to get a "Kasse" by ID.
+	 * 
+	 * @author 
+	 * @param id
+	 * @return
+	 * @throws SQLException
+	 * @throws DatabaseException
+	 */
 	public Kasse getKasseByID(int id) throws SQLException, DatabaseException {
 		return SQLManager.getInstance().getKasseByID(id);
 	}
 	
+	/**
+	 * This method tries to get all "Kassen".
+	 * 
+	 * @author 
+	 * @return
+	 * @throws SQLException
+	 */
 	public List<Kasse> getAllKasse() throws SQLException {
 		return SQLManager.getInstance().getAllKassen();
 	}
 	
+	/**
+	 * This method tries to modify a "Kasse".
+	 * 
+	 * @author 
+	 * @param id
+	 * @param attribut
+	 * @param newData
+	 * @throws SQLException
+	 */
 	public void modifyKasse(int id, String attribut, String newData) throws SQLException {
 		SQLManager.getInstance().modifyKasse(id, attribut, newData);
 	}
