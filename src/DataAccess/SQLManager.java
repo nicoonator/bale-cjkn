@@ -16,6 +16,12 @@ public class SQLManager {
 	private static SQLManager instance;
 	private Connection c;
 	
+	/**
+	 * This method ensures that at most one instance of "SQLManager" exists.
+	 * 
+	 * @author 
+	 * @return an instance of "SQLManager"
+	 */
 	public static SQLManager getInstance(){
 		if (instance==null) instance = new SQLManager();
 		return instance;
@@ -428,6 +434,14 @@ public class SQLManager {
 		stmt.close();	
 	}
 
+	/**
+	 * This method takes a "Bauteil" by ID from database.
+	 * 
+	 * @author 
+	 * @param id
+	 * @return the "Bauteil"
+	 * @throws SQLException
+	 */
 	public Bauteil getBauteilByID (int id) throws SQLException {
 		Bauteil result = null;
 		Statement stmt = c.createStatement();
@@ -445,6 +459,13 @@ public class SQLManager {
 		return result;
 	}
 	
+	/**
+	 * This method takes a list of all "Bauteile" from database.
+	 * 
+	 * @author 
+	 * @return list of all "Bauteile"
+	 * @throws SQLException
+	 */
 	public List<Bauteil> getAllBauteil () throws SQLException {
 		List<Bauteil> result = new ArrayList<Bauteil>();
 		Statement stmt = c.createStatement();
@@ -457,6 +478,14 @@ public class SQLManager {
 		return result;
 	}
 
+	/**
+	 * This method takes a "Kategorie" by ID from database.
+	 * 
+	 * @author 
+	 * @param id
+	 * @return the "Kategorie"
+	 * @throws SQLException
+	 */
 	public Kategorie getKategorieByID (int id) throws SQLException {
 		Kategorie result = null;
 		Statement stmt = c.createStatement();
@@ -470,8 +499,19 @@ public class SQLManager {
 		return result;
 	}
 
-	
-	
+	/**
+	 * This method creates an "Auftrag" and inserts it into database.
+	 * 
+	 * @author 
+	 * @param titel
+	 * @param art
+	 * @param prog_kosten
+	 * @param reelle_kosten
+	 * @param person_ID
+	 * @param verwalter_ID
+	 * @param vertreter
+	 * @throws SQLException
+	 */
 	public void createAuftrag(String titel, String art, double prog_kosten, double reelle_kosten, int person_ID, int verwalter_ID, List<Person> vertreter) throws SQLException{
 		Statement stmt = c.createStatement();
 		String sql ="INSERT INTO Auftrag (titel, art, prognostizierte_kosten, reelle_kosten,angenommen, gefertigt, kalkuliert, abgeholt, abgerechnet, warten, unterbrochen, defekt, date_angenommen, date_gefertigt, date_kalkuliert, date_abgeholt, date_abgerechnet, date_warten, date_unterbrochen, date_defekt) VALUES ('"+titel+"','"+art+"','"+prog_kosten+"','"+reelle_kosten+"',1,0,0,0,0,0,0,0,"+new Date().getTime()/1000L+","+new Date().getTime()/1000L+","+new Date().getTime()/1000L+","+new Date().getTime()/1000L+","+new Date().getTime()/1000L+","+new Date().getTime()/1000L+","+new Date().getTime()/1000L+","+new Date().getTime()/1000L+");";
@@ -488,6 +528,15 @@ public class SQLManager {
 		stmt.close();	
 	}
 	
+	/**
+	 * This method modifies an "Auftrag" and puts it into database.
+	 * 
+	 * @author 
+	 * @param AUFTRAG_ID
+	 * @param attribut
+	 * @param newData
+	 * @throws SQLException
+	 */
 	public void modifyAuftrag(int AUFTRAG_ID, String attribut, String newData) throws SQLException{
 		Statement stmt = c.createStatement();
 		String sql = "UPDATE Auftrag SET "+attribut+" = '"+newData+"' WHERE AUFTRAG_ID="+AUFTRAG_ID+";";
@@ -495,6 +544,15 @@ public class SQLManager {
 		stmt.close();	
 	}
 
+	/**
+	 * This method takes an "Auftrag" by ID from database.
+	 * 
+	 * @author 
+	 * @param ID
+	 * @return the "Auftrag"
+	 * @throws SQLException
+	 * @throws DatabaseException
+	 */
 	public Auftrag getAuftragByID(int ID) throws SQLException, DatabaseException {
 		Auftrag result = null;
 		Statement stmt = c.createStatement();
@@ -530,6 +588,14 @@ public class SQLManager {
 		}
 	}
 
+	/**
+	 * This method changes a status of an "Auftrag" and puts it into database.
+	 * 
+	 * @author 
+	 * @param id
+	 * @param Status
+	 * @throws SQLException
+	 */
 	public void changeAuftragStatus (int id, String Status) throws SQLException {
 		Statement stmt = c.createStatement();
 		String sql ="SELECT "+Status+" FROM AUFTRAG WHERE AUFTRAG_ID = "+id+";";
@@ -562,7 +628,14 @@ public class SQLManager {
 		stmt.close();
 	}
 	
-
+	/**
+	 * This method takes a list of all "Auftraege" from database.
+	 * 
+	 * @author 
+	 * @return list of all "Auftraege"
+	 * @throws SQLException
+	 * @throws DatabaseException
+	 */
 	public List<Auftrag> getAllAuftrag() throws SQLException, DatabaseException {
 		List<Auftrag> result= new ArrayList<Auftrag>();
 		Statement stmt = c.createStatement();
@@ -575,6 +648,19 @@ public class SQLManager {
 		return result;
 	}
 
+	/**
+	 * This method creates an invoice and inserts it into database.
+	 * 
+	 * @author 
+	 * @param name
+	 * @param bezahlart
+	 * @param betrag
+	 * @param auftrag_id
+	 * @param verwalter_id
+	 * @param topf_id
+	 * @throws SQLException
+	 * @throws DatabaseException
+	 */
 	public void createRechnung(String name, String bezahlart, double betrag, int auftrag_id, int verwalter_id, int topf_id) throws SQLException, DatabaseException{
 		Statement stmt = c.createStatement();
 		String sql ="INSERT INTO Rechnung (rechnungsname, bezahlungsart, betrag, AUFTRAG_ID, AUFTRAGGEBER_ID, ANSPRECHPARTNER_ID, TOPF_ID, bearbeitung, eingereicht, abgewickelt, ausstehend, RECHNUNGSDATUM, date_bearbeitung, date_eingereicht, date_abgewickelt, date_ausstehend) VALUES ('"+name+"','"+bezahlart+"','"+betrag+"','"+auftrag_id+"','"+this.getAuftragByID(auftrag_id).getAuftraggeber().getPERSON_ID()+"','"+verwalter_id+"','"+topf_id+"',0,0,0,0, "+new Date().getTime()/1000L+", "+new Date().getTime()/1000L+", "+new Date().getTime()/1000L+", "+new Date().getTime()/1000L+", "+new Date().getTime()/1000L+");";
@@ -599,6 +685,15 @@ public class SQLManager {
 	
 	}
 	
+	/**
+	 * This method takes an invoice by ID from database.
+	 * 
+	 * @author 
+	 * @param ID
+	 * @return the invoice
+	 * @throws SQLException
+	 * @throws DatabaseException
+	 */
 	public Rechnung getRechnungByID(int ID) throws SQLException, DatabaseException {
 		Rechnung result = null;
 		Statement stmt = c.createStatement();
@@ -610,6 +705,16 @@ public class SQLManager {
 		if (result!=null) return result;
 		else throw new RechnungNichtVorhandenException();
 	}
+	
+	/**
+	 * This method modifies an invoice and puts it into database.
+	 * 
+	 * @author 
+	 * @param RECHNUNG_ID
+	 * @param attribut
+	 * @param newData
+	 * @throws SQLException
+	 */
 	public void modifyRechnung(int RECHNUNG_ID, String attribut, String newData) throws SQLException{
 		Statement stmt = c.createStatement();
 		String sql = "UPDATE Rechnung SET "+attribut+" = "+newData+" WHERE RECHNUNG_ID="+RECHNUNG_ID+";";
@@ -617,8 +722,14 @@ public class SQLManager {
 		stmt.close();	
 	}
 	
-
-
+	/**
+	 * This method changes a status of an invoice and puts it into database.
+	 * 
+	 * @author 
+	 * @param id
+	 * @param Status
+	 * @throws SQLException
+	 */
 	public void changeRechnungStatus (int id, String Status) throws SQLException {
 		Statement stmt = c.createStatement();
 		String sql ="SELECT "+Status+" FROM Rechnung WHERE RECHNUNG_ID = "+id+";";
@@ -880,7 +991,14 @@ public class SQLManager {
 		stmt.close();	
 	}
 	
-
+	/**
+	 * This method takes a list of all invoices from database.
+	 * 
+	 * @author 
+	 * @return list of all invoices
+	 * @throws SQLException
+	 * @throws DatabaseException
+	 */
 	public List<Rechnung> getAllRechnung() throws SQLException, DatabaseException {
 		List<Rechnung> result= new ArrayList<Rechnung>();
 		Statement stmt = c.createStatement();
@@ -905,6 +1023,14 @@ public class SQLManager {
 		else return false;
 	}
 	
+	/**
+	 * This method takes a list of all admins from database.
+	 * 
+	 * @author 
+	 * @return list of all admins
+	 * @throws SQLException
+	 * @throws DatabaseException
+	 */
 	public List<Person> getAllAdmins() throws SQLException, DatabaseException{
 		List<Person> result= new ArrayList<Person>();
 		Statement stmt = c.createStatement();
@@ -917,6 +1043,14 @@ public class SQLManager {
 		return result;
 	}
 	
+	/**
+	 * Thid method takes a "Bauteilwarenkorb" by ID from database.
+	 * 
+	 * @author 
+	 * @param person_ID
+	 * @return the "Bauteilwarenkorb"
+	 * @throws SQLException
+	 */
 	public List<Bauteilwarenkorbelement> getBauteilwarenkorbByID(int person_ID) throws SQLException {
 		List<Bauteilwarenkorbelement> result = new ArrayList<Bauteilwarenkorbelement>();
 		Statement stmt = c.createStatement();
@@ -930,6 +1064,13 @@ public class SQLManager {
 		return result;
 	}
 	
+	/**
+	 * This method clears a "Bauteilwarenkorb" and puts it into database.
+	 * 
+	 * @author 
+	 * @param id
+	 * @throws SQLException
+	 */
 	public void clearBauteilwarenkorb (int id) throws SQLException {
 		Statement stmt = c.createStatement();
 		String sql = "DELETE FROM Bauteilwarenkorb WHERE PERSON_ID = " + id + ";";
