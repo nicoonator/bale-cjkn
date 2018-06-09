@@ -963,14 +963,18 @@ public class SQLManager {
 	 * @param ist "ist"-value of the "Kasse"
 	 * @throws SQLException
 	 */
-	public void createKasse( String name, double soll) throws SQLException {
+	public void createKasse( String name, double soll, double ist, int typ) throws SQLException {
 		
 		Statement stmt = c.createStatement();
-		String sql = "INSERT INTO Kasse ( name, soll, ist) VALUES ("
-				+ "'" + name + "', " + soll + ", 0,0);";
-		
+		String sql = "INSERT INTO Kasse ( name, soll, ist, typ) VALUES ("
+				+ "'" + name + "', " + soll + ",  " + ist + " , "+typ+");";		
 		stmt.executeUpdate(sql);
-		
+		if (typ==2) {
+			sql="SELECT KASSE_ID FROM KASSE WHERE KASSE_ID = (SELECT MAX(KASSE_ID) FROM KASSE;";
+			int id =stmt.executeQuery(sql).getInt(1);
+			//TODO weitermachen
+			sql="INSERT INTO VERBINDUNG_KASSE_KOSTENSTELLENNUMMER;";
+		}
 		stmt.close();
 	}
 	
