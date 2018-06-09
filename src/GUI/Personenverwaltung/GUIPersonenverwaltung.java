@@ -73,21 +73,22 @@ public class GUIPersonenverwaltung {
 		TableColumn<Person, String> vornameColumn = new TableColumn<>("Vorname");
 		//vornameColumn.setMinWidth(100);
 		vornameColumn.setCellValueFactory(new PropertyValueFactory<>("vorname"));
+		vornameColumn.setMinWidth(140);
 
 		TableColumn<Person, String> nachnameColumn = new TableColumn<>("Nachname");
-		nachnameColumn.setMinWidth(100);
+		nachnameColumn.setMinWidth(140);
 		nachnameColumn.setCellValueFactory(new PropertyValueFactory<>("nachname"));
 
 		TableColumn<Person, Date> erstelltColumn = new TableColumn<>("Erstellt");
-		//erstelltColumn.setMinWidth(150);
+		erstelltColumn.setMinWidth(140);
 		erstelltColumn.setCellValueFactory(new PropertyValueFactory<>("zuerst_erstellt"));
 
 		TableColumn<Person, Date> geaendertColumn = new TableColumn<>("Zuletzt geaendert");
-		//erstelltColumn.setMinWidth(150);
+		erstelltColumn.setMinWidth(140);
 		geaendertColumn.setCellValueFactory(new PropertyValueFactory<>("zuletzt_geaendert"));
 
 		TableColumn<Person, Boolean> rolleColumn = new TableColumn<>("Admin?");
-		//rolleColumn.setMinWidth(50);
+		rolleColumn.setMinWidth(94);
 		rolleColumn.setCellValueFactory(new PropertyValueFactory<>("admin"));
 
 		table = new TableView<>();
@@ -98,7 +99,7 @@ public class GUIPersonenverwaltung {
 		}
 		table.getColumns().addAll(vornameColumn, nachnameColumn, erstelltColumn, geaendertColumn, rolleColumn);
 
-		table.setPrefWidth(620);
+		table.setPrefWidth(700);
 		bp.setLeft(table);
 
 		// End of LEFT
