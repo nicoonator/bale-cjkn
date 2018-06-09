@@ -11,6 +11,13 @@ import javafx.geometry.*;
 
 public class AlertBox {
 
+	/**
+	 * This method ...
+	 * 
+	 * @author 
+	 * @param title
+	 * @param message
+	 */
     public static void display(String title, String message) {
         Stage window = new Stage();
 
