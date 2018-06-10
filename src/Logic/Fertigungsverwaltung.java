@@ -2,10 +2,8 @@ package Logic;
 
 import java.sql.SQLException;
 import java.util.List;
-
 import DataAccess.SQLManager;
 import Exceptions.DatabaseException;
-import Exceptions.deleteAuftragExRechnungException;
 
 public class Fertigungsverwaltung {
 	

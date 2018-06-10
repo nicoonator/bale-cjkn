@@ -5,11 +5,9 @@ package GUI.Personenverwaltung;
 
 import java.sql.SQLException;
 import java.util.Date;
-
 import Exceptions.DatabaseException;
 import GUI.AlertBox;
 import GUI.Validation.Validation;
-import Logic.Auftrag;
 import Logic.Person;
 import Logic.Personenverwaltung;
 import javafx.collections.FXCollections;
@@ -18,11 +16,9 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
-import javafx.scene.control.SelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TableView.TableViewSelectionModel;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
@@ -44,6 +40,7 @@ public class GUIPersonenverwaltung {
 		this.nutzer = person;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void open() {
 		
 		BorderPane bp = new BorderPane();

@@ -1,22 +1,15 @@
 package GUI.Finanzverwaltung;
 
 import java.sql.SQLException;
-import java.util.Iterator;
-import java.util.List;
-
-import Exceptions.DatabaseException;
 import GUI.AlertBox;
 import GUI.Validation.Validation;
 import Logic.Finanzverwaltung;
-import Logic.Person;
-import Logic.Personenverwaltung;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;

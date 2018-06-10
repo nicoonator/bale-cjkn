@@ -1013,7 +1013,6 @@ public class SQLManager {
 		List<Rechnung> result= new ArrayList<Rechnung>();
 		Statement stmt = c.createStatement();
 		ResultSet rs = stmt.executeQuery("SELECT * FROM Rechnung;");
-		Rechnung tempRechnung=null;
 		while (rs.next()) {
 			result.add(this.getRechnungByID(rs.getInt(1)));
 		}

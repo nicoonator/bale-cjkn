@@ -1,7 +1,5 @@
 package GUI;
 import java.sql.SQLException;
-
-import Exceptions.DatabaseException;
 import Exceptions.LoginException;
 import Logic.LogIn;
 import Logic.Personenverwaltung;

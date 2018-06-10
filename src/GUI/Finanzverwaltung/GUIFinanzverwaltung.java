@@ -5,10 +5,8 @@ package GUI.Finanzverwaltung;
 
 import GUI.Bauteileverwaltung.GUIBauteile;
 import GUI.Bauteileverwaltung.GUIKategorie;
-import GUI.Bauteileverwaltung.GUINutzerverwaltung;
 import GUI.Bauteileverwaltung.GUIWarenkorb;
 import Logic.Person;
-import javafx.scene.control.Label;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;

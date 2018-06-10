@@ -4,15 +4,11 @@
 package GUI.Bauteileverwaltung;
 
 import java.sql.SQLException;
-import java.util.List;
-
 import Exceptions.DatabaseException;
 import GUI.AlertBox;
 import GUI.Validation.Validation;
 import Logic.Bauteileverwaltung;
 import Logic.Kategorie;
-import Logic.Person;
-import Logic.Personenverwaltung;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;

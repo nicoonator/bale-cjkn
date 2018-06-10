@@ -2,7 +2,6 @@ package GUI.Finanzverwaltung;
 
 import java.sql.SQLException;
 import java.util.List;
-
 import GUI.AlertBox;
 import GUI.Bauteileverwaltung.GUICreateBauteil;
 import GUI.Bauteileverwaltung.GUIWarenkorb;
@@ -43,6 +42,7 @@ public class GUIRechnungen {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public void open() {
 		BorderPane bp = new BorderPane();
 		bp.setPadding(new Insets(10,10,10,10));

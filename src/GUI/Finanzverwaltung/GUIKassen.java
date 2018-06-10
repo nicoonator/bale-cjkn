@@ -26,7 +26,7 @@ import javafx.scene.layout.HBox;
 public class GUIKassen {
 	Tab tab;
 	TableView<Kasse> kassenTable;
-	List<Kasse> kassen = this.getKassen();
+	List<Kasse> kassen = GUIKassen.getKassen();
 	
 	public GUIKassen(Tab tab) {
 		this.tab=tab;
@@ -70,7 +70,7 @@ public class GUIKassen {
 		typColumn.setCellValueFactory(new PropertyValueFactory<>("typ"));
 		
 		kassenTable = new TableView<>();
-		kassenTable.setItems(this.getKassen());
+		kassenTable.setItems(GUIKassen.getKassen());
 		kassenTable.getColumns().addAll(nameColumn, sollColumn, istColumn, typColumn);
 		
 		kassenTable.setPrefWidth(350);
@@ -168,7 +168,7 @@ public class GUIKassen {
 			Kasse tempKasse = kassenTable.getSelectionModel().getSelectedItem();
 			try {
 				Finanzverwaltung.getInstance().deleteKasse(tempKasse.getKASSE_ID());
-				kassenTable.setItems(this.getKassen());
+				kassenTable.setItems(GUIKassen.getKassen());
 			} catch (SQLException | DatabaseException e1) {
 				AlertBox.display("Fehler", e1.getMessage());
 			} finally {

@@ -4,11 +4,8 @@
 package GUI.Bauteileverwaltung;
 
 import java.sql.SQLException;
-import java.util.Date;
-
 import Exceptions.DatabaseException;
 import GUI.AlertBox;
-import GUI.Personenverwaltung.GUICreatePerson;
 import GUI.Validation.Validation;
 import Logic.Bauteil;
 import Logic.Bauteileverwaltung;
@@ -21,7 +18,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;

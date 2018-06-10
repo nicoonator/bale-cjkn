@@ -4,17 +4,11 @@
 package GUI.Bauteileverwaltung;
 
 import java.sql.SQLException;
-import java.util.Date;
-
 import Exceptions.DatabaseException;
 import GUI.AlertBox;
-import GUI.Personenverwaltung.GUICreatePerson;
 import GUI.Validation.Validation;
-import Logic.Bauteil;
 import Logic.Bauteileverwaltung;
 import Logic.Kategorie;
-import Logic.Person;
-import Logic.Personenverwaltung;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -42,6 +36,7 @@ public class GUIKategorie {
 		this.tab=tab;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void open() {
 		BorderPane bp = new BorderPane();
 		bp.setPadding(new Insets(10,10,10,10));

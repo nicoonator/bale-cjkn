@@ -7,16 +7,11 @@ import javafx.stage.*;
 import javafx.scene.*;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
-
 import java.sql.SQLException;
-
 import Exceptions.DatabaseException;
 import GUI.AlertBox;
 import GUI.Validation.Validation;
-import Logic.Person;
 import Logic.Personenverwaltung;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.*;
 
 public class GUICreatePerson {

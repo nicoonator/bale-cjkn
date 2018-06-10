@@ -2,13 +2,11 @@ package GUI.Finanzverwaltung;
 
 import java.sql.SQLException;
 import java.util.List;
-
 import Exceptions.DatabaseException;
 import GUI.AlertBox;
 import GUI.Validation.Validation;
 import Logic.Finanzverwaltung;
 import Logic.Kasse;
-import Logic.Kategorie;
 import Logic.Topf;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

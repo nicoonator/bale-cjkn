@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Mitglied extends Person {
 
+	@SuppressWarnings("unused")
 	private final boolean admin = true;
 	/**
 	 * @param pERSON_ID
@@ -29,6 +30,5 @@ public class Mitglied extends Person {
 				passwort, bauteilschulden, bauteilwarenkorb, admin);
 		// TODO Auto-generated constructor stub
 	}
-
 	
 }

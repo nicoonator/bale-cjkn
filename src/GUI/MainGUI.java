@@ -1,7 +1,6 @@
 package GUI;
 
 import java.sql.SQLException;
-
 import Exceptions.DatabaseException;
 import GUI.Bauteileverwaltung.GUIBauteileverwaltung;
 import GUI.Fertigungsverwaltung.GUIFertigungsverwaltung;
@@ -9,21 +8,11 @@ import GUI.Finanzverwaltung.GUIFinanzverwaltung;
 import GUI.Personenverwaltung.GUIPersonenverwaltung;
 import Logic.Personenverwaltung;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TabPane.TabClosingPolicy;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 

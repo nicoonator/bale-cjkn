@@ -2,12 +2,9 @@
 package GUI.Fertigungsverwaltung;
 
 import java.sql.SQLException;
-import java.util.Iterator;
 import java.util.List;
-
 import Exceptions.DatabaseException;
 import GUI.AlertBox;
-import GUI.Personenverwaltung.GUIPersonenverwaltung;
 import GUI.Validation.Validation;
 import Logic.Auftrag;
 import Logic.Fertigungsverwaltung;
@@ -16,24 +13,18 @@ import Logic.Personenverwaltung;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
-import javafx.geometry.Side;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 
 /**
  * @author Nico Rychlik
@@ -48,6 +39,7 @@ public class GUIFertigungsverwaltungSicherung {
 		this.tab=tab; 
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void open() {
 		
 		BorderPane bp = new BorderPane();

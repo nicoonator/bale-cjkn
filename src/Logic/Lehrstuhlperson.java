@@ -29,5 +29,6 @@ public class Lehrstuhlperson extends Person {
 		// TODO Auto-generated constructor stub
 	}
 
+	@SuppressWarnings("unused")
 	private final boolean admin = false;
 }

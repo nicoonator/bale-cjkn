@@ -1,12 +1,6 @@
 package GUI;
 
-import java.sql.SQLException;
-import java.util.Date;
-
 import DataAccess.SQLManager;
-import Logic.Bauteileverwaltung;
-import Logic.Finanzverwaltung;
-import Logic.Rechnung;
 
 public class TestClass {
 

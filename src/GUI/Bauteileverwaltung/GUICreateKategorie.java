@@ -2,19 +2,15 @@
  package GUI.Bauteileverwaltung;
  
  import java.sql.SQLException;
- 
  import Exceptions.DatabaseException;
  import GUI.AlertBox;
  import GUI.Validation.Validation;
  import Logic.Bauteileverwaltung;
- import Logic.Personenverwaltung;
  import javafx.geometry.HPos;
  import javafx.geometry.Insets;
  import javafx.scene.Scene;
  import javafx.scene.control.Button;
- import javafx.scene.control.ComboBox;
  import javafx.scene.control.Label;
- import javafx.scene.control.PasswordField;
  import javafx.scene.control.TextField;
  import javafx.scene.layout.GridPane;
  import javafx.stage.Modality;

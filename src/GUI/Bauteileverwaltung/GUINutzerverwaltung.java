@@ -5,9 +5,6 @@ package GUI.Bauteileverwaltung;
 
 import java.sql.SQLException;
 import java.util.Date;
-import java.util.List;
-
-import GUI.AlertBox;
 import GUI.Personenverwaltung.GUIPersonenverwaltung;
 import Logic.Bauteileverwaltung;
 import Logic.Person;
@@ -22,7 +19,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 
 /**
  * @author Nico Rychlik
@@ -39,6 +35,7 @@ public class GUINutzerverwaltung {
 		this.nutzer=nutzer;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void open() {
 		BorderPane bp = new BorderPane();
 		bp.setPadding(new Insets(10,10,10,10));

@@ -5,17 +5,11 @@ package GUI.Bauteileverwaltung;
 
 import java.sql.SQLException;
 import java.util.List;
-
-import Exceptions.DatabaseException;
 import GUI.AlertBox;
 import GUI.Validation.Validation;
 import Logic.Bauteil;
 import Logic.Bauteileverwaltung;
 import Logic.Kategorie;
-import Logic.Person;
-import Logic.Personenverwaltung;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -53,6 +47,7 @@ public class GUIBauteile {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public void open() {
 		BorderPane bp = new BorderPane();
 		bp.setPadding(new Insets(10,10,10,10));
