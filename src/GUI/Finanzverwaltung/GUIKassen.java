@@ -85,7 +85,6 @@ public class GUIKassen {
 		
 		kassenTable = new TableView<>();
 		kassenTable.setItems(this.getKassen());
-		
 		kassenTable.getColumns().addAll(kategorieColumn, nameColumn, linkColumn, preisColumn);
 		
 		kassenTable.setPrefWidth(350);
@@ -129,7 +128,14 @@ public class GUIKassen {
 		GridPane.setConstraints(typInput, 1, 3);
 		typInput.setDisable(true);
 		
-		grid.getChildren().addAll(btnameLabel,btnameInput,sollLabel,sollInput,istLabel,istInput ,typLabel,typInput);
+		Label ksLabel = new Label("Kostenstellennummer: ");
+		GridPane.setConstraints(ksLabel, 0, 4);
+		
+		TextField ksInput = new TextField();
+		GridPane.setConstraints(ksInput, 1, 4);
+		ksInput.setDisable(true);
+		
+		grid.getChildren().addAll(btnameLabel,btnameInput,sollLabel,sollInput,istLabel,istInput ,typLabel,typInput, ksLabel, ksInput);
 		bp.setCenter(grid);
 		
 		// End of Center
@@ -139,52 +145,62 @@ public class GUIKassen {
 		create.setOnMouseClicked(e -> {
 			GUICreateKasse.display();
 			try {
-				kassenTable.setItems(GUIWarenkorb.getBauteile());
-			} catch (SQLException e1) {
-				AlertBox.display("Fehler", e1.getMessage());
+				kassenTable.setItems(getKassen());
 			}
 			finally {
 				modify.setDisable(true);
 				delete.setDisable(true);
 			}
 		});
-		/*
+		
 		modify.setOnMouseClicked(e -> {
-			Bauteil tempBauteil = kassenTable.getSelectionModel().getSelectedItem();
+			Kasse tempKasse = kassenTable.getSelectionModel().getSelectedItem();
 			try {
-				if(Validation.StringInputValidation(btnameInput) && Validation.StringInputValidation(linkInput) &&Validation.IntegerInputValidation(gelagertInput) &&Validation.IntegerInputValidation(geplantInput) &&Validation.IntegerInputValidation(bestelltInput) &&Validation.StringInputValidation(ortInput)&&Validation.ComboBoxValidationKategorie(comboBoxKategorie)) {
-					Bauteileverwaltung.getInstance().modifyBauteil(tempBauteil.getID(), "name", btnameInput.getText());
-					Bauteileverwaltung.getInstance().modifyBauteil(tempBauteil.getID(), "link", linkInput.getText());
-					Bauteileverwaltung.getInstance().modifyBauteil(tempBauteil.getID(), "gelagert", gelagertInput.getText());
-					Bauteileverwaltung.getInstance().modifyBauteil(tempBauteil.getID(), "geplant", geplantInput.getText());
-					Bauteileverwaltung.getInstance().modifyBauteil(tempBauteil.getID(), "bestellt", bestelltInput.getText());
-					Bauteileverwaltung.getInstance().modifyBauteil(tempBauteil.getID(), "ort", ortInput.getText());
-					Bauteileverwaltung.getInstance().modifyBauteil(tempBauteil.getID(), "KATEGORIE_ID", String.valueOf(comboBoxKategorie.getSelectionModel().getSelectedItem().getID()));
-					kassenTable.setItems(GUIWarenkorb.getBauteile());
+				if(!ksInput.isDisable()) {
+					if(Validation.StringInputValidation(btnameInput)&&Validation.DoubleInputValidation(sollInput)&&Validation.DoubleInputValidation(istInput)&&Validation.KostenstellenInputValidation(ksInput)) {
+						Finanzverwaltung.getInstance().modifyKasse(tempKasse.getKASSE_ID(), "name", btnameInput.getText());
+						Finanzverwaltung.getInstance().modifyKasse(tempKasse.getKASSE_ID(), "soll", sollInput.getText());
+						Finanzverwaltung.getInstance().modifyKasse(tempKasse.getKASSE_ID(), "ist", istInput.getText());
+						Finanzverwaltung.getInstance().modifyKasse(tempKasse.getKASSE_ID(), "kostenstellennummer", ksInput.getText());
+					}
+				} else {
+					if(Validation.StringInputValidation(btnameInput)&&Validation.DoubleInputValidation(sollInput)&&Validation.DoubleInputValidation(istInput)) {
+						Finanzverwaltung.getInstance().modifyKasse(tempKasse.getKASSE_ID(), "name", btnameInput.getText());
+						Finanzverwaltung.getInstance().modifyKasse(tempKasse.getKASSE_ID(), "soll", sollInput.getText());
+						Finanzverwaltung.getInstance().modifyKasse(tempKasse.getKASSE_ID(), "ist", istInput.getText());
+					}
 				}
-			} catch (SQLException e1) {
+					kassenTable.setItems(getKassen());
+				} catch (SQLException e1) {
 			AlertBox.display("Fehler", e1.getMessage());
 			} finally {
-				kassenTable.getSelectionModel().select(tempBauteil);
+				kassenTable.getSelectionModel().select(tempKasse);
 			}
-			
 		});
 		
 		delete.setOnMouseClicked(e -> {
-			Bauteil tempBauteil = kassenTable.getSelectionModel().getSelectedItem();
+			Kasse tempKasse = kassenTable.getSelectionModel().getSelectedItem();
 			try {
-				Bauteileverwaltung.getInstance().deleteBauteilByID(tempBauteil.getID());
-				kassenTable.setItems(GUIWarenkorb.getBauteile());
+				Finanzverwaltung.getInstance().deleteKasse(tempKasse.getKASSE_ID());
+				kassenTable.setItems(this.getKassen());
 			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				AlertBox.display("Fehler", e1.getMessage());
 			} finally {
 				modify.setDisable(true);
 				delete.setDisable(true);
+				btnameInput.setDisable(true);
+				btnameInput.clear();
+				sollInput.setDisable(true);
+				sollInput.clear();
+				istInput.setDisable(true);
+				istInput.clear();
+				typInput.setDisable(true);
+				typInput.clear();
+				ksInput.setDisable(true);
+				ksInput.clear();
 			}
 			
 		});
-		*/
 		kassenTable.setOnMouseClicked(e -> {
 			if(!(kassenTable.getSelectionModel().isEmpty())) {
 				modify.setDisable(false);
@@ -202,6 +218,14 @@ public class GUIKassen {
 				istInput.setDisable(false);
 				typInput.setText(tempKasse.getTyp());
 				typInput.setStyle(null);
+				if (tempKasse.getTyp()=="Kostenstelle") {
+					ksInput.setText(String.valueOf(tempKasse.getKsnummer()));
+					ksInput.setStyle(null);
+					ksInput.setDisable(false);
+				} else {
+					ksInput.clear();
+					ksInput.setDisable(true);
+				}
 			}
 		});
 		
@@ -213,10 +237,9 @@ public class GUIKassen {
 		try {
 			for (Kasse k :  Finanzverwaltung.getInstance().getAllKasse()) {
 				result.add(k);
-			}
+				}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			AlertBox.display("Fehler", e.getMessage());
 		}
 		return result;
 	}

@@ -7,6 +7,7 @@ import java.util.List;
 import Exceptions.DatabaseException;
 import GUI.AlertBox;
 import GUI.Validation.Validation;
+import Logic.Finanzverwaltung;
 import Logic.Person;
 import Logic.Personenverwaltung;
 import javafx.geometry.HPos;
@@ -49,7 +50,7 @@ public class GUICreateKasse {
 			TextField istInput = new TextField();
 			GridPane.setConstraints(istInput, 1, 2);
 			
-			Label kostenstellennummerLabel = new Label("Typ: ");
+			Label kostenstellennummerLabel = new Label("Kostenstellennummer: ");
 			GridPane.setConstraints(kostenstellennummerLabel, 0, 3);
 			kostenstellennummerLabel.setDisable(true);
 			
@@ -77,18 +78,24 @@ public class GUICreateKasse {
 			grid.getChildren().addAll(btnameLabel,btnameInput,sollLabel,sollInput,istLabel,istInput,kostenstellennummerLabel,kostenstellennummerInput, comboBox, btn ,btnClose);
 			
 			btn.setOnMouseClicked(e -> {
-				
-				if(comboBox.getSelectionModel().getSelectedIndex()==2) {
-					//Wenn eine Kostenstelle erstellt wird
-					if(Validation.StringInputValidation(btnameInput)&&Validation.DoubleInputValidation(sollInput)&&Validation.DoubleInputValidation(istInput)&&Validation.KostenstellenInputValidation(kostenstellennummerInput)) {
-						
+				try {
+					if(comboBox.getSelectionModel().getSelectedIndex()==2) {
+						//Wenn eine Kostenstelle erstellt wird
+						if(Validation.StringInputValidation(btnameInput)&&Validation.DoubleInputValidation(sollInput)&&Validation.DoubleInputValidation(istInput)&&Validation.KostenstellenInputValidation(kostenstellennummerInput)&&Validation.ComboBoxValidationKasse(comboBox)) {
+							Finanzverwaltung.getInstance().createKasse(btnameInput.getText(), Double.parseDouble(sollInput.getText()), Double.parseDouble(istInput.getText()), comboBox.getSelectionModel().getSelectedIndex(), Long.parseLong(kostenstellennummerInput.getText()));
+							AlertBox.display("Kasse erzeugt", "Erfolg! Kasse erzeugt!");
+							window.close();
+						} //Wenn keine Kostenstelle erstellt wird
+					} else if(Validation.StringInputValidation(btnameInput)&&Validation.DoubleInputValidation(sollInput)&&Validation.DoubleInputValidation(istInput)&&Validation.ComboBoxValidationKasse(comboBox)) {
+						Finanzverwaltung.getInstance().createKasse(btnameInput.getText(), Double.parseDouble(sollInput.getText()), Double.parseDouble(istInput.getText()), comboBox.getSelectionModel().getSelectedIndex(), Long.parseLong("0"));
+						AlertBox.display("Kasse erzeugt", "Erfolg! Kasse erzeugt!");
+						window.close();
 					}
-					//Wenn keine Kostenstelle erstellt wird
-					else if() {
-						
-					}
-					
-				}});
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					AlertBox.display("Fehler", e1.getMessage());
+				}
+				});
 			
 			btnClose.setOnMouseClicked(e -> {
 				window.close();
@@ -96,12 +103,12 @@ public class GUICreateKasse {
 			
 			comboBox.getSelectionModel().selectedItemProperty().addListener((v,oldValue,newValue) ->{
 				if(newValue == "Kostenstelle"){
-					kostenstellennummerLabel.setDisable(true);
-					kostenstellennummerInput.setDisable(true);
-				}
-				else {
 					kostenstellennummerLabel.setDisable(false);
 					kostenstellennummerInput.setDisable(false);
+				}
+				else {
+					kostenstellennummerLabel.setDisable(true);
+					kostenstellennummerInput.setDisable(true);
 					kostenstellennummerInput.clear();
 				}
 			});
