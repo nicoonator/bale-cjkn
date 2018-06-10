@@ -187,6 +187,16 @@ public class Validation {
 		
 		return result;
 	}
+	
+	public static boolean ComboBoxValidationKasse(ComboBox<String> comboBox) {
+		boolean result=false;
+		if (!(comboBox.getSelectionModel().isEmpty())) {
+			result=true;
+		}
+		else AlertBox.display("Fehler", "Ein Kassentyp muss ausgewahlt werden!");
+		
+		return result;
+	}
 
 
 	/**
@@ -197,10 +207,12 @@ public class Validation {
 		boolean result=false;
 		if (!(tf.getText()==null || tf.getText().trim().isEmpty())) {
 			try {
-				Integer.parseInt(tf.getText());
-				
+				Long ksnummer=Long.parseLong(tf.getText());
+				if ((ksnummer>=100000L && ksnummer<1000000L)||(ksnummer>=1000000000000000L&&ksnummer<10000000000000000L)) {
+					result=true;
+				} else AlertBox.display("Fehler", "Die Kostenstellennummer ist 6- oder 16- Stellig!");
 			} catch (NumberFormatException e) {
-				AlertBox.display("Fehler", "Es wurde eine Integer-Zahl erwartet!");
+				AlertBox.display("Fehler", "Es wurde eine Zahl erwartet!");
 			}
 		}
 		else AlertBox.display("Fehler", "Kein Textfeld darf leer sein!");
