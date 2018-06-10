@@ -2,6 +2,8 @@ package GUI.Finanzverwaltung;
 
 import java.sql.SQLException;
 import java.util.List;
+
+import Exceptions.DatabaseException;
 import GUI.AlertBox;
 import GUI.Validation.Validation;
 import Logic.Finanzverwaltung;
@@ -55,21 +57,21 @@ public class GUIKassen {
 		
 		// Start of LEFT
 		
-		TableColumn<Kasse, String> kategorieColumn = new TableColumn<>("Name");
-		kategorieColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+		TableColumn<Kasse, String> nameColumn = new TableColumn<>("Name");
+		nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
 		
-		TableColumn<Kasse, Integer> nameColumn = new TableColumn<>("Soll");
-		nameColumn.setCellValueFactory(new PropertyValueFactory<>("soll"));
+		TableColumn<Kasse, Double> sollColumn = new TableColumn<>("Soll");
+		sollColumn.setCellValueFactory(new PropertyValueFactory<>("soll"));
 		
-		TableColumn<Kasse, Integer> linkColumn = new TableColumn<>("Ist");
-		linkColumn.setCellValueFactory(new PropertyValueFactory<>("ist"));
+		TableColumn<Kasse, Double> istColumn = new TableColumn<>("Ist");
+		istColumn.setCellValueFactory(new PropertyValueFactory<>("ist"));
 		
-		TableColumn<Kasse, String> preisColumn = new TableColumn<>("Typ");
-		preisColumn.setCellValueFactory(new PropertyValueFactory<>("typ"));
+		TableColumn<Kasse, String> typColumn = new TableColumn<>("Typ");
+		typColumn.setCellValueFactory(new PropertyValueFactory<>("typ"));
 		
 		kassenTable = new TableView<>();
 		kassenTable.setItems(this.getKassen());
-		kassenTable.getColumns().addAll(kategorieColumn, nameColumn, linkColumn, preisColumn);
+		kassenTable.getColumns().addAll(nameColumn, sollColumn, istColumn, typColumn);
 		
 		kassenTable.setPrefWidth(350);
 		bp.setLeft(kassenTable);
@@ -167,7 +169,7 @@ public class GUIKassen {
 			try {
 				Finanzverwaltung.getInstance().deleteKasse(tempKasse.getKASSE_ID());
 				kassenTable.setItems(this.getKassen());
-			} catch (SQLException e1) {
+			} catch (SQLException | DatabaseException e1) {
 				AlertBox.display("Fehler", e1.getMessage());
 			} finally {
 				modify.setDisable(true);
@@ -216,7 +218,7 @@ public class GUIKassen {
 		tab.setContent(bp);
 	}
 
-	private ObservableList<Kasse> getKassen() {
+	static ObservableList<Kasse> getKassen() {
 		ObservableList<Kasse> result = FXCollections.observableArrayList();
 		try {
 			for (Kasse k :  Finanzverwaltung.getInstance().getAllKasse()) {
