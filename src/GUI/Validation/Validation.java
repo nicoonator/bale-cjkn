@@ -8,6 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import GUI.AlertBox;
+import Logic.Kasse;
 import Logic.Kategorie;
 import Logic.LogIn;
 import Logic.Person;
@@ -219,6 +220,21 @@ public class Validation {
 
 		if (!result) tf.setStyle("-fx-text-fill: red;");
 		else tf.setStyle(null);
+		
+		return result;
+	}
+
+
+	/**
+	 * @param comboBoxKassen
+	 * @return
+	 */
+	public static boolean ComboBoxValidationKassenauswahl(ComboBox<Kasse> comboBox) {
+		boolean result=false;
+		if (!(comboBox.getSelectionModel().isEmpty())) {
+			result=true;
+		}
+		else AlertBox.display("Fehler", "Eine Kasse muss ausgewahlt werden!");
 		
 		return result;
 	}
