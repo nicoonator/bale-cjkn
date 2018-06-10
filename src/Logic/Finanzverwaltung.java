@@ -259,4 +259,12 @@ public class Finanzverwaltung {
 	public void deleteTopf(int id) throws SQLException, DatabaseException {
 		SQLManager.getInstance().deleteTopf(id);
 	}
+	
+	public Rechnung getRechnungByID(int id) throws SQLException, DatabaseException {
+		return SQLManager.getInstance().getRechnungByID(id);
+	}
+	
+	public List<Rechnung> getAllRechnung() throws SQLException, DatabaseException{
+		return SQLManager.getInstance().getAllRechnung();
+	}
 }
