@@ -238,4 +238,16 @@ public class Finanzverwaltung {
 	public void modifyKasse(int id, String attribut, String newData) throws SQLException {
 		SQLManager.getInstance().modifyKasse(id, attribut, newData);
 	}
+	
+	public void createKasse(String name, double soll, double ist, int typ, long ksnummer) throws SQLException {
+		if (typ!=2){
+			SQLManager.getInstance().createKasse(name, soll, ist, typ, 0);
+		} else {
+			SQLManager.getInstance().createKasse(name, soll, ist, typ, ksnummer);
+		}
+	}
+	
+	public void deleteKasse(int id) throws SQLException {
+		SQLManager.getInstance().deleteKasse(id);
+	}
 }
