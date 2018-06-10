@@ -31,6 +31,10 @@ public abstract class Kasse {
 	private String typ="Konto";
 	private long ksnummer;
 	
+	@Override
+	public String toString() {
+		return name + ": " +KASSE_ID;
+	}
 	
 	public String getTyp() {
 		return typ;
