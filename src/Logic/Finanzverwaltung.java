@@ -184,8 +184,9 @@ public class Finanzverwaltung {
 	 * @author 
 	 * @return
 	 * @throws SQLException
+	 * @throws DatabaseException 
 	 */
-	public List<Topf> getAllTopf() throws SQLException {
+	public List<Topf> getAllTopf() throws SQLException, DatabaseException {
 		return SQLManager.getInstance().getAllToepfe();
 	}
 	
@@ -247,7 +248,15 @@ public class Finanzverwaltung {
 		}
 	}
 	
-	public void deleteKasse(int id) throws SQLException {
+	public void deleteKasse(int id) throws SQLException, DatabaseException {
 		SQLManager.getInstance().deleteKasse(id);
+	}
+	
+	public void createTopf(String name, double soll, double ist, int KASSE_ID) throws SQLException {
+		SQLManager.getInstance().createTopf(name, soll, ist, KASSE_ID);
+	}
+	
+	public void deleteTopf(int id) throws SQLException, DatabaseException {
+		SQLManager.getInstance().deleteTopf(id);
 	}
 }
