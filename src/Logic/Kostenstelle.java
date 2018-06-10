@@ -8,11 +8,14 @@ public class Kostenstelle extends Kasse{
 	 * @param soll
 	 * @param ist
 	 */
-	public Kostenstelle(int kASSE_ID, String name, double soll, double ist) {
-		super(kASSE_ID, name, soll, ist);
+	
+	
+	public Kostenstelle(int kASSE_ID, String name, double soll, double ist, long ksnummer) {
+		super(kASSE_ID, name, soll, ist, ksnummer);
 		this.setTyp("Kostenstelle");
 	}
 
-	//TODO Kostenstellennummer
+
+
 	
 }

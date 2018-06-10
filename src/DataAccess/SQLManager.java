@@ -845,7 +845,7 @@ public class SQLManager {
 	 * @throws SQLException
 	 */
 	public void deleteTopf(int TOPF_ID) throws SQLException {
-		
+		//TODO: Nur wenn keine Rechnung in Topf
 		Statement stmt = c.createStatement();
 		String sql = "DELETE FROM Topf WHERE TOPF_ID = " + TOPF_ID + ";";
 		
@@ -867,23 +867,23 @@ public class SQLManager {
 		
 		Kasse result = null;
 		Statement stmt = c.createStatement();
-		String sql = "SELECT * FROM Kasse WHERE KASSE_ID = " + KASSE_ID + ";";
+		String sql = "SELECT * FROM KASSE left JOIN Verbindung_Kasse_Kostenstellennummer ON KASSE.KASSE_ID = Verbindung_Kasse_Kostenstellennummer.KASSE_ID WHERE KASSE_ID = " + KASSE_ID + ";";
 		ResultSet rs = stmt.executeQuery(sql);
 		
 		if(rs.next()) {
 			
 			switch(rs.getInt("typ")) {
-			case 1:
+			case 0:
 				result = new Barkasse(rs.getInt("KASSE_ID"), rs.getString("name"), 
 						rs.getDouble("soll"), rs.getDouble("ist"));
 				break;
-			case 2:
+			case 1:
 				result = new Konto(rs.getInt("KASSE_ID"), rs.getString("name"), 
 						rs.getDouble("soll"), rs.getDouble("ist"));
 				break;
-			case 3:
+			case 2:				
 				result = new Kostenstelle(rs.getInt("KASSE_ID"), rs.getString("name"), 
-						rs.getDouble("soll"), rs.getDouble("ist"));
+						rs.getDouble("soll"), rs.getDouble("ist"),rs.getLong("kostenstellennummer"));
 				break;
 			}
 		}
@@ -908,22 +908,21 @@ public class SQLManager {
 		
 		List<Kasse> result = new ArrayList<Kasse>();
 		Statement stmt = c.createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT * FROM Kasse;");
+		ResultSet rs = stmt.executeQuery("SELECT * FROM KASSE left JOIN Verbindung_Kasse_Kostenstellennummer ON KASSE.KASSE_ID = Verbindung_Kasse_Kostenstellennummer.KASSE_ID;");
 		
 		while(rs.next()) {
 			
 			switch(rs.getInt("typ")) {
-			case 1:
+			case 0:
 				result.add(new Barkasse(rs.getInt("KASSE_ID"), rs.getString("name"), 
 						rs.getDouble("soll"), rs.getDouble("ist")));
 				break;
-			case 2:
+			case 1:
 				result.add(new Konto(rs.getInt("KASSE_ID"), rs.getString("name"), 
 						rs.getDouble("soll"), rs.getDouble("ist")));
 				break;
-			case 3:
-				result.add(new Kostenstelle(rs.getInt("KASSE_ID"), rs.getString("name"), 
-						rs.getDouble("soll"), rs.getDouble("ist")));
+			case 2:
+				result.add(new Kostenstelle(rs.getInt("KASSE_ID"), rs.getString("name"), rs.getDouble("soll"), rs.getDouble("ist"),rs.getLong("kostenstellennummer")));
 				break;
 			}
 		}
@@ -946,10 +945,13 @@ public class SQLManager {
 	public void modifyKasse(int KASSE_ID, String attribut, String newData) throws SQLException {
 		
 		Statement stmt = c.createStatement();
-		String sql = "UPDATE Kasse SET " + attribut + " = " + newData + " WHERE KASSE_ID = " + KASSE_ID + ";";
-		
+		String sql="";
+		if(!attribut.equals("kostenstellennummer")) {
+			sql = "UPDATE Kasse SET " + attribut + " = '" + newData + "' WHERE KASSE_ID = " + KASSE_ID + ";";
+		} else {
+			sql = "UPDATE VERBINDUNG_Kasse_KOSTENSTELLENNUMMER SET " + attribut + " = '" + newData + "' WHERE KASSE_ID = " + KASSE_ID + ";";
+		}
 		stmt.executeUpdate(sql);
-		
 		stmt.close();
 	}
 	
@@ -963,17 +965,17 @@ public class SQLManager {
 	 * @param ist "ist"-value of the "Kasse"
 	 * @throws SQLException
 	 */
-	public void createKasse( String name, double soll, double ist, int typ) throws SQLException {
+	public void createKasse( String name, double soll, double ist, int typ, long ksnummer) throws SQLException {
 		
 		Statement stmt = c.createStatement();
 		String sql = "INSERT INTO Kasse ( name, soll, ist, typ) VALUES ("
 				+ "'" + name + "', " + soll + ",  " + ist + " , "+typ+");";		
 		stmt.executeUpdate(sql);
 		if (typ==2) {
-			sql="SELECT KASSE_ID FROM KASSE WHERE KASSE_ID = (SELECT MAX(KASSE_ID) FROM KASSE;";
+			sql="SELECT KASSE_ID FROM KASSE WHERE KASSE_ID = (SELECT MAX(KASSE_ID) FROM KASSE);";
 			int id =stmt.executeQuery(sql).getInt(1);
-			//TODO weitermachen
-			sql="INSERT INTO VERBINDUNG_KASSE_KOSTENSTELLENNUMMER;";
+			sql="INSERT INTO VERBINDUNG_KASSE_KOSTENSTELLENNUMMER (KASSE_ID, kostenstellennummer) VALUES ('"+id+"' , '"+ksnummer+"') ;";
+			stmt.executeUpdate(sql);
 		}
 		stmt.close();
 	}
@@ -986,12 +988,13 @@ public class SQLManager {
 	 * @throws SQLException
 	 */
 	public void deleteKasse(int KASSE_ID) throws SQLException {
-		
+		//TODO: Nur loeschen wenn kein Topf in Kasse
 		Statement stmt = c.createStatement();
 		String sql = "DELETE FROM Kasse WHERE KASSE_ID = " + KASSE_ID + ";";
-		
 		stmt.executeUpdate(sql);
-		
+		if(stmt.executeQuery("SELECT * FROM VERBINDUNG_KASSE_KOSTENSTELLENNUMMER WHERE KASSE_ID = "+KASSE_ID+";").next()) {
+			stmt.executeUpdate("DELETE FROM VERBINDUNG_KASSE_KOSTENSTELLENNUMMER WHERE KASSE_ID = "+KASSE_ID+";");
+		}
 		stmt.close();	
 	}
 	
