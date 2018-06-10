@@ -2,22 +2,15 @@ package GUI.Finanzverwaltung;
 
 import java.sql.SQLException;
 import java.util.List;
-
 import GUI.AlertBox;
-import GUI.Bauteileverwaltung.GUICreateBauteil;
-import GUI.Bauteileverwaltung.GUIWarenkorb;
 import GUI.Validation.Validation;
-import Logic.Bauteil;
-import Logic.Bauteileverwaltung;
 import Logic.Finanzverwaltung;
 import Logic.Kasse;
-import Logic.Kategorie;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
@@ -36,17 +29,8 @@ public class GUIKassen {
 	public GUIKassen(Tab tab) {
 		this.tab=tab;
 	}
-	
-	private List<Kategorie> getKategorien() {
-		try {
-			return Bauteileverwaltung.getInstance().getAllKategorie();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
-		}
-	}
 
+	@SuppressWarnings("unchecked")
 	public void open() {
 		BorderPane bp = new BorderPane();
 		bp.setPadding(new Insets(10,10,10,10));
