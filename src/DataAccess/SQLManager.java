@@ -762,7 +762,7 @@ public class SQLManager {
 		ResultSet rs = stmt.executeQuery(sql);
 		
 		if(rs.next()) 
-			result = new Topf(rs.getInt("TOPF_ID"), rs.getString("name"), rs.getDouble("soll"), rs.getDouble("ist"));
+			result = new Topf(rs.getInt("TOPF_ID"), rs.getString("name"), rs.getDouble("soll"), rs.getDouble("ist"), this.getKasseByID(rs.getInt("KASSE_ID")));
 		
 		stmt.close();
 		rs.close();
@@ -779,8 +779,9 @@ public class SQLManager {
 	 * @author Joel Wolf
 	 * @return list of all "Toepfe"
 	 * @throws SQLException
+	 * @throws DatabaseException 
 	 */
-	public List<Topf> getAllToepfe() throws SQLException {
+	public List<Topf> getAllToepfe() throws SQLException, DatabaseException {
 		
 		List<Topf> result = new ArrayList<Topf>();
 		Statement stmt = c.createStatement();
@@ -788,7 +789,7 @@ public class SQLManager {
 		
 		while(rs.next()) {
 			
-			result.add(new Topf(rs.getInt("TOPF_ID"), rs.getString("name"), rs.getDouble("soll"), rs.getDouble("ist")));
+			result.add(new Topf(rs.getInt("TOPF_ID"), rs.getString("name"), rs.getDouble("soll"), rs.getDouble("ist"), this.getKasseByID(rs.getInt("KASSE_ID"))));
 		}
 		
 		stmt.close();		
@@ -820,17 +821,15 @@ public class SQLManager {
 	 * This method inserts a new "Topf" into database.
 	 * 
 	 * @author Joel Wolf
-	 * @param TOPF_ID
 	 * @param name the name of the "Topf"
 	 * @param soll "soll"-value of the "Topf"
 	 * @param ist "ist"-value of the "Topf"
 	 * @throws SQLException
 	 */
-	public void createTopf(int TOPF_ID, String name, double soll, double ist, int KASSE_ID) throws SQLException {
+	public void createTopf(String name, double soll, double ist, int KASSE_ID) throws SQLException {
 		
 		Statement stmt = c.createStatement();
-		String sql = "INSERT INTO Topf (TOPF_ID, name, soll, ist, KASSE_ID) VALUES (" 
-				+ TOPF_ID + ", '" + name + "', " + soll + ", " + ist + ", " + KASSE_ID + ");";
+		String sql = "INSERT INTO Topf (name, soll, ist, KASSE_ID) VALUES ('" + name + "', " + soll + ", " + ist + ", " + KASSE_ID + ");";
 		
 		stmt.executeUpdate(sql);
 		
@@ -843,14 +842,15 @@ public class SQLManager {
 	 * @author Joel Wolf
 	 * @param TOPF_ID
 	 * @throws SQLException
+	 * @throws DatabaseException 
 	 */
-	public void deleteTopf(int TOPF_ID) throws SQLException {
-		//TODO: Nur wenn keine Rechnung in Topf
+	public void deleteTopf(int TOPF_ID) throws SQLException, DatabaseException {
 		Statement stmt = c.createStatement();
-		String sql = "DELETE FROM Topf WHERE TOPF_ID = " + TOPF_ID + ";";
-		
-		stmt.executeUpdate(sql);
-		
+		String sql="SELECT * FROM Rechnung WHERE TOPF_ID = "+TOPF_ID+";";
+		if(!stmt.executeQuery(sql).next()) {
+			sql = "DELETE FROM Topf WHERE TOPF_ID = " + TOPF_ID + ";";
+			stmt.executeUpdate(sql);
+		} else throw new DeleteTopfException();
 		stmt.close();	
 	}
 	
@@ -867,7 +867,7 @@ public class SQLManager {
 		
 		Kasse result = null;
 		Statement stmt = c.createStatement();
-		String sql = "SELECT * FROM KASSE left JOIN Verbindung_Kasse_Kostenstellennummer ON KASSE.KASSE_ID = Verbindung_Kasse_Kostenstellennummer.KASSE_ID WHERE KASSE_ID = " + KASSE_ID + ";";
+		String sql = "SELECT * FROM KASSE left JOIN Verbindung_Kasse_Kostenstellennummer ON KASSE.KASSE_ID = Verbindung_Kasse_Kostenstellennummer.KASSE_ID WHERE KASSE.KASSE_ID = " + KASSE_ID + ";";
 		ResultSet rs = stmt.executeQuery(sql);
 		
 		if(rs.next()) {
@@ -987,14 +987,17 @@ public class SQLManager {
 	 * @param KASSE_ID
 	 * @throws SQLException
 	 */
-	public void deleteKasse(int KASSE_ID) throws SQLException {
+	public void deleteKasse(int KASSE_ID) throws SQLException, DatabaseException {
 		//TODO: Nur loeschen wenn kein Topf in Kasse
 		Statement stmt = c.createStatement();
-		String sql = "DELETE FROM Kasse WHERE KASSE_ID = " + KASSE_ID + ";";
-		stmt.executeUpdate(sql);
-		if(stmt.executeQuery("SELECT * FROM VERBINDUNG_KASSE_KOSTENSTELLENNUMMER WHERE KASSE_ID = "+KASSE_ID+";").next()) {
-			stmt.executeUpdate("DELETE FROM VERBINDUNG_KASSE_KOSTENSTELLENNUMMER WHERE KASSE_ID = "+KASSE_ID+";");
-		}
+		String sql = "SELECT* FROM TOPF WHERE KASSE_ID = "+KASSE_ID+";";
+		if(!stmt.executeQuery(sql).next()) {
+			sql = "DELETE FROM Kasse WHERE KASSE_ID = " + KASSE_ID + ";";
+			stmt.executeUpdate(sql);
+			if(stmt.executeQuery("SELECT * FROM VERBINDUNG_KASSE_KOSTENSTELLENNUMMER WHERE KASSE_ID = "+KASSE_ID+";").next()) {
+				stmt.executeUpdate("DELETE FROM VERBINDUNG_KASSE_KOSTENSTELLENNUMMER WHERE KASSE_ID = "+KASSE_ID+";");
+			}
+		} else throw new DeleteKasseException();
 		stmt.close();	
 	}
 	
