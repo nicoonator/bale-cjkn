@@ -266,9 +266,11 @@ public class GUIRechnungen {
 		export.setOnMouseClicked(e -> {
 			try {
 				Finanzverwaltung.getInstance().exportRechnung(rechnungTable.getSelectionModel().getSelectedItem().getRECHNUNG_ID());
+				AlertBox.display("Erfolg!", "Rechnungs-PDF erstellt!");
 			} catch (SQLException | DatabaseException | IOException e1) {
 				AlertBox.display("Fehler", e1.getMessage());
 			}
+			
 		});
 		
 		
