@@ -165,8 +165,6 @@ public class GUIBauteile {
 		
 		ComboBox<Kategorie> comboBoxKategorie = new ComboBox<>();
 		comboBoxKategorie.setPromptText("Kategorie");
-		
-		
 		comboBoxKategorie.getItems().addAll(kategorien);
 		
 		
