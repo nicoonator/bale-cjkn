@@ -3,9 +3,6 @@
  */
 package GUI.Finanzverwaltung;
 
-import GUI.Bauteileverwaltung.GUIBauteile;
-import GUI.Bauteileverwaltung.GUIKategorie;
-import GUI.Bauteileverwaltung.GUIWarenkorb;
 import Logic.Person;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
@@ -40,9 +37,9 @@ public class GUIFinanzverwaltung {
 		
 		tp.getTabs().addAll(tb1, tb2, tb3);
 		
-		new GUIWarenkorb(tb1, nutzer).open();
-		new GUIKategorie(tb2).open();
-		new GUIBauteile(tb3).open();
+		new GUIRechnungen(tb1).open();
+		new GUIToepfe(tb2).open();
+		new GUIKassen(tb3).open();
 		
 		tp.getSelectionModel().selectedItemProperty().addListener((ov, oldTab, newTab) -> {
 			if(newTab.equals(tb1)) new GUIRechnungen(tb1).open();

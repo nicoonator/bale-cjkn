@@ -1,6 +1,9 @@
 package Logic;
 
+import java.sql.SQLException;
 import java.util.Date;
+
+import Exceptions.DatabaseException;
 
 public class Rechnung {
 
@@ -32,6 +35,10 @@ public class Rechnung {
 	private int auftrag_ID;
 	private int verwalter_ID;
 	private int topf_ID;
+	private Person auftraggeber;
+	private Person verwalter;
+	private Topf topf;
+	private Auftrag auftrag;
 	
 	//AUFTRAG_ID
 	
@@ -52,11 +59,13 @@ public class Rechnung {
 	 * @param auftrag_ID
 	 * @param verwalter_ID
 	 * @param topf_ID
+	 * @throws DatabaseException 
+	 * @throws SQLException 
 	 */
 	public Rechnung(int rECHNUNG_ID, Date rECHNUNGSDATUM, String rechnungsname, String bezahlart, double betrag,
 			boolean bearbeitung, boolean eingereicht, boolean abgewickelt, boolean ausstehend, Date date_bearbeitung,
 			Date date_eingereicht, Date date_abgewickelt, Date date_ausstehend, int auftrag_ID, int verwalter_ID,
-			int topf_ID) {
+			int topf_ID) throws SQLException, DatabaseException {
 		super();
 		RECHNUNG_ID = rECHNUNG_ID;
 		RECHNUNGSDATUM = rECHNUNGSDATUM;
@@ -74,6 +83,10 @@ public class Rechnung {
 		this.auftrag_ID = auftrag_ID;
 		this.verwalter_ID = verwalter_ID;
 		this.topf_ID = topf_ID;
+		this.auftraggeber=Fertigungsverwaltung.getInstance().getAuftragByID(auftrag_ID).getAuftraggeber();
+		this.verwalter=Fertigungsverwaltung.getInstance().getAuftragByID(auftrag_ID).getVerwalter();
+		this.topf=Finanzverwaltung.getInstance().getTopfByID(topf_ID);
+		this.auftrag=Fertigungsverwaltung.getInstance().getAuftragByID(auftrag_ID);
 	}
 	
 	/**
@@ -207,6 +220,62 @@ public class Rechnung {
 	 */
 	public void setTopf_ID(int topf_ID) {
 		this.topf_ID = topf_ID;
+	}
+
+	/**
+	 * @return the auftraggeber
+	 */
+	public Person getAuftraggeber() {
+		return auftraggeber;
+	}
+
+	/**
+	 * @param auftraggeber the auftraggeber to set
+	 */
+	public void setAuftraggeber(Person auftraggeber) {
+		this.auftraggeber = auftraggeber;
+	}
+
+	/**
+	 * @return the verwalter
+	 */
+	public Person getVerwalter() {
+		return verwalter;
+	}
+
+	/**
+	 * @param verwalter the verwalter to set
+	 */
+	public void setVerwalter(Person verwalter) {
+		this.verwalter = verwalter;
+	}
+
+	/**
+	 * @return the topf
+	 */
+	public Topf getTopf() {
+		return topf;
+	}
+
+	/**
+	 * @param topf the topf to set
+	 */
+	public void setTopf(Topf topf) {
+		this.topf = topf;
+	}
+
+	/**
+	 * @return the auftrag
+	 */
+	public Auftrag getAuftrag() {
+		return auftrag;
+	}
+
+	/**
+	 * @param auftrag the auftrag to set
+	 */
+	public void setAuftrag(Auftrag auftrag) {
+		this.auftrag = auftrag;
 	}
 	
 }

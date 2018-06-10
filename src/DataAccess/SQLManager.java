@@ -76,7 +76,10 @@ public class SQLManager {
 		Statement stmt = c.createStatement();
 		ResultSet rs = stmt.executeQuery("SELECT * FROM Person WHERE nutzername = '"+nutzername+"';");
 		if(!rs.next()) {
-			String sql ="INSERT INTO Person (Vorname, Nachname, strasse, hausnr, PLZ, email, zuerst_erstellt, zuletzt_geaendert, nutzername, passwort, rolle, bauteilschulden) VALUES ('"+vname+"','"+nname+"','"+strasse+"','"+hausnummer+"','"+PLZ+"','"+email+"', "+(new Date().getTime()/1000)+", "+(new Date().getTime()/1000)+",'"+nutzername+"','"+passwort+"','"+rolle+"', 0);";
+			String sql ="INSERT INTO Person (Vorname, Nachname, strasse, hausnr, PLZ, email, zuerst_erstellt, "
+					+ "zuletzt_geaendert, nutzername, passwort, rolle, bauteilschulden) VALUES "
+					+ "('"+vname+"','"+nname+"','"+strasse+"','"+hausnummer+"','"+PLZ+"','"+email+"', "
+					+(new Date().getTime()/1000)+", "+(new Date().getTime()/1000)+",'"+nutzername+"','"+passwort+"','"+rolle+"', 0);";
 			stmt.executeUpdate(sql);
 		}
 		else throw new NutzernameVorhandenException();
@@ -663,7 +666,12 @@ public class SQLManager {
 	 */
 	public void createRechnung(String name, String bezahlart, double betrag, int auftrag_id, int verwalter_id, int topf_id) throws SQLException, DatabaseException{
 		Statement stmt = c.createStatement();
-		String sql ="INSERT INTO Rechnung (rechnungsname, bezahlungsart, betrag, AUFTRAG_ID, AUFTRAGGEBER_ID, ANSPRECHPARTNER_ID, TOPF_ID, bearbeitung, eingereicht, abgewickelt, ausstehend, RECHNUNGSDATUM, date_bearbeitung, date_eingereicht, date_abgewickelt, date_ausstehend) VALUES ('"+name+"','"+bezahlart+"','"+betrag+"','"+auftrag_id+"','"+this.getAuftragByID(auftrag_id).getAuftraggeber().getPERSON_ID()+"','"+verwalter_id+"','"+topf_id+"',0,0,0,0, "+new Date().getTime()/1000L+", "+new Date().getTime()/1000L+", "+new Date().getTime()/1000L+", "+new Date().getTime()/1000L+", "+new Date().getTime()/1000L+");";
+		String sql ="INSERT INTO Rechnung (rechnungsname, bezahlungsart, betrag, AUFTRAG_ID, AUFTRAGGEBER_ID, "
+				+ "ANSPRECHPARTNER_ID, TOPF_ID, bearbeitung, eingereicht, abgewickelt, ausstehend, RECHNUNGSDATUM, "
+				+ "date_bearbeitung, date_eingereicht, date_abgewickelt, date_ausstehend) VALUES "
+				+ "('"+name+"','"+bezahlart+"','"+betrag+"','"+auftrag_id+"','"+this.getAuftragByID(auftrag_id).getAuftraggeber().getPERSON_ID()+"'"
+				+ ",'"+verwalter_id+"','"+topf_id+"',0,0,0,0, "+(new Date().getTime()/1000)+", "+(new Date().getTime()/1000)+", "
+				+(new Date().getTime()/1000)+", "+(new Date().getTime()/1000)+", "+(new Date().getTime()/1000)+");";
 		stmt.executeUpdate(sql);
 		stmt.close();	
 	
@@ -699,13 +707,39 @@ public class SQLManager {
 		Statement stmt = c.createStatement();
 		String sql = "SELECT * FROM Rechnung WHERE RECHNUNG_ID = "+ID+";";
 		ResultSet rs = stmt.executeQuery(sql);
-		if (rs.next()) result = new Rechnung(rs.getInt("RECHNUNG_ID"),rs.getDate("RECHNUNGSDATUM"),rs.getString("rechnungsname"),rs.getString("bezahlungsart"),rs.getDouble("betrag"),this.convertIntToBoolean(rs.getInt("bearbeitung")),this.convertIntToBoolean(rs.getInt("eingereicht")),this.convertIntToBoolean(rs.getInt("abgewickelt")),this.convertIntToBoolean(rs.getInt("ausstehend")),new Date(rs.getLong("date_bearbeitung")*1000L),new Date(rs.getLong("date_eingereicht")*1000L),new Date(rs.getLong("date_abgewickelt")*1000L),new Date(rs.getLong("date_ausstehend")*1000L), rs.getInt("AUFTRAG_ID"), rs.getInt("ANSPRECHPARTNER_ID"), rs.getInt("TOPF_ID"));
+		if (rs.next()) result = new Rechnung(rs.getInt("RECHNUNG_ID"),new Date((rs.getLong("Rechnungsdatum"))*1000L), 
+				rs.getString("rechnungsname"),rs.getString("bezahlungsart"),rs.getDouble("betrag"),
+				this.convertIntToBoolean(rs.getInt("bearbeitung")),this.convertIntToBoolean(rs.getInt("eingereicht")),
+				this.convertIntToBoolean(rs.getInt("abgewickelt")),this.convertIntToBoolean(rs.getInt("ausstehend")),
+				new Date((rs.getLong("date_bearbeitung"))*1000L),new Date(rs.getLong(("date_eingereicht"))*1000L),
+				new Date((rs.getLong("date_abgewickelt"))*1000L),new Date((rs.getLong("date_ausstehend"))*1000L), 
+				rs.getInt("AUFTRAG_ID"), rs.getInt("ANSPRECHPARTNER_ID"), rs.getInt("TOPF_ID"));
 		stmt.close();
 		rs.close();
 		if (result!=null) return result;
 		else throw new RechnungNichtVorhandenException();
 	}
 	
+	/**
+	 * This method takes a list of all invoices from database.
+	 * 
+	 * @author 
+	 * @return list of all invoices
+	 * @throws SQLException
+	 * @throws DatabaseException
+	 */
+	public List<Rechnung> getAllRechnung() throws SQLException, DatabaseException {
+		List<Rechnung> result= new ArrayList<Rechnung>();
+		Statement stmt = c.createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT * FROM RECHNUNG;");
+		while (rs.next()) {
+			result.add(this.getRechnungByID(rs.getInt(1)));
+		}
+		rs.close();
+		stmt.close();
+		return result;
+	}
+
 	/**
 	 * This method modifies an invoice and puts it into database.
 	 * 
@@ -717,7 +751,7 @@ public class SQLManager {
 	 */
 	public void modifyRechnung(int RECHNUNG_ID, String attribut, String newData) throws SQLException{
 		Statement stmt = c.createStatement();
-		String sql = "UPDATE Rechnung SET "+attribut+" = "+newData+" WHERE RECHNUNG_ID="+RECHNUNG_ID+";";
+		String sql = "UPDATE RECHNUNG SET "+attribut+" = '"+newData+"' WHERE RECHNUNG_ID="+RECHNUNG_ID+";";
 		stmt.executeUpdate(sql);
 		stmt.close();	
 	}
@@ -732,15 +766,15 @@ public class SQLManager {
 	 */
 	public void changeRechnungStatus (int id, String Status) throws SQLException {
 		Statement stmt = c.createStatement();
-		String sql ="SELECT "+Status+" FROM Rechnung WHERE RECHNUNG_ID = "+id+";";
+		String sql ="SELECT "+Status+" FROM RECHNUNG WHERE RECHNUNG_ID = "+id+";";
 		if(stmt.executeQuery(sql).getInt(1)==1) {
-			sql="UPDATE Rechnung SET "+Status+" = 0 WHERE RECHNUNG_ID = "+id+";";
+			sql="UPDATE RECHNUNG SET "+Status+" = 0 WHERE RECHNUNG_ID = "+id+";";
 		}
 		else {
-			sql="UPDATE Rechnung SET "+Status+" = 1 WHERE RECHNUNG_ID = "+id+";";
+			sql="UPDATE RECHNUNG SET "+Status+" = 1 WHERE RECHNUNG_ID = "+id+";";
 		}
 		stmt.executeUpdate(sql);
-		sql="UPDATE Rechnung SET date_"+Status+" = "+(new Date().getTime()/1000)+" WHERE PERSON_ID = "+id+";";
+		sql="UPDATE RECHNUNG SET date_"+Status+" = "+(new Date().getTime()/1000)+" WHERE RECHNUNG_ID = "+id+";";
 		stmt.executeUpdate(sql);
 		stmt.close();
 	}
@@ -810,7 +844,7 @@ public class SQLManager {
 	public void modifyTopf(int TOPF_ID, String attribut, String newData) throws SQLException {
 		
 		Statement stmt = c.createStatement();
-		String sql = "UPDATE Topf SET " + attribut + " = " + newData + " WHERE TOPF_ID = " + TOPF_ID + ";";
+		String sql = "UPDATE Topf SET " + attribut + " = '" + newData + "' WHERE TOPF_ID = " + TOPF_ID + ";";
 		
 		stmt.executeUpdate(sql);
 		
@@ -999,26 +1033,6 @@ public class SQLManager {
 			}
 		} else throw new DeleteKasseException();
 		stmt.close();	
-	}
-	
-	/**
-	 * This method takes a list of all invoices from database.
-	 * 
-	 * @author 
-	 * @return list of all invoices
-	 * @throws SQLException
-	 * @throws DatabaseException
-	 */
-	public List<Rechnung> getAllRechnung() throws SQLException, DatabaseException {
-		List<Rechnung> result= new ArrayList<Rechnung>();
-		Statement stmt = c.createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT * FROM Rechnung;");
-		while (rs.next()) {
-			result.add(this.getRechnungByID(rs.getInt(1)));
-		}
-		rs.close();
-		stmt.close();
-		return result;
 	}
 	
 	/**

@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.Iterator;
 import Exceptions.DatabaseException;
 import GUI.AlertBox;
+import GUI.Finanzverwaltung.GUICreateRechnung;
 import GUI.Validation.Validation;
 import Logic.Auftrag;
 import Logic.Fertigungsverwaltung;
@@ -226,6 +227,7 @@ public class GUIFertigungsverwaltung {
 		
 		Button export = new Button("Auftrag Exportieren");
 		GridPane.setConstraints(export, 2, 15);
+		export.setDisable(true);
 		
 		
 		
@@ -245,6 +247,7 @@ public class GUIFertigungsverwaltung {
 			open();
 			modify.setDisable(true);
 			delete.setDisable(true);
+			export.setDisable(true);
 		});
 		
 		modify.setOnMouseClicked(e -> {
@@ -357,7 +360,8 @@ public class GUIFertigungsverwaltung {
 		});
 				
 		export.setOnMouseClicked(e -> {
-		
+			Auftrag tempAuftrag = auftragTable.getSelectionModel().getSelectedItem();
+			GUICreateRechnung.display(tempAuftrag);
 		});
 		
 		
@@ -367,6 +371,7 @@ public class GUIFertigungsverwaltung {
 			if(!(auftragTable.getSelectionModel().isEmpty())) {
 				delete.setDisable(false);
 				modify.setDisable(false);
+				export.setDisable(false);
 				Auftrag tempAuftragTable = auftragTable.getSelectionModel().getSelectedItem();
 				
 				//Tabelle
@@ -470,7 +475,7 @@ public class GUIFertigungsverwaltung {
 		tab.setContent(bp);
 	}
 	
-	public ObservableList<Auftrag> getAuftraege() throws SQLException{
+	public static ObservableList<Auftrag> getAuftraege() throws SQLException{
 		ObservableList<Auftrag> resultAuftrag = FXCollections.observableArrayList();
 		try {
 			for (Auftrag a :  Fertigungsverwaltung.getInstance().getAllAuftrag()) {

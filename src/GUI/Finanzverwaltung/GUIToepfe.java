@@ -27,7 +27,7 @@ import javafx.scene.layout.HBox;
 public class GUIToepfe {
 	Tab tab;
 	TableView<Topf> toepfeTable;
-	List<Topf> toepfe = this.getToepfe();
+	List<Topf> toepfe = GUIToepfe.getToepfe();
 	List<Kasse> kassen = GUIKassen.getKassen();
 	
 	public GUIToepfe(Tab tab) {
@@ -72,7 +72,7 @@ public class GUIToepfe {
 		kasseColumn.setCellValueFactory(new PropertyValueFactory<>("kasse"));
 		
 		toepfeTable = new TableView<>();
-		toepfeTable.setItems(this.getToepfe());
+		toepfeTable.setItems(GUIToepfe.getToepfe());
 		toepfeTable.getColumns().addAll(nameColumn, sollColumn,istColumn, kasseColumn);
 		
 		toepfeTable.setPrefWidth(350);
@@ -155,7 +155,7 @@ public class GUIToepfe {
 			Topf tempTopf = toepfeTable.getSelectionModel().getSelectedItem();
 			try {
 				Finanzverwaltung.getInstance().deleteTopf(tempTopf.getTOPF_ID());
-				toepfeTable.setItems(this.getToepfe());
+				toepfeTable.setItems(GUIToepfe.getToepfe());
 			} catch (SQLException | DatabaseException e1) {
 				AlertBox.display("Fehler", e1.getMessage());
 			} finally {
@@ -194,7 +194,7 @@ public class GUIToepfe {
 		tab.setContent(bp);
 	}
 
-	private ObservableList<Topf> getToepfe() {
+	static ObservableList<Topf> getToepfe() {
 		ObservableList<Topf> result = FXCollections.observableArrayList();
 		try {
 			for (Topf t :  Finanzverwaltung.getInstance().getAllTopf()) {

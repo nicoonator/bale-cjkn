@@ -105,7 +105,10 @@ public class Auftrag {
 		this.vertreter = vertreter;
 	}
 
-	
+	@Override
+	public String toString() {
+		return titel +": " +AUFTRAG_ID;
+	}
 
 	/**
 	 * @return the date_angenommen

@@ -34,6 +34,12 @@ public class Topf {
 		this.kasseName =  kasse.getName();
 		this.kasse=kasse;
 	}
+	
+	@Override
+	public String toString() {
+		return name +": " +TOPF_ID;
+	}
+	
 	public String getName() {
 		return name;
 	}

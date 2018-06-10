@@ -8,10 +8,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import GUI.AlertBox;
+import Logic.Auftrag;
 import Logic.Kasse;
 import Logic.Kategorie;
 import Logic.LogIn;
 import Logic.Person;
+import Logic.Topf;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -235,6 +237,36 @@ public class Validation {
 			result=true;
 		}
 		else AlertBox.display("Fehler", "Eine Kasse muss ausgewahlt werden!");
+		
+		return result;
+	}
+
+
+	/**
+	 * @param comboBoxToepfe
+	 * @return
+	 */
+	public static boolean ComboBoxValidationTopf(ComboBox<Topf> comboBox) {
+		boolean result=false;
+		if (!(comboBox.getSelectionModel().isEmpty())) {
+			result=true;
+		}
+		else AlertBox.display("Fehler", "Ein Topf muss ausgewahlt werden!");
+		
+		return result;
+	}
+
+
+	/**
+	 * @param comboBoxAuftrag
+	 * @return
+	 */
+	public static boolean ComboBoxValidationAuftrag(ComboBox<Auftrag> comboBox) {
+		boolean result=false;
+		if (!(comboBox.getSelectionModel().isEmpty())) {
+			result=true;
+		}
+		else AlertBox.display("Fehler", "Ein Auftrag muss ausgewahlt werden!");
 		
 		return result;
 	}
