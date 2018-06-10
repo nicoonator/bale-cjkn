@@ -144,6 +144,7 @@ public class GUIToepfe {
 						Finanzverwaltung.getInstance().modifyTopf(tempTopf.getTOPF_ID(), "KASSE_ID", String.valueOf(comboBoxKassen.getSelectionModel().getSelectedItem().getKASSE_ID()));
 					}
 					toepfeTable.setItems(getToepfe());
+					AlertBox.display("Erfolg!", "Topf bearbeitet!");
 				} catch (SQLException e1) {
 			AlertBox.display("Fehler", e1.getMessage());
 			} finally {
@@ -167,6 +168,7 @@ public class GUIToepfe {
 				sollInput.clear();
 				istInput.setDisable(true);
 				istInput.clear();
+				AlertBox.display("Erfolg!", "Topf geloescht!");
 			}
 			
 		});

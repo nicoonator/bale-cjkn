@@ -202,6 +202,7 @@ public class GUIBauteile {
 			AlertBox.display("Fehler", e1.getMessage());
 			} finally {
 				bauteillager.getSelectionModel().select(tempBauteil);
+				AlertBox.display("Erfolg!", "Bauteil bearbeitet!");
 			}
 			
 		});
@@ -215,6 +216,7 @@ public class GUIBauteile {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			} finally {
+				AlertBox.display("Erfolg!", "Bauteil geloescht!");
 				modify.setDisable(true);
 				delete.setDisable(true);
 			}

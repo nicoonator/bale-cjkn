@@ -256,6 +256,7 @@ public class GUIRechnungen {
 			try {
 				Finanzverwaltung.getInstance().deleteRechnung(tempRechnungDel.getRECHNUNG_ID());
 				open();
+				AlertBox.display("Erfolg!", "Auftrag geloescht!");
 				
 			} catch (SQLException | DatabaseException e1) {
 				AlertBox.display("Fehler", e1.getMessage());

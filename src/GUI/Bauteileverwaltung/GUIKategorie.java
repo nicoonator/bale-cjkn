@@ -125,6 +125,7 @@ public class GUIKategorie {
 			} catch (SQLException | DatabaseException e1) {
 			AlertBox.display("Fehler", e1.getMessage());
 			} finally {
+				AlertBox.display("Erfolg!", "Kategorie umbenannt!");
 				table.getSelectionModel().select(tempKategorie);
 			}
 			
@@ -138,6 +139,7 @@ public class GUIKategorie {
 				tfKatName.clear();
 				modify.setDisable(true);
 				delete.setDisable(true);
+				AlertBox.display("Erfolg!", "Kategorie geloescht!");
 			} catch (SQLException | DatabaseException e1) {
 				AlertBox.display("Fehler", e1.getMessage());
 			}

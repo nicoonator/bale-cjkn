@@ -5,6 +5,8 @@ package GUI.Bauteileverwaltung;
 
 import java.sql.SQLException;
 import java.util.Date;
+
+import GUI.AlertBox;
 import GUI.Personenverwaltung.GUIPersonenverwaltung;
 import Logic.Bauteileverwaltung;
 import Logic.Person;
@@ -113,6 +115,7 @@ public class GUINutzerverwaltung {
 			}
 			finally {
 				table.getSelectionModel().select(tempPerson);
+				AlertBox.display("Erfolg!", "Schulden zurueckgesetzt!");
 			}
 		});
 		

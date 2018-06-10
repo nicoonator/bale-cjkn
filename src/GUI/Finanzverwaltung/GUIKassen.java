@@ -161,6 +161,7 @@ public class GUIKassen {
 			AlertBox.display("Fehler", e1.getMessage());
 			} finally {
 				kassenTable.getSelectionModel().select(tempKasse);
+				AlertBox.display("Erfolg!", "Kasse bearbeitet!");
 			}
 		});
 		
@@ -184,6 +185,7 @@ public class GUIKassen {
 				typInput.clear();
 				ksInput.setDisable(true);
 				ksInput.clear();
+				AlertBox.display("Erfolg!", "Kasse geloescht!");
 			}
 			
 		});

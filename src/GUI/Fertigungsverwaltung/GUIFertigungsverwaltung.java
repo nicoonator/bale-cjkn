@@ -334,7 +334,7 @@ public class GUIFertigungsverwaltung {
 
 				
 			
-				//open();
+				
 				auftragTable.setItems(getAuftraege());
 			} catch (SQLException | DatabaseException e1) {
 				AlertBox.display("Fehler", e1.getMessage());
@@ -351,6 +351,7 @@ public class GUIFertigungsverwaltung {
 			Auftrag tempAuftragDel = auftragTable.getSelectionModel().getSelectedItem();
 			try {
 				Fertigungsverwaltung.getInstance().deleteAuftrag(tempAuftragDel.getAUFTRAG_ID());
+				AlertBox.display("Erfolg!", "Auftrag geloescht!");
 				open();
 				
 			} catch (SQLException | DatabaseException e1) {

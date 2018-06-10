@@ -318,6 +318,8 @@ public class GUIPersonenverwaltung {
 				hausnummerInput.clear();
 				modify.setDisable(true);
 				delete.setDisable(true);
+				
+				AlertBox.display("Erfolg!", "Person geloescht!");
 			} catch (SQLException | DatabaseException e1) {
 				AlertBox.display("Fehler", e1.getMessage());
 			}
