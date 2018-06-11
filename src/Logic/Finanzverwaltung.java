@@ -86,8 +86,6 @@ public class Finanzverwaltung {
 		Rechnung tempRechnung = SQLManager.getInstance().getRechnungByID(rechnung_id);
 		Auftrag tempAuftrag = SQLManager.getInstance().getAuftragByID(tempRechnung.getAuftrag_ID());
 		
-		String path = "Rechnungen/Rechnung_" + rechnung_id + ".pdf";
-		
 		PDDocument document = new PDDocument();
 		PDPage page = new PDPage();
 		PDPageContentStream contentStream = new PDPageContentStream(document, page);
@@ -148,7 +146,12 @@ public class Finanzverwaltung {
 		if(!file.isDirectory())
 			file.mkdir();
 		
-		document.save(path);
+		try {
+			document.save("Rechnungen/Rechnung_" + tempRechnung.getRechnungsname() + "_" + rechnung_id + ".pdf");
+		}
+		catch(Exception ex) {
+			document.save("Rechnungen/Rechnung_" + rechnung_id + ".pdf");
+		}
 		
 		document.close();
 	}
