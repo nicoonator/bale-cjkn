@@ -30,6 +30,9 @@ import javafx.scene.layout.HBox;
  *
  */
 
+
+
+//TODO EINE PERSON DARF SICH NICHT LOESCHEN KOENNEN!!!!!!!
 public class GUIPersonenverwaltung {
 	
 	Tab tab;
@@ -268,6 +271,32 @@ public class GUIPersonenverwaltung {
 			
 		});
 		
+		//TODO PERSON DARF SICH NICHT SELBST LOESCHEN
+		//Person loeschen
+		delete.setOnMouseClicked(e -> {
+			Person tempPerson = table.getSelectionModel().getSelectedItem();
+			try {
+				Personenverwaltung.getInstance().deletePerson(tempPerson.getPERSON_ID());
+				table.setItems(getPersonen());
+				vornameInput.clear();
+				nachnameInput.clear();
+				strasseInput.clear();
+				PLZInput.clear();
+				EMailInput.clear();
+				nutzernameInput.clear();
+				passwortInput.clear();
+				hausnummerInput.clear();
+				modify.setDisable(true);
+				delete.setDisable(true);
+				
+				AlertBox.display("Erfolg!", "Person geloescht!");
+			} catch (SQLException | DatabaseException e1) {
+				AlertBox.display("Fehler", e1.getMessage());
+			}
+		});
+		
+		
+		
 		
 		//Actionlistener fuer das Anklicken von Tabellenzeilen
 		table.setOnMouseClicked(e -> {
@@ -313,29 +342,6 @@ public class GUIPersonenverwaltung {
 			}
 		});
 		
-		
-		//Person loeschen
-		delete.setOnMouseClicked(e -> {
-			Person tempPerson = table.getSelectionModel().getSelectedItem();
-			try {
-				Personenverwaltung.getInstance().deletePerson(tempPerson.getPERSON_ID());
-				table.setItems(getPersonen());
-				vornameInput.clear();
-				nachnameInput.clear();
-				strasseInput.clear();
-				PLZInput.clear();
-				EMailInput.clear();
-				nutzernameInput.clear();
-				passwortInput.clear();
-				hausnummerInput.clear();
-				modify.setDisable(true);
-				delete.setDisable(true);
-				
-				AlertBox.display("Erfolg!", "Person geloescht!");
-			} catch (SQLException | DatabaseException e1) {
-				AlertBox.display("Fehler", e1.getMessage());
-			}
-		});
 		
 		tab.setContent(bp);
 	}
