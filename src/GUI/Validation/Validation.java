@@ -64,8 +64,8 @@ public class Validation {
 	public static boolean StringInputValidation(TextField tf) {
 		boolean result=false;
 		if (!(tf.getText()==null || tf.getText().trim().isEmpty())) {
-			if (!(Pattern.compile( "[0-9]" ).matcher( tf.getText() ).find())) result = true;
-			else AlertBox.display("Fehler", "Regulaere Textfelder duerfen keine Zahlen enthalten!");	
+			/*if (!(Pattern.compile( "[0-9]" ).matcher( tf.getText() ).find()))*/ result = true;
+			//else AlertBox.display("Fehler", "Regulaere Textfelder duerfen keine Zahlen enthalten!");	
 		}
 		else AlertBox.display("Fehler", "Kein Textfeld darf leer sein!");
 

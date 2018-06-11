@@ -666,13 +666,17 @@ public class SQLManager {
 	 */
 	public void createRechnung(String name, String bezahlart, double betrag, int auftrag_id, int verwalter_id, int topf_id) throws SQLException, DatabaseException{
 		Statement stmt = c.createStatement();
-		String sql ="INSERT INTO Rechnung (rechnungsname, bezahlungsart, betrag, AUFTRAG_ID, AUFTRAGGEBER_ID, "
-				+ "ANSPRECHPARTNER_ID, TOPF_ID, bearbeitung, eingereicht, abgewickelt, ausstehend, RECHNUNGSDATUM, "
-				+ "date_bearbeitung, date_eingereicht, date_abgewickelt, date_ausstehend) VALUES "
-				+ "('"+name+"','"+bezahlart+"','"+betrag+"','"+auftrag_id+"','"+this.getAuftragByID(auftrag_id).getAuftraggeber().getPERSON_ID()+"'"
-				+ ",'"+verwalter_id+"','"+topf_id+"',0,0,0,0, "+(new Date().getTime()/1000)+", "+(new Date().getTime()/1000)+", "
-				+(new Date().getTime()/1000)+", "+(new Date().getTime()/1000)+", "+(new Date().getTime()/1000)+");";
-		stmt.executeUpdate(sql);
+		String sql="SELECT * FROM RECHNUNG WHERE AUFTRAG_ID = "+auftrag_id+";";
+		if(!stmt.executeQuery(sql).next()){
+			sql ="INSERT INTO Rechnung (rechnungsname, bezahlungsart, betrag, AUFTRAG_ID, AUFTRAGGEBER_ID, "
+					+ "ANSPRECHPARTNER_ID, TOPF_ID, bearbeitung, eingereicht, abgewickelt, ausstehend, RECHNUNGSDATUM, "
+					+ "date_bearbeitung, date_eingereicht, date_abgewickelt, date_ausstehend) VALUES "
+					+ "('"+name+"','"+bezahlart+"','"+betrag+"','"+auftrag_id+"','"+this.getAuftragByID(auftrag_id).getAuftraggeber().getPERSON_ID()+"'"
+					+ ",'"+verwalter_id+"','"+topf_id+"',0,0,0,0, "+(new Date().getTime()/1000)+", "+(new Date().getTime()/1000)+", "
+					+(new Date().getTime()/1000)+", "+(new Date().getTime()/1000)+", "+(new Date().getTime()/1000)+");";
+			stmt.executeUpdate(sql);	
+		} else throw new RechnungVorhandenException();
+		
 		stmt.close();	
 	
 	}
