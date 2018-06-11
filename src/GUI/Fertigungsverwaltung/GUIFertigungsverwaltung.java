@@ -117,7 +117,7 @@ public class GUIFertigungsverwaltung {
 		
 		TableView<Person> vertretungTable = new TableView<>();
 		vertretungTable.getColumns().addAll(vorname,nachname);
-		vertretungTable.setPrefWidth(250);
+		vertretungTable.setPrefWidth(252);
 		
 		
 		rechts.getChildren().addAll(tabellenLabel, vertretungTable);
