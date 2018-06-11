@@ -121,8 +121,10 @@ public class GUIToepfe {
 		
 		// End of Center
 		
-		//Events:
 		
+		
+		//Events:
+		//Oeffnet CreateTopf Fenster
 		create.setOnMouseClicked(e -> {
 			GUICreateTopf.display();
 			try {
@@ -134,6 +136,8 @@ public class GUIToepfe {
 			}
 		});
 		
+		
+		//Bearbeitet einen Topf
 		modify.setOnMouseClicked(e -> {
 			Topf tempTopf = toepfeTable.getSelectionModel().getSelectedItem();
 			try {
@@ -152,6 +156,8 @@ public class GUIToepfe {
 			}
 		});
 		
+		
+		//Loescht einen Topf
 		delete.setOnMouseClicked(e -> {
 			Topf tempTopf = toepfeTable.getSelectionModel().getSelectedItem();
 			try {
@@ -173,6 +179,8 @@ public class GUIToepfe {
 			
 		});
 		
+		
+		//Behandelt den Klick auf einen Tabelleneintrag
 		toepfeTable.setOnMouseClicked(e -> {
 			if(!(toepfeTable.getSelectionModel().isEmpty())) {
 				modify.setDisable(false);
@@ -196,6 +204,8 @@ public class GUIToepfe {
 		tab.setContent(bp);
 	}
 
+	
+	//Holt alle Toepfe aus der Datenbank
 	static ObservableList<Topf> getToepfe() {
 		ObservableList<Topf> result = FXCollections.observableArrayList();
 		try {
@@ -208,6 +218,8 @@ public class GUIToepfe {
 		return result;
 	}
 	
+	
+	//Gibt den Index einer Kasse zurueck
 	private int indexOf(int id) {
 		int i=0;
 		for(Kasse k: kassen){

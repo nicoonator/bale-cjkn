@@ -70,6 +70,8 @@ public class GUICreateKasse {
 			
 			grid.getChildren().addAll(btnameLabel,btnameInput,sollLabel,sollInput,istLabel,istInput,kostenstellennummerLabel,kostenstellennummerInput, comboBox, btn ,btnClose);
 			
+			
+			//Kasse erstellen
 			btn.setOnMouseClicked(e -> {
 				try {
 					if(comboBox.getSelectionModel().getSelectedIndex()==2) {
@@ -90,6 +92,8 @@ public class GUICreateKasse {
 				}
 				});
 			
+			
+			//Fenster schliessen
 			btnClose.setOnMouseClicked(e -> {
 				window.close();
 			});

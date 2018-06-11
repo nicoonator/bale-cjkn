@@ -16,6 +16,8 @@ import javafx.geometry.*;
 
 public class GUICreatePerson {
 
+ 
+   
     public static void display() {
         Stage window = new Stage();
         window.setTitle("Person Erstellen");
@@ -79,8 +81,8 @@ public class GUICreatePerson {
 		PasswordField passwortconfirmInput = new PasswordField();
 		GridPane.setConstraints(passwortconfirmInput, 1, 8);
 		
-		Button btn = new Button("Erstellen");
-		GridPane.setConstraints(btn, 1, 9);
+		Button btnErstellen = new Button("Erstellen");
+		GridPane.setConstraints(btnErstellen, 1, 9);
 		
 		Button btnClose = new Button ("Schliessen");
 		GridPane.setConstraints(btnClose, 1, 9,1,1,HPos.RIGHT,null);
@@ -96,9 +98,11 @@ public class GUICreatePerson {
         GridPane.setConstraints(comboBox, 0, 9);
 		
 		grid.getChildren().addAll(vornameLabel, vornameInput, nachnameLabel, nachnameInput, strasseLabel, strasseInput, hausnummerLabel, hausnummerInput, 
-				PLZLabel, PLZInput, EMailLabel, EMailInput, nutzernameLabel, nutzernameInput, passwortLabel, passwortInput,passwortconfirmInput, passwortconfirmLabel, comboBox, btn ,btnClose);
+				PLZLabel, PLZInput, EMailLabel, EMailInput, nutzernameLabel, nutzernameInput, passwortLabel, passwortInput,passwortconfirmInput, passwortconfirmLabel, comboBox, btnErstellen ,btnClose);
 		
-		btn.setOnMouseClicked(e -> {
+		
+		//Person erstellen
+		btnErstellen.setOnMouseClicked(e -> {
 			
 			if(Validation.passwordInputValidation(passwortInput, passwortconfirmInput) && Validation.IntegerInputValidation(PLZInput) && Validation.nutzernameInputValidation(nutzernameInput) && Validation.StringInputValidation(vornameInput) && Validation.StringInputValidation(nachnameInput) && Validation.HausNrInputValidation(hausnummerInput) && Validation.StringInputValidation(strasseInput) && Validation.ComboBoxValidationString(comboBox)){
 					
@@ -114,6 +118,7 @@ public class GUICreatePerson {
 			}
 			}});
 		
+		//Fenster schliessen
 		btnClose.setOnMouseClicked(e -> {
 			window.close();
 		});

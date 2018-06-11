@@ -65,6 +65,8 @@ public class GUIPersonenverwaltung {
 		
 		// End of TOP
 		
+		
+		
 		// Left
 		
 		TableColumn<Person, String> vornameColumn = new TableColumn<>("Vorname");
@@ -100,6 +102,8 @@ public class GUIPersonenverwaltung {
 		bp.setLeft(table);
 
 		// End of LEFT
+		
+		
 		
 		// Start of Center
 		
@@ -199,6 +203,9 @@ public class GUIPersonenverwaltung {
 		
 		//Events:
 		
+		
+		
+		//Oeffne das Person erstellen Fenster
 		create.setOnMouseClicked(e -> {
 			GUICreatePerson.display();
 			try {
@@ -213,6 +220,7 @@ public class GUIPersonenverwaltung {
 			}
 		});
 		
+		//Personen bearbeiten
 		modify.setOnMouseClicked(e -> {
 			Person tempPerson = table.getSelectionModel().getSelectedItem();
 			try {
@@ -260,6 +268,8 @@ public class GUIPersonenverwaltung {
 			
 		});
 		
+		
+		//Actionlistener fuer das Anklicken von Tabellenzeilen
 		table.setOnMouseClicked(e -> {
 			if(!(table.getSelectionModel().isEmpty())) {
 				
@@ -303,7 +313,9 @@ public class GUIPersonenverwaltung {
 			}
 		});
 		
-		delete.setOnMouseClicked(e-> {
+		
+		//Person loeschen
+		delete.setOnMouseClicked(e -> {
 			Person tempPerson = table.getSelectionModel().getSelectedItem();
 			try {
 				Personenverwaltung.getInstance().deletePerson(tempPerson.getPERSON_ID());
@@ -328,7 +340,7 @@ public class GUIPersonenverwaltung {
 		tab.setContent(bp);
 	}
 	
-
+	//Holt alle Personen aus der Datenbank
 	public static ObservableList<Person> getPersonen() throws SQLException{
 		ObservableList<Person> result = FXCollections.observableArrayList();
 		for (Person p :  Personenverwaltung.getInstance().getAllPersons()) {

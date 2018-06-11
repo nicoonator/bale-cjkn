@@ -87,6 +87,8 @@ public class GUICreateRechnung {
 		grid.getChildren().addAll(reNameInput, reNameLabel, comboBoxAuftrag, 
 				betragLabel, betragInput, comboBoxBezahlart, comboBoxToepfe, btn ,btnClose);
 		
+		
+		//Rechnung erstellen
 		btn.setOnMouseClicked(e -> {
 			
 			if(Validation.StringInputValidation(reNameInput)&&Validation.ComboBoxValidationString(comboBoxBezahlart)&&Validation.ComboBoxValidationAuftrag(comboBoxAuftrag)&&Validation.ComboBoxValidationTopf(comboBoxToepfe)) {
@@ -99,6 +101,8 @@ public class GUICreateRechnung {
 				}
 			}});
 		
+		
+		//Fenster schliessen
 		btnClose.setOnMouseClicked(e -> {
 			window.close();
 		});
@@ -220,6 +224,8 @@ public class GUICreateRechnung {
         window.showAndWait();
         
     }	
+    
+    //Holt alle Toepfe entsprechend der Bezahlart
     static ObservableList<Topf> getTopfByBezahlart(String bezahlart){
     	ObservableList<Topf> result = FXCollections.observableArrayList();
     	
@@ -234,6 +240,8 @@ public class GUICreateRechnung {
 		return result;
     }
     
+    
+    //Holt den Index eines Auftrags
     private static int indexOf(int id) {
 		int i=0;
 		try {

@@ -48,6 +48,8 @@
  		
  		grid.getChildren().addAll(btn, btnClose, katName, tfKatName);
  		
+ 		
+ 		//Kategorie erstellen
  		btn.setOnMouseClicked(e  -> {
  			
  			if(Validation.StringInputValidation(tfKatName)) {
@@ -62,6 +64,8 @@
  			}
  			}});
  		
+ 		
+ 		//Fenster schliessen
  		btnClose.setOnMouseClicked(e  -> {
  			window.close();
  		});

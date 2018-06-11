@@ -38,6 +38,9 @@ public class GUIAuftragErstellen {
 	        BorderPane bp = new BorderPane();
 			bp.setPadding(new Insets(10,10,10,10));
 			
+			
+			//RIGHT
+			
 			TableView<Person> personTable;
 			TableColumn<Person, String> vorname = new TableColumn<>("Vorname");
 			vorname.setCellValueFactory(new PropertyValueFactory<>("vorname"));
@@ -52,12 +55,10 @@ public class GUIAuftragErstellen {
 			personTable.getColumns().addAll(vorname, nachname);
 			personTable.setPrefSize(220, 5);
 			personTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-			
-
-			
+		
 			bp.setCenter(personTable);
 			
-			
+			//END OF RIGHT
 			
 			
 			
@@ -140,7 +141,7 @@ public class GUIAuftragErstellen {
 			Button btnClose = new Button ("Schliessen");
 			GridPane.setConstraints(btnClose, 1, 9,1,1,HPos.RIGHT,null);
 			
-			
+			//END OF LEFT
 			
 			grid.getChildren().addAll(l1, comboBoxPersonen, l2, comboBoxAdmins, l3, auftragsTitel, l4, prognoKosten, l5, reelleKosten , comboBoxFertigung, btn, btnClose  );
 			
@@ -148,7 +149,8 @@ public class GUIAuftragErstellen {
 			
 			//EVENTS
 			
-			//TODO 
+			//Combobox fuer Personen
+			
 			comboBoxPersonen.getSelectionModel().selectedItemProperty().addListener((v,oldValue,newValue) -> {
 				if(oldValue != newValue){
 					comboBoxAdmins.setDisable(false);
@@ -183,6 +185,8 @@ public class GUIAuftragErstellen {
 				}
 			});
 			
+			
+			//Combobox fuer Admins abhaengig von der vorher ausgewaehlten Person
 			comboBoxAdmins.getSelectionModel().selectedItemProperty().addListener((v,oldValue,newValue) ->{
 				if(oldValue != newValue){
 					personTable.getItems().clear();

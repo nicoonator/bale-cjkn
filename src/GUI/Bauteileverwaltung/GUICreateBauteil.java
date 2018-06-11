@@ -101,6 +101,8 @@ public class GUICreateBauteil {
 		
 		grid.getChildren().addAll(btnameLabel,btnameInput,linkLabel,linkInput,preisLabel,preisInput ,gelagertLabel,gelagertInput,geplantLabel,geplantInput,bestelltLabel,bestelltInput, ortLabel,ortInput,kategorieLabel,comboBoxKategorie, btn, btnClose);
 		
+		
+		//Bauteil erstellen
 		btn.setOnMouseClicked(e -> {
 			
 			try {
@@ -114,6 +116,7 @@ public class GUICreateBauteil {
 			} finally {
 			}});
 		
+		//Fenster schliessen
 		btnClose.setOnMouseClicked(e -> {
 			window.close();
 		});

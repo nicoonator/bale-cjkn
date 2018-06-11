@@ -58,6 +58,7 @@ public class GUICreateTopf {
 			
 			grid.getChildren().addAll(btnameLabel,btnameInput,sollLabel,sollInput,istLabel,istInput,comboBoxKassen, btn ,btnClose);
 			
+			//Topf erstellen
 			btn.setOnMouseClicked(e -> {
 				try {
 					if(Validation.StringInputValidation(btnameInput)&&Validation.DoubleInputValidation(sollInput)&&Validation.DoubleInputValidation(istInput)&&Validation.ComboBoxValidationKassenauswahl(comboBoxKassen)) {
@@ -70,6 +71,7 @@ public class GUICreateTopf {
 				}
 				});
 			
+			//Fenster schliessen
 			btnClose.setOnMouseClicked(e -> {
 				window.close();
 			});

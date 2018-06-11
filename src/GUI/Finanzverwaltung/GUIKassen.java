@@ -126,8 +126,10 @@ public class GUIKassen {
 		
 		// End of Center
 		
-		//Events:
 		
+		
+		//Events:
+		//Oeffnet das CreateKasse Fenster
 		create.setOnMouseClicked(e -> {
 			GUICreateKasse.display();
 			try {
@@ -139,6 +141,8 @@ public class GUIKassen {
 			}
 		});
 		
+		
+		//Bearbeitet eine Kasse
 		modify.setOnMouseClicked(e -> {
 			Kasse tempKasse = kassenTable.getSelectionModel().getSelectedItem();
 			try {
@@ -165,6 +169,8 @@ public class GUIKassen {
 			}
 		});
 		
+		
+		//Loescht eine Kasse
 		delete.setOnMouseClicked(e -> {
 			Kasse tempKasse = kassenTable.getSelectionModel().getSelectedItem();
 			try {
@@ -189,6 +195,9 @@ public class GUIKassen {
 			}
 			
 		});
+		
+		
+		//Behandelt den Klick auf einen Tabelleneintrag
 		kassenTable.setOnMouseClicked(e -> {
 			if(!(kassenTable.getSelectionModel().isEmpty())) {
 				modify.setDisable(false);
@@ -220,6 +229,8 @@ public class GUIKassen {
 		tab.setContent(bp);
 	}
 
+	
+	//Gibt alle Kassen aus der Datenbank zurueck
 	static ObservableList<Kasse> getKassen() {
 		ObservableList<Kasse> result = FXCollections.observableArrayList();
 		try {

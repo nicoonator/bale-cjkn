@@ -99,6 +99,7 @@ public class GUIFertigungsverwaltung {
 		auftragTable.setPrefWidth(751);
 		bp.setLeft(auftragTable);
 	
+		
 		//RECHTS
 		
 		VBox rechts = new VBox();
@@ -236,7 +237,7 @@ public class GUIFertigungsverwaltung {
 		
 		//EVENTS
 		
-		
+		//Oeffnet Auftrag erstellen Fenster
 		create.setOnMouseClicked(e -> {
 			GUIAuftragErstellen.display();
 			try {
@@ -250,6 +251,7 @@ public class GUIFertigungsverwaltung {
 			export.setDisable(true);
 		});
 		
+		//Auftrag bearbeiten
 		modify.setOnMouseClicked(e -> {
 			Auftrag tempAuftragMod = auftragTable.getSelectionModel().getSelectedItem();
 			
@@ -347,6 +349,7 @@ public class GUIFertigungsverwaltung {
 			
 		});
 		
+		//Auftrag loeschen
 		delete.setOnMouseClicked(e ->{
 			Auftrag tempAuftragDel = auftragTable.getSelectionModel().getSelectedItem();
 			try {
@@ -359,7 +362,8 @@ public class GUIFertigungsverwaltung {
 			}
 			
 		});
-				
+		
+		//Auftrag exportieren
 		export.setOnMouseClicked(e -> {
 			Auftrag tempAuftrag = auftragTable.getSelectionModel().getSelectedItem();
 			GUICreateRechnung.display(tempAuftrag);
@@ -367,7 +371,7 @@ public class GUIFertigungsverwaltung {
 		
 		
 		
-		
+		//Auftragstabelle ausgewaehlte Zeile
 		auftragTable.setOnMouseClicked(e -> {
 			if(!(auftragTable.getSelectionModel().isEmpty())) {
 				delete.setDisable(false);
@@ -476,6 +480,8 @@ public class GUIFertigungsverwaltung {
 		tab.setContent(bp);
 	}
 	
+	
+	//Holt alle Auftraege aus der Datenbank
 	public static ObservableList<Auftrag> getAuftraege() throws SQLException{
 		ObservableList<Auftrag> resultAuftrag = FXCollections.observableArrayList();
 		try {
@@ -488,7 +494,7 @@ public class GUIFertigungsverwaltung {
 		}
 		return resultAuftrag;
 	}
-	
+	//Holt alle Vertreter fuer einen Auftrag aus der Datenbank
 	public ObservableList<Person> getVertretung (Auftrag tempAuftragTable){
 		ObservableList<Person> resultVertretung = FXCollections.observableArrayList();
 		Iterator<Person> vertretungIterator = tempAuftragTable.getVertreter().iterator();
@@ -502,9 +508,7 @@ public class GUIFertigungsverwaltung {
 	}
 	
 	
-	
-	
-	
+	//TODO wird die Funktion benoetigt??
 	public ObservableList<Auftrag> getDruckAuftraege() throws SQLException{
 		ObservableList<Auftrag> resultAuftrag = FXCollections.observableArrayList();
 		try {

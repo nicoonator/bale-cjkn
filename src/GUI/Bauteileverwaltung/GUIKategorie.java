@@ -103,6 +103,8 @@ public class GUIKategorie {
 		
 		//Events:
 		
+		
+		//CreateKategorie Fenster erstellen
 		create.setOnMouseClicked(e -> {
 			GUICreateKategorie.display();
 			try {
@@ -115,6 +117,8 @@ public class GUIKategorie {
 				delete.setDisable(true);
 			}
 		});
+		
+		//Kategorie bearbeiten
 		modify.setOnMouseClicked(e -> {
 			Kategorie tempKategorie = table.getSelectionModel().getSelectedItem();
 			try {
@@ -131,6 +135,8 @@ public class GUIKategorie {
 			
 		});
 		
+	
+		//Kategorie loeschen
 		delete.setOnMouseClicked(e-> {
 			Kategorie tempKategorie = table.getSelectionModel().getSelectedItem();
 			try {
@@ -145,6 +151,8 @@ public class GUIKategorie {
 			}
 		});
 		
+		
+		//Handling fuer Klick auf Tabelleneintrag
 		table.setOnMouseClicked(e -> {
 			if(!(table.getSelectionModel().isEmpty())) {
 				delete.setDisable(false);
@@ -160,6 +168,8 @@ public class GUIKategorie {
 	}
 
 	/**
+	 * Holt alle Kategorien aus der Datenbank
+	 * 
 	 * @return
 	 * @throws SQLException 
 	 */

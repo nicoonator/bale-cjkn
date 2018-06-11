@@ -180,7 +180,7 @@ public class GUIRechnungen {
 	
 		//EVENTS
 		
-		
+		//Oeffnet CreateRechnung Fenster
 		create.setOnMouseClicked(e -> {
 			GUICreateRechnung.display();
 			rechnungTable.setItems(getRechnungen());
@@ -190,6 +190,8 @@ public class GUIRechnungen {
 			export.setDisable(true);
 		});
 		
+		
+		//Bearbeitet eine Rechnung
 		modify.setOnMouseClicked(e -> {
 			Rechnung tempRechnung = rechnungTable.getSelectionModel().getSelectedItem();
 			
@@ -250,7 +252,7 @@ public class GUIRechnungen {
 			
 		});
 		
-		
+		//Loescht eine Rechnung
 		delete.setOnMouseClicked(e ->{
 			Rechnung tempRechnungDel = rechnungTable.getSelectionModel().getSelectedItem();
 			try {
@@ -263,7 +265,9 @@ public class GUIRechnungen {
 			}
 			
 		});
-				
+		
+		
+		//Exportiert die Rechnung als PDF
 		export.setOnMouseClicked(e -> {
 			try {
 				Finanzverwaltung.getInstance().exportRechnung(rechnungTable.getSelectionModel().getSelectedItem().getRECHNUNG_ID());
@@ -276,7 +280,7 @@ public class GUIRechnungen {
 		
 		
 		
-		
+		//ActionHandler fuer Klick auf Tabelle
 		rechnungTable.setOnMouseClicked(e -> {
 			if(!(rechnungTable.getSelectionModel().isEmpty())) {
 				delete.setDisable(false);
@@ -351,6 +355,7 @@ public class GUIRechnungen {
 	}
 
 	/**
+	 *Holt alle Rechnungen aus der Datenbank
 	 * @return
 	 */
 	private ObservableList<Rechnung> getRechnungen() {
@@ -365,6 +370,8 @@ public class GUIRechnungen {
 		}
 		return resultAuftrag;
 	}
+	
+	//Gibt den Index eines Topfes zurueck
 	private int indexOf(int id) {
 		int i=0;
 		for(Topf t: GUIToepfe.getToepfe()){

@@ -28,6 +28,7 @@ public class GUIFinanzverwaltung {
 	}
 	
 	public void open() {	
+				
 		TabPane tp =new TabPane();
 		SingleSelectionModel<Tab> selectionModel = tp.getSelectionModel();
 		

@@ -172,6 +172,8 @@ public class GUIBauteile {
 		
 		//Events:
 		
+		
+		//CreateBauteil Fenster oeffnen
 		create.setOnMouseClicked(e -> {
 			GUICreateBauteil.display();
 			try {
@@ -185,6 +187,8 @@ public class GUIBauteile {
 			}
 		});
 		
+		
+		//Bauteil bearbeiten
 		modify.setOnMouseClicked(e -> {
 			Bauteil tempBauteil = bauteillager.getSelectionModel().getSelectedItem();
 			try {
@@ -207,6 +211,8 @@ public class GUIBauteile {
 			
 		});
 		
+		
+		//Bauteil loeschen
 		delete.setOnMouseClicked(e -> {
 			Bauteil tempBauteil = bauteillager.getSelectionModel().getSelectedItem();
 			try {
@@ -223,6 +229,8 @@ public class GUIBauteile {
 			
 		});
 		
+		
+		//Handling fuer Klick auf Tabelleneintrag
 		bauteillager.setOnMouseClicked(e -> {
 			if(!(bauteillager.getSelectionModel().isEmpty())) {
 				modify.setDisable(false);
@@ -250,6 +258,7 @@ public class GUIBauteile {
 		tab.setContent(bp);
 	}
 
+	//Return index der Kategorie
 	private int indexOf(int kategorie_ID) {
 		int i=0;
 		for(Kategorie k: kategorien){

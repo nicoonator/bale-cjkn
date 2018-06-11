@@ -211,8 +211,14 @@ public class GUIWarenkorb {
 		
 		// End Bottom
 		
+		
+		
+		
+		
 		//Events:
 		
+		
+		//Handling fuer Klicks auf Tabelleneintrag
 		bauteillager.setOnMouseClicked(e -> {
 			if(!(bauteillager.getSelectionModel().isEmpty())) {
 				Bauteil tempBauteil = bauteillager.getSelectionModel().getSelectedItem();
@@ -221,6 +227,8 @@ public class GUIWarenkorb {
 			}
 		});
 		
+		
+		//Handling fuer Klicks auf Tabelleneintrag
 		warenkorb.setOnMouseClicked(e -> {
 			if(!(warenkorb.getSelectionModel().isEmpty())) {
 				Bauteilwarenkorbelement tempBauteilelement = warenkorb.getSelectionModel().getSelectedItem();
@@ -229,6 +237,8 @@ public class GUIWarenkorb {
 			}
 		});
 		
+		
+		//Hinzufuegen von Items in den Personen Warenkorb
 		takeOut.setOnMouseClicked(e -> {
 			if(Validation.IntegerInputValidation(anzahlInput)) {
 				Bauteil tempBauteil = bauteillager.getSelectionModel().getSelectedItem();
@@ -246,6 +256,8 @@ public class GUIWarenkorb {
 			}
 		});
 		
+		
+		//Hinzufuegen von Items aus dem Personen Warenkorb ins Lager
 		takeBack.setOnMouseClicked(e -> {
 			if(Validation.IntegerInputValidation(anzahl2Input)) {
 				Bauteilwarenkorbelement tempWarenkorbelement = warenkorb.getSelectionModel().getSelectedItem();
@@ -269,6 +281,8 @@ public class GUIWarenkorb {
 	
 	// methoden
 	
+	
+	//Holt alle Bauteile aus der Datenbank
 	public static ObservableList<Bauteil> getBauteile() throws SQLException{
 		ObservableList<Bauteil> result = FXCollections.observableArrayList();
 		for (Bauteil b :  Bauteileverwaltung.getInstance().getAllBauteile()) {
@@ -277,6 +291,8 @@ public class GUIWarenkorb {
 		return result;
 	}
 	
+	
+	//Holt alle Bauteile aus der Datenbank fuer die Person
 	public ObservableList<Bauteilwarenkorbelement> getBauteilewarenkorb() throws SQLException{
 		ObservableList<Bauteilwarenkorbelement> result = FXCollections.observableArrayList();
 		for (Bauteilwarenkorbelement b :  Bauteileverwaltung.getInstance().getBauteilwarenkorbByID(nutzer.getPERSON_ID())) {

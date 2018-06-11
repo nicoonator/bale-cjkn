@@ -105,6 +105,7 @@ public class GUINutzerverwaltung {
 		
 		//Events:
 		
+		//Schulden zuruecksetzen
 		btn.setOnMouseClicked(e -> {
 			try {
 				Bauteileverwaltung.getInstance().ClearBauteilwarenkorb(tempPerson.getPERSON_ID());
@@ -119,6 +120,7 @@ public class GUINutzerverwaltung {
 			}
 		});
 		
+		
 		table.setOnMouseClicked(e -> {
 			if(!(table.getSelectionModel().isEmpty())) {
 				tempPerson = table.getSelectionModel().getSelectedItem();
@@ -129,7 +131,7 @@ public class GUINutzerverwaltung {
 		tab.setContent(bp);
 	}
 
-	
+		//Alle Personen aus Datenbank holen, ausser currentUser
 	 	private ObservableList<Person> getPersonenOhneNutzer() {
 		ObservableList<Person> result=null;
 		try {
