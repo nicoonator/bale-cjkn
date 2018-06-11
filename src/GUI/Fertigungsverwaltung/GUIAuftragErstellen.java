@@ -253,7 +253,11 @@ public class GUIAuftragErstellen {
 	        
 	    }
 	 
-	 public static ObservableList<Auftrag> getAuftraege() throws SQLException{
+	 /**
+	 * @return
+	 * @throws SQLException
+	 */
+	public static ObservableList<Auftrag> getAuftraege() throws SQLException{
 			ObservableList<Auftrag> resultAuftrag = FXCollections.observableArrayList();
 			try {
 				for (Auftrag a :  Fertigungsverwaltung.getInstance().getAllAuftrag()) {
@@ -265,7 +269,12 @@ public class GUIAuftragErstellen {
 			}
 			return resultAuftrag;
 		}
-	 public static ObservableList<Person> getAdmins() throws SQLException{
+	 /**
+	  * this method returns all admins 
+	 * @return
+	 * @throws SQLException
+	 */
+	public static ObservableList<Person> getAdmins() throws SQLException{
 			ObservableList<Person> result = FXCollections.observableArrayList();
 			try {
 				for (Person p :  Personenverwaltung.getInstance().getAllAdmins()) {

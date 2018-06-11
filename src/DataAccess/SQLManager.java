@@ -310,9 +310,10 @@ public class SQLManager {
 	
 	public void deleteBauteilByID(int ID) throws SQLException{
 		Statement stmt = c.createStatement();
-		String sql = "DELETE FROM Bauteilwarenkorb WHERE Bauteil_ID = "+ID+";";
+		String sql = "DELETE FROM Bauteilwarenkorb WHERE BAUTEIL_ID = "+ID+";";
 		stmt.executeUpdate(sql);
 		sql="DELETE FROM Bauteil WHERE BAUTEIL_ID = "+ID+";";
+		stmt.executeUpdate(sql);
 		stmt.close();
 	}
 	
@@ -1071,7 +1072,7 @@ public class SQLManager {
 	}
 	
 	/**
-	 * Thid method takes a "Bauteilwarenkorb" by ID from database.
+	 * This method takes a "Bauteilwarenkorb" by ID from database.
 	 * 
 	 * @author 
 	 * @param person_ID

@@ -113,7 +113,7 @@ public class LogInWindow extends Application {
         primaryStage.show();
    
         //Bypass:
-      new MainGUI(true, Personenverwaltung.getInstance().getIDByNutzername("admin0")).start(primaryStage);
+      //new MainGUI(true, Personenverwaltung.getInstance().getIDByNutzername("admin0")).start(primaryStage);
     }
     
 }

@@ -212,13 +212,13 @@ public class GUIBauteile {
 			try {
 				Bauteileverwaltung.getInstance().deleteBauteilByID(tempBauteil.getID());
 				bauteillager.setItems(GUIWarenkorb.getBauteile());
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} finally {
 				AlertBox.display("Erfolg!", "Bauteil geloescht!");
+			} catch (SQLException e1) {
+				AlertBox.display("Fehler", e1.getMessage());
+			} finally {
 				modify.setDisable(true);
 				delete.setDisable(true);
+				//TODO Button Clearen
 			}
 			
 		});
