@@ -407,7 +407,6 @@ public class SQLManager {
 	
 	// IN den Warenkorb REIN 
 	
-	//TODO: BUGFIX
 	public void removeBauteil(int id, int anzahl, int person) throws SQLException, BauteilAnzahlZuKleinException {
 		Statement stmt = c.createStatement();
 		String sql = "SELECT gelagert FROM Bauteil WHERE BAUTEIL_ID = "+id+";";
@@ -448,7 +447,6 @@ public class SQLManager {
 	 */
 	// Aus dem Warenkorb IN dem Bestand
 	
-	//TODO: BUGFIX
 	public void addBauteil(int id, int anzahl, int person) throws SQLException, BauteilNichtImWarenkorbException, ZuWenigBauteileImWarenkorbException {
 		Statement stmt = c.createStatement();
 		String sql = "UPDATE Bauteil SET gelagert = gelagert + "+anzahl+" WHERE BAUTEIL_ID = "+id+";";
@@ -967,7 +965,6 @@ public class SQLManager {
 	 * @throws SQLException
 	 */
 	public void deleteKasse(int KASSE_ID) throws SQLException, DatabaseException {
-		//TODO: Nur loeschen wenn kein Topf in Kasse
 		Statement stmt = c.createStatement();
 		String sql = "SELECT* FROM TOPF WHERE KASSE_ID = "+KASSE_ID+";";
 		if(!stmt.executeQuery(sql).next()) {

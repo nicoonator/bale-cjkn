@@ -196,9 +196,6 @@ public class GUIWarenkorb {
 		bot.setAlignment(Pos.BOTTOM_CENTER);
 		bot.setSpacing(10);
 		bot.setPadding(new Insets(10,10,10,20));
-		
-		
-		//TODO: <-Anmerkung von Kevin: Was gibts hier zutun?
 		Label schulden =new Label();
 		try {
 			schulden.setText("Aktuelle Schulden in Euro: "+String.valueOf(Personenverwaltung.getInstance().getPersonByID(nutzer.getPERSON_ID()).getBauteilschulden()));

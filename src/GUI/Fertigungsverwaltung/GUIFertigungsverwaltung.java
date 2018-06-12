@@ -506,8 +506,9 @@ public class GUIFertigungsverwaltung {
 	}
 	
 	
-	//TODO wird die Funktion benoetigt??
-	public ObservableList<Auftrag> getDruckAuftraege() throws SQLException{
+	/*
+	 * Die Funktion kann zum Filtern genutzt werden, falls das noch eingebaut werden soll
+	 public ObservableList<Auftrag> getDruckAuftraege() throws SQLException{
 		ObservableList<Auftrag> resultAuftrag = FXCollections.observableArrayList();
 		try {
 			for (Auftrag a :  Fertigungsverwaltung.getInstance().getAllAuftrag()) {
@@ -518,6 +519,6 @@ public class GUIFertigungsverwaltung {
 		}
 		return resultAuftrag;
 	}
-	
+	*/
 	
 }

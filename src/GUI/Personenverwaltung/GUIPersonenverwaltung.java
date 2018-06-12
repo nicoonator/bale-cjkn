@@ -271,7 +271,7 @@ public class GUIPersonenverwaltung {
 			
 		});
 		
-		//TODO PERSON DARF SICH NICHT SELBST LOESCHEN
+		
 		
 		//Person loeschen
 		delete.setOnMouseClicked(e -> {

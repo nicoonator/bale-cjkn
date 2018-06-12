@@ -26,7 +26,6 @@ public class Kunde extends Person {
 			List<Bauteil> bauteilwarenkorb, boolean admin) {
 		super(pERSON_ID, vorname, nachname, strasse, hausnr, pLZ, email, zuerst_erstellt, zuletzt_geaendert, nutzername,
 				passwort, bauteilschulden, bauteilwarenkorb, admin);
-		// TODO Auto-generated constructor stub
 	}
 
 	@SuppressWarnings("unused")
