@@ -5,7 +5,7 @@ import DataAccess.SQLManager;
 public class TestClass {
 
 	public static void main(String[] args) {
-		//try {
+		try {
 		//	Date testdate =new Date();
 		//	testdate.setTime(1526836286L*1000L);
 		//	System.out.println(testdate.toString());
@@ -21,15 +21,15 @@ public class TestClass {
 		//	SQLManager.getInstance().createRechnung("test", "bar", 5, 1, 8, 8, 2);
 		//	Finanzverwaltung.getInstance().exportRechnung(1);
 		//	Bauteileverwaltung.getInstance().addKategorie("Trash");
-		/*	for(int i=0; i<15;i++) {
+			for(int i=0; i<15;i++) {
 				if(i<5) {
-					SQLManager.getInstance().createPerson("TestAdmin "+i , "TestAdmin "+i, "TestAdmin "+i, "12", 57072, "admin@admin.com", "admin"+i, "admin", 0);
+					SQLManager.getInstance().createPerson("TestAdmin "+i , "TestAdmin "+i, "TestAdmin "+i, "12", 57072, "admin@admin.com", "admin"+i, "admin", 0,"");
 				}
 				if(i<10 && i>=5) {
-					SQLManager.getInstance().createPerson("TestKunde "+i , "TestKunde "+i, "TestKunde "+i, "12", 57072, "kunde@kunde.com", "TestKunde"+i, "TestKunde", 1);
+					SQLManager.getInstance().createPerson("TestKunde "+i , "TestKunde "+i, "TestKunde "+i, "12", 57072, "kunde@kunde.com", "TestKunde"+i, "TestKunde", 1,"");
 				}
 				if(i>=10) {
-					SQLManager.getInstance().createPerson("TestLehrstuhlmitglied "+i , "TestLehrstuhlmitglied "+i, "TestLehrstuhlmitglied "+i, "12", 57072, "lehrstuhl@uni.com", "TestLehrstuhlmitglied"+i, "TestLehrstuhlmitglied", 2);
+					SQLManager.getInstance().createPerson("TestLehrstuhlmitglied "+i , "TestLehrstuhlmitglied "+i, "TestLehrstuhlmitglied "+i, "12", 57072, "lehrstuhl@uni.com", "TestLehrstuhlmitglied"+i, "TestLehrstuhlmitglied", 2,"");
 				}
 			}
 		
@@ -37,7 +37,7 @@ public class TestClass {
 		catch (Exception e) {
 			//e.printStackTrace();
 		}
-		*/
+	
 	}
 
 	

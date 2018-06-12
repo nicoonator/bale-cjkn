@@ -74,7 +74,7 @@ public class SQLManager {
 	 * @throws NutzernameVorhandenException 
 	 */
 	
-	public void createPerson (String vname, String nname, String strasse, String hausnummer, int PLZ, String email, String nutzername, String passwort, int rolle, long telefonnummer) throws SQLException, NutzernameVorhandenException{
+	public void createPerson (String vname, String nname, String strasse, String hausnummer, int PLZ, String email, String nutzername, String passwort, int rolle, String telefonnummer) throws SQLException, NutzernameVorhandenException{
 		Statement stmt = c.createStatement();
 		ResultSet rs = stmt.executeQuery("SELECT * FROM Person WHERE nutzername = '"+nutzername+"';");
 		if(!rs.next()) {
