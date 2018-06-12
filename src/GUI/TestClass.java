@@ -9,7 +9,7 @@ public class TestClass {
 		//	Date testdate =new Date();
 		//	testdate.setTime(1526836286L*1000L);
 		//	System.out.println(testdate.toString());
-			SQLManager.getInstance().createPerson("Nico","Rychlik","Oststrasse","24",57234,"nico.rychlik@student.uni-siegen.de","nicoonator","admin",0);
+		//	SQLManager.getInstance().createPerson("Nico","Rychlik","Oststrasse","24",57234,"nico.rychlik@student.uni-siegen.de","nicoonator","admin",0);
 		//	SQLManager.getInstance().deletePerson(1);
 		//	SQLManager.getInstance().addKategorie("Test");
 		//	SQLManager.getInstance().createBauteil("Testbauteil", "link", 5.33, 10, 0, 0, "Regal", 1);
@@ -35,7 +35,7 @@ public class TestClass {
 		*/
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 
