@@ -152,8 +152,7 @@ public class Validation {
 				}
 				
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			AlertBox.display("Fehler", e.getMessage());
 		}
 		
     	return result;

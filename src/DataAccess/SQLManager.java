@@ -41,20 +41,21 @@ public class SQLManager {
 	
 
 	/**
-	 * returns all Kategorien
 	 * @author Nico Rychlik
-	 * @return returns List of all Kategories
+	 * @param username
+	 * @param password
+	 * @return returns true if username & password are correct
 	 * @throws SQLException
 	 */
-	public List<Kategorie> getAllKategorie() throws SQLException {
-		List<Kategorie> result = new ArrayList<Kategorie>();
-		Statement stmt = c.createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT * FROM Kategorie;");
-		while(rs.next()) {
-			result.add(new Kategorie (rs.getInt("KATEGORIE_ID"),rs.getString("name")));
-		}
-		stmt.close();		
+	public boolean login (String username, String password) throws SQLException {
+		boolean result=false;
+		Statement stmt =c.createStatement();
+		String sql="SELECT * FROM PERSON WHERE nutzername= '"+username+"' AND passwort= '"+password+"';";
+		ResultSet rs = stmt.executeQuery(sql);
+		if (rs.next()) result=true;
 		rs.close();
+		stmt.close();
+		
 		return result;
 	}
 
@@ -72,14 +73,15 @@ public class SQLManager {
 	 * @throws SQLException
 	 * @throws NutzernameVorhandenException 
 	 */
-	public void createPerson (String vname, String nname, String strasse, String hausnummer, int PLZ, String email, String nutzername, String passwort, int rolle) throws SQLException, NutzernameVorhandenException{
+	
+	public void createPerson (String vname, String nname, String strasse, String hausnummer, int PLZ, String email, String nutzername, String passwort, int rolle, long telefonnummer) throws SQLException, NutzernameVorhandenException{
 		Statement stmt = c.createStatement();
 		ResultSet rs = stmt.executeQuery("SELECT * FROM Person WHERE nutzername = '"+nutzername+"';");
 		if(!rs.next()) {
 			String sql ="INSERT INTO Person (Vorname, Nachname, strasse, hausnr, PLZ, email, zuerst_erstellt, "
-					+ "zuletzt_geaendert, nutzername, passwort, rolle, bauteilschulden) VALUES "
+					+ "zuletzt_geaendert, nutzername, passwort, rolle, bauteilschulden, telefonnummer) VALUES "
 					+ "('"+vname+"','"+nname+"','"+strasse+"','"+hausnummer+"','"+PLZ+"','"+email+"', "
-					+(new Date().getTime()/1000)+", "+(new Date().getTime()/1000)+",'"+nutzername+"','"+passwort+"','"+rolle+"', 0);";
+					+(new Date().getTime()/1000)+", "+(new Date().getTime()/1000)+",'"+nutzername+"','"+passwort+"','"+rolle+"', 0, '"+telefonnummer+"');";
 			stmt.executeUpdate(sql);
 		}
 		else throw new NutzernameVorhandenException();
@@ -88,43 +90,22 @@ public class SQLManager {
 	}
 
 	/**
+	 * 
 	 * @author Nico Rychlik
-	 * @return returns all Persons currently in Database as a List<Person>
+	 * @param id
+	 * @param attribut
+	 * @param newData
 	 * @throws SQLException
 	 */
-	public List<Person> getAllPersons() throws SQLException {
-		List<Person> result= new ArrayList<Person>();
+	public void modifyPerson(int id, String attribut, String newData) throws SQLException{
 		Statement stmt = c.createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT * FROM Person ORDER BY rolle ASC;");
-		Person tempPerson=null;
-		while (rs.next()) {
-			switch (rs.getInt("rolle")) {
-			case 0:
-				tempPerson=new Mitglied(rs.getInt("PERSON_ID"), rs.getString("vorname"), rs.getString("nachname"),  rs.getString("strasse"),  rs.getString("hausnr"),  rs.getInt("PLZ"), rs.getString("email"), new Date((rs.getLong("zuerst_erstellt"))*1000L), new Date((rs.getLong("zuletzt_geaendert"))*1000L), rs.getString("nutzername"), rs.getString("passwort"), rs.getDouble("bauteilschulden"), new ArrayList<Bauteil>(), true);
-				break;
-			
-			case 1:
-				tempPerson=new Kunde(rs.getInt("PERSON_ID"), rs.getString("vorname"), rs.getString("nachname"),  rs.getString("strasse"),  rs.getString("hausnr"),  rs.getInt("PLZ"), rs.getString("email"), new Date((rs.getLong("zuerst_erstellt"))*1000L), new Date((rs.getLong("zuletzt_geaendert"))*1000L), rs.getString("nutzername"), rs.getString("passwort"), rs.getDouble("bauteilschulden"), new ArrayList<Bauteil>(), false);
-				break;
-			
-			case 2:
-				tempPerson=new Lehrstuhlperson(rs.getInt("PERSON_ID"), rs.getString("vorname"), rs.getString("nachname"),  rs.getString("strasse"),  rs.getString("hausnr"),  rs.getInt("PLZ"), rs.getString("email"), new Date((rs.getLong("zuerst_erstellt"))*1000L), new Date((rs.getLong("zuletzt_geaendert"))*1000L), rs.getString("nutzername"), rs.getString("passwort"), rs.getDouble("bauteilschulden"), new ArrayList<Bauteil>(), false);
-				break;
-			}
-			result.add(tempPerson);
-		}
-		rs.close();
-		stmt.close();
-		return result;
+		String sql = "UPDATE Person SET "+attribut+" = '"+newData+"' WHERE PERSON_ID="+id+";";
+		stmt.executeUpdate(sql);
+		String sql2 = "UPDATE Person SET zuletzt_geaendert = "+(new Date().getTime()/1000)+" WHERE PERSON_ID="+id+";";
+		stmt.executeUpdate(sql2);
+		stmt.close();	
 	}
-	
-	public int getIDByNutzername(String name) throws SQLException, DatabaseException {
-		Statement stmt = c.createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT PERSON_ID FROM PERSON WHERE nutzername = '"+name+"';");
-		if(rs.next()) return rs.getInt(1);
-		else throw new NutzernameNichtVorhandenException();
-	}
-	
+
 	/**
 	 * @author Nico Rychlik
 	 * @param id
@@ -159,24 +140,38 @@ public class SQLManager {
 		stmt.close();	
 	}
 
-	
 	/**
-	 * 
 	 * @author Nico Rychlik
-	 * @param id
-	 * @param attribut
-	 * @param newData
+	 * @return returns all Persons currently in Database as a List<Person>
 	 * @throws SQLException
 	 */
-	public void modifyPerson(int id, String attribut, String newData) throws SQLException{
-		Statement stmt = c.createStatement();
-		String sql = "UPDATE Person SET "+attribut+" = '"+newData+"' WHERE PERSON_ID="+id+";";
-		stmt.executeUpdate(sql);
-		String sql2 = "UPDATE Person SET zuletzt_geaendert = "+(new Date().getTime()/1000)+" WHERE PERSON_ID="+id+";";
-		stmt.executeUpdate(sql2);
-		stmt.close();	
-	}
 	
+	public List<Person> getAllPersons() throws SQLException {
+		List<Person> result= new ArrayList<Person>();
+		Statement stmt = c.createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT * FROM Person ORDER BY rolle ASC;");
+		Person tempPerson=null;
+		while (rs.next()) {
+			switch (rs.getInt("rolle")) {
+			case 0:
+				tempPerson=new Mitglied(rs.getInt("PERSON_ID"), rs.getString("vorname"), rs.getString("nachname"),  rs.getString("strasse"),  rs.getString("hausnr"),  rs.getInt("PLZ"), rs.getString("email"), new Date((rs.getLong("zuerst_erstellt"))*1000L), new Date((rs.getLong("zuletzt_geaendert"))*1000L), rs.getString("nutzername"), rs.getString("passwort"), rs.getDouble("bauteilschulden"), new ArrayList<Bauteil>(), true, rs.getString("telefonnummer"));
+				break;
+			
+			case 1:
+				tempPerson=new Kunde(rs.getInt("PERSON_ID"), rs.getString("vorname"), rs.getString("nachname"),  rs.getString("strasse"),  rs.getString("hausnr"),  rs.getInt("PLZ"), rs.getString("email"), new Date((rs.getLong("zuerst_erstellt"))*1000L), new Date((rs.getLong("zuletzt_geaendert"))*1000L), rs.getString("nutzername"), rs.getString("passwort"), rs.getDouble("bauteilschulden"), new ArrayList<Bauteil>(), false, rs.getString("telefonnummer"));
+				break;
+			
+			case 2:
+				tempPerson=new Lehrstuhlperson(rs.getInt("PERSON_ID"), rs.getString("vorname"), rs.getString("nachname"),  rs.getString("strasse"),  rs.getString("hausnr"),  rs.getInt("PLZ"), rs.getString("email"), new Date((rs.getLong("zuerst_erstellt"))*1000L), new Date((rs.getLong("zuletzt_geaendert"))*1000L), rs.getString("nutzername"), rs.getString("passwort"), rs.getDouble("bauteilschulden"), new ArrayList<Bauteil>(), false, rs.getString("telefonnummer"));
+				break;
+			}
+			result.add(tempPerson);
+		}
+		rs.close();
+		stmt.close();
+		return result;
+	}
+
 	/**
 	 * @author Nico Rychlik
 	 * @param id
@@ -192,24 +187,12 @@ public class SQLManager {
 		stmt.close();
 		return result;
 	}
-	
-	/**
-	 * @author Nico Rychlik
-	 * @param username
-	 * @param password
-	 * @return returns true if username & password are correct
-	 * @throws SQLException
-	 */
-	public boolean login (String username, String password) throws SQLException {
-		boolean result=false;
-		Statement stmt =c.createStatement();
-		String sql="SELECT * FROM PERSON WHERE nutzername= '"+username+"' AND passwort= '"+password+"';";
-		ResultSet rs = stmt.executeQuery(sql);
-		if (rs.next()) result=true;
-		rs.close();
-		stmt.close();
-		
-		return result;
+
+	public int getIDByNutzername(String name) throws SQLException, DatabaseException {
+		Statement stmt = c.createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT PERSON_ID FROM PERSON WHERE nutzername = '"+name+"';");
+		if(rs.next()) return rs.getInt(1);
+		else throw new NutzernameNichtVorhandenException();
 	}
 	
 	/**
@@ -219,6 +202,7 @@ public class SQLManager {
 	 * @throws SQLException
 	 * @throws PersonNichtInDBException 
 	 */
+	
 	public Person getPersonByID (int ID) throws SQLException, PersonNichtInDBException {
 		Person result = null;
 		Statement stmt = c.createStatement();
@@ -226,15 +210,15 @@ public class SQLManager {
 		if(rs.next()) {
 			switch (rs.getInt("rolle")) {
 			case 0:
-				result=new Mitglied(rs.getInt("PERSON_ID"), rs.getString("vorname"), rs.getString("nachname"),  rs.getString("strasse"),  rs.getString("hausnr"),  rs.getInt("PLZ"), rs.getString("email"), new Date((rs.getLong("zuerst_erstellt"))*1000L), new Date((rs.getLong("zuletzt_geaendert"))*1000L), rs.getString("nutzername"), rs.getString("passwort"), rs.getDouble("bauteilschulden"), new ArrayList<Bauteil>(), true);
+				result=new Mitglied(rs.getInt("PERSON_ID"), rs.getString("vorname"), rs.getString("nachname"),  rs.getString("strasse"),  rs.getString("hausnr"),  rs.getInt("PLZ"), rs.getString("email"), new Date((rs.getLong("zuerst_erstellt"))*1000L), new Date((rs.getLong("zuletzt_geaendert"))*1000L), rs.getString("nutzername"), rs.getString("passwort"), rs.getDouble("bauteilschulden"), new ArrayList<Bauteil>(), true, rs.getString("telefonnummer"));
 				break;
 			
 			case 1:
-				result=new Kunde(rs.getInt("PERSON_ID"), rs.getString("vorname"), rs.getString("nachname"),  rs.getString("strasse"),  rs.getString("hausnr"),  rs.getInt("PLZ"), rs.getString("email"), new Date((rs.getLong("zuerst_erstellt"))*1000L), new Date((rs.getLong("zuletzt_geaendert"))*1000L), rs.getString("nutzername"), rs.getString("passwort"), rs.getDouble("bauteilschulden"), new ArrayList<Bauteil>(), false);
+				result=new Kunde(rs.getInt("PERSON_ID"), rs.getString("vorname"), rs.getString("nachname"),  rs.getString("strasse"),  rs.getString("hausnr"),  rs.getInt("PLZ"), rs.getString("email"), new Date((rs.getLong("zuerst_erstellt"))*1000L), new Date((rs.getLong("zuletzt_geaendert"))*1000L), rs.getString("nutzername"), rs.getString("passwort"), rs.getDouble("bauteilschulden"), new ArrayList<Bauteil>(), false, rs.getString("telefonnummer"));
 				break;
 			
 			case 2:
-				result=new Lehrstuhlperson(rs.getInt("PERSON_ID"), rs.getString("vorname"), rs.getString("nachname"),  rs.getString("strasse"),  rs.getString("hausnr"),  rs.getInt("PLZ"), rs.getString("email"), new Date((rs.getLong("zuerst_erstellt"))*1000L), new Date((rs.getLong("zuletzt_geaendert"))*1000L), rs.getString("nutzername"), rs.getString("passwort"), rs.getDouble("bauteilschulden"), new ArrayList<Bauteil>(), false);
+				result=new Lehrstuhlperson(rs.getInt("PERSON_ID"), rs.getString("vorname"), rs.getString("nachname"),  rs.getString("strasse"),  rs.getString("hausnr"),  rs.getInt("PLZ"), rs.getString("email"), new Date((rs.getLong("zuerst_erstellt"))*1000L), new Date((rs.getLong("zuletzt_geaendert"))*1000L), rs.getString("nutzername"), rs.getString("passwort"), rs.getDouble("bauteilschulden"), new ArrayList<Bauteil>(), false, rs.getString("telefonnummer"));
 				break;
 			}
 		}
@@ -244,6 +228,26 @@ public class SQLManager {
 		else throw new PersonNichtInDBException();
 	}
 	
+	/**
+	 * This method takes a list of all admins from database.
+	 * 
+	 * @author 
+	 * @return list of all admins
+	 * @throws SQLException
+	 * @throws DatabaseException
+	 */
+	public List<Person> getAllAdmins() throws SQLException, DatabaseException{
+		List<Person> result= new ArrayList<Person>();
+		Statement stmt = c.createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT Person_ID FROM Person WHERE rolle = 0;");
+		while (rs.next()) {
+				result.add(this.getPersonByID(rs.getInt(1)));
+		}
+		stmt.close();
+		rs.close();
+		return result;
+	}
+
 	/**
 	 * @author Nico Rychlik
 	 * @param name
@@ -262,6 +266,24 @@ public class SQLManager {
 		rs.close();
 	}
 	
+	/**
+	 * returns all Kategorien
+	 * @author Nico Rychlik
+	 * @return returns List of all Kategories
+	 * @throws SQLException
+	 */
+	public List<Kategorie> getAllKategorie() throws SQLException {
+		List<Kategorie> result = new ArrayList<Kategorie>();
+		Statement stmt = c.createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT * FROM Kategorie;");
+		while(rs.next()) {
+			result.add(new Kategorie (rs.getInt("KATEGORIE_ID"),rs.getString("name")));
+		}
+		stmt.close();		
+		rs.close();
+		return result;
+	}
+
 	/**
 	 * loescht die Kategorie und weist Bauteilen die dieser Kategorie angehoeren die Trash Kategorie zu und erstellt sie ggf.
 	 * @author Nico Rychlik
@@ -308,15 +330,27 @@ public class SQLManager {
 		stmt.close();	
 	}
 	
-	public void deleteBauteilByID(int ID) throws SQLException{
+	/**
+	 * This method takes a "Kategorie" by ID from database.
+	 * 
+	 * @author 
+	 * @param id
+	 * @return the "Kategorie"
+	 * @throws SQLException
+	 */
+	public Kategorie getKategorieByID (int id) throws SQLException {
+		Kategorie result = null;
 		Statement stmt = c.createStatement();
-		String sql = "DELETE FROM Bauteilwarenkorb WHERE BAUTEIL_ID = "+ID+";";
-		stmt.executeUpdate(sql);
-		sql="DELETE FROM Bauteil WHERE BAUTEIL_ID = "+ID+";";
-		stmt.executeUpdate(sql);
-		stmt.close();
+		String sql="SELECT * FROM Kategorie WHERE KATEGORIE_ID = "+id+";";
+		ResultSet rs = stmt.executeQuery(sql);
+		while(rs.next()) {
+			result=(new Kategorie (rs.getInt("KATEGORIE_ID"),rs.getString("name")));
+		}
+		stmt.close();		
+		rs.close();
+		return result;
 	}
-	
+
 	/**
 	 * @author Nico Rychlik
 	 * @param name
@@ -356,6 +390,15 @@ public class SQLManager {
 		stmt.close();	
 	}
 	
+	public void deleteBauteilByID(int ID) throws SQLException{
+		Statement stmt = c.createStatement();
+		String sql = "DELETE FROM Bauteilwarenkorb WHERE BAUTEIL_ID = "+ID+";";
+		stmt.executeUpdate(sql);
+		sql="DELETE FROM Bauteil WHERE BAUTEIL_ID = "+ID+";";
+		stmt.executeUpdate(sql);
+		stmt.close();
+	}
+
 	/**
 	 * @author Nico Rychlik
 	 * @param id
@@ -367,7 +410,6 @@ public class SQLManager {
 	
 	// IN den Warenkorb REIN 
 	
-	//TODO: BUGFIX
 	public void removeBauteil(int id, int anzahl, int person) throws SQLException, BauteilAnzahlZuKleinException {
 		Statement stmt = c.createStatement();
 		String sql = "SELECT gelagert FROM Bauteil WHERE BAUTEIL_ID = "+id+";";
@@ -408,7 +450,6 @@ public class SQLManager {
 	 */
 	// Aus dem Warenkorb IN dem Bestand
 	
-	//TODO: BUGFIX
 	public void addBauteil(int id, int anzahl, int person) throws SQLException, BauteilNichtImWarenkorbException, ZuWenigBauteileImWarenkorbException {
 		Statement stmt = c.createStatement();
 		String sql = "UPDATE Bauteil SET gelagert = gelagert + "+anzahl+" WHERE BAUTEIL_ID = "+id+";";
@@ -483,27 +524,6 @@ public class SQLManager {
 	}
 
 	/**
-	 * This method takes a "Kategorie" by ID from database.
-	 * 
-	 * @author 
-	 * @param id
-	 * @return the "Kategorie"
-	 * @throws SQLException
-	 */
-	public Kategorie getKategorieByID (int id) throws SQLException {
-		Kategorie result = null;
-		Statement stmt = c.createStatement();
-		String sql="SELECT * FROM Kategorie WHERE KATEGORIE_ID = "+id+";";
-		ResultSet rs = stmt.executeQuery(sql);
-		while(rs.next()) {
-			result=(new Kategorie (rs.getInt("KATEGORIE_ID"),rs.getString("name")));
-		}
-		stmt.close();		
-		rs.close();
-		return result;
-	}
-
-	/**
 	 * This method creates an "Auftrag" and inserts it into database.
 	 * 
 	 * @author 
@@ -546,6 +566,23 @@ public class SQLManager {
 		String sql = "UPDATE Auftrag SET "+attribut+" = '"+newData+"' WHERE AUFTRAG_ID="+AUFTRAG_ID+";";
 		stmt.executeUpdate(sql);
 		stmt.close();	
+	}
+
+	//Nur loeschen wenns keine Rechnung gibt
+	/**
+	 * @author Christin Meyer, Nico Rychlik
+	 * @param id
+	 * @throws SQLException
+	 * @throws deleteAuftragExRechnungException 
+	 */
+	public void deleteAuftrag (int id) throws SQLException, deleteAuftragExRechnungException{
+		Statement stmt = c.createStatement();
+		if (stmt.executeQuery("SELECT * FROM Rechnung WHERE AUFTRAG_ID = "+id+";").next()) throw new deleteAuftragExRechnungException();
+		String sql ="DELETE FROM Auftrag WHERE AUFTRAG_ID="+id+";";
+		stmt.executeUpdate(sql);
+		sql ="DELETE FROM Verbindung_Person_Auftrag WHERE AUFTRAG_ID="+id+";";
+		stmt.executeUpdate(sql);
+		stmt.close();
 	}
 
 	/**
@@ -613,23 +650,6 @@ public class SQLManager {
 		sql="UPDATE Auftrag SET date_"+Status+" = "+(new Date().getTime()/1000)+" WHERE AUFTRAG_ID = "+id+";";
 		stmt.executeUpdate(sql);
 		stmt.close();	
-	}
-	
-	//Nur loeschen wenns keine Rechnung gibt
-	/**
-	 * @author Christin Meyer, Nico Rychlik
-	 * @param id
-	 * @throws SQLException
-	 * @throws deleteAuftragExRechnungException 
-	 */
-	public void deleteAuftrag (int id) throws SQLException, deleteAuftragExRechnungException{
-		Statement stmt = c.createStatement();
-		if (stmt.executeQuery("SELECT * FROM Rechnung WHERE AUFTRAG_ID = "+id+";").next()) throw new deleteAuftragExRechnungException();
-		String sql ="DELETE FROM Auftrag WHERE AUFTRAG_ID="+id+";";
-		stmt.executeUpdate(sql);
-		sql ="DELETE FROM Verbindung_Person_Auftrag WHERE AUFTRAG_ID="+id+";";
-		stmt.executeUpdate(sql);
-		stmt.close();
 	}
 	
 	/**
@@ -785,6 +805,62 @@ public class SQLManager {
 	}
 	
 	/**
+	 * This method inserts a new "Topf" into database.
+	 * 
+	 * @author Joel Wolf
+	 * @param name the name of the "Topf"
+	 * @param soll "soll"-value of the "Topf"
+	 * @param ist "ist"-value of the "Topf"
+	 * @throws SQLException
+	 */
+	public void createTopf(String name, double soll, double ist, int KASSE_ID) throws SQLException {
+		
+		Statement stmt = c.createStatement();
+		String sql = "INSERT INTO Topf (name, soll, ist, KASSE_ID) VALUES ('" + name + "', " + soll + ", " + ist + ", " + KASSE_ID + ");";
+		
+		stmt.executeUpdate(sql);
+		
+		stmt.close();
+	}
+
+	/**
+	 * This method saves the modified attribute from a "Topf" to database.
+	 * 
+	 * @author Joel Wolf
+	 * @param TOPF_ID
+	 * @param attribut the modified attribute from the "Topf"
+	 * @param newData the new value from the attribute
+	 * @throws SQLException
+	 */
+	public void modifyTopf(int TOPF_ID, String attribut, String newData) throws SQLException {
+		
+		Statement stmt = c.createStatement();
+		String sql = "UPDATE Topf SET " + attribut + " = '" + newData + "' WHERE TOPF_ID = " + TOPF_ID + ";";
+		
+		stmt.executeUpdate(sql);
+		
+		stmt.close();
+	}
+
+	/**
+	 * This method deletes a "Topf" from database.
+	 * 
+	 * @author Joel Wolf
+	 * @param TOPF_ID
+	 * @throws SQLException
+	 * @throws DatabaseException 
+	 */
+	public void deleteTopf(int TOPF_ID) throws SQLException, DatabaseException {
+		Statement stmt = c.createStatement();
+		String sql="SELECT * FROM Rechnung WHERE TOPF_ID = "+TOPF_ID+";";
+		if(!stmt.executeQuery(sql).next()) {
+			sql = "DELETE FROM Topf WHERE TOPF_ID = " + TOPF_ID + ";";
+			stmt.executeUpdate(sql);
+		} else throw new DeleteTopfException();
+		stmt.close();	
+	}
+
+	/**
 	 * This method loads the requested "Topf" from database.
 	 * 
 	 * @author Joel Wolf
@@ -838,61 +914,72 @@ public class SQLManager {
 	}
 	
 	/**
-	 * This method saves the modified attribute from a "Topf" to database.
+	 * This method inserts a new "Kasse" into database.
 	 * 
 	 * @author Joel Wolf
-	 * @param TOPF_ID
-	 * @param attribut the modified attribute from the "Topf"
+	 * @param KASSE_ID
+	 * @param name the name of the "Kasse"
+	 * @param soll "soll"-value of the "Kasse"
+	 * @param ist "ist"-value of the "Kasse"
+	 * @throws SQLException
+	 */
+	public void createKasse( String name, double soll, double ist, int typ, long ksnummer) throws SQLException {
+		
+		Statement stmt = c.createStatement();
+		String sql = "INSERT INTO Kasse ( name, soll, ist, typ) VALUES ("
+				+ "'" + name + "', " + soll + ",  " + ist + " , "+typ+");";		
+		stmt.executeUpdate(sql);
+		if (typ==2) {
+			sql="SELECT KASSE_ID FROM KASSE WHERE KASSE_ID = (SELECT MAX(KASSE_ID) FROM KASSE);";
+			int id =stmt.executeQuery(sql).getInt(1);
+			sql="INSERT INTO VERBINDUNG_KASSE_KOSTENSTELLENNUMMER (KASSE_ID, kostenstellennummer) VALUES ('"+id+"' , '"+ksnummer+"') ;";
+			stmt.executeUpdate(sql);
+		}
+		stmt.close();
+	}
+
+	/**
+	 * This method saves the modified attribute from a "Kasse" to database.
+	 * 
+	 * @author Joel Wolf
+	 * @param KASSE_ID
+	 * @param attribut the modified attribute from the "Kasse"
 	 * @param newData the new value from the attribute
 	 * @throws SQLException
 	 */
-	public void modifyTopf(int TOPF_ID, String attribut, String newData) throws SQLException {
+	public void modifyKasse(int KASSE_ID, String attribut, String newData) throws SQLException {
 		
 		Statement stmt = c.createStatement();
-		String sql = "UPDATE Topf SET " + attribut + " = '" + newData + "' WHERE TOPF_ID = " + TOPF_ID + ";";
-		
+		String sql="";
+		if(!attribut.equals("kostenstellennummer")) {
+			sql = "UPDATE Kasse SET " + attribut + " = '" + newData + "' WHERE KASSE_ID = " + KASSE_ID + ";";
+		} else {
+			sql = "UPDATE VERBINDUNG_Kasse_KOSTENSTELLENNUMMER SET " + attribut + " = '" + newData + "' WHERE KASSE_ID = " + KASSE_ID + ";";
+		}
 		stmt.executeUpdate(sql);
-		
 		stmt.close();
 	}
-	
+
 	/**
-	 * This method inserts a new "Topf" into database.
+	 * This method deletes a "Kasse" from database.
 	 * 
 	 * @author Joel Wolf
-	 * @param name the name of the "Topf"
-	 * @param soll "soll"-value of the "Topf"
-	 * @param ist "ist"-value of the "Topf"
+	 * @param KASSE_ID
 	 * @throws SQLException
 	 */
-	public void createTopf(String name, double soll, double ist, int KASSE_ID) throws SQLException {
-		
+	public void deleteKasse(int KASSE_ID) throws SQLException, DatabaseException {
 		Statement stmt = c.createStatement();
-		String sql = "INSERT INTO Topf (name, soll, ist, KASSE_ID) VALUES ('" + name + "', " + soll + ", " + ist + ", " + KASSE_ID + ");";
-		
-		stmt.executeUpdate(sql);
-		
-		stmt.close();
-	}
-	
-	/**
-	 * This method deletes a "Topf" from database.
-	 * 
-	 * @author Joel Wolf
-	 * @param TOPF_ID
-	 * @throws SQLException
-	 * @throws DatabaseException 
-	 */
-	public void deleteTopf(int TOPF_ID) throws SQLException, DatabaseException {
-		Statement stmt = c.createStatement();
-		String sql="SELECT * FROM Rechnung WHERE TOPF_ID = "+TOPF_ID+";";
+		String sql = "SELECT* FROM TOPF WHERE KASSE_ID = "+KASSE_ID+";";
 		if(!stmt.executeQuery(sql).next()) {
-			sql = "DELETE FROM Topf WHERE TOPF_ID = " + TOPF_ID + ";";
+			sql = "DELETE FROM Kasse WHERE KASSE_ID = " + KASSE_ID + ";";
 			stmt.executeUpdate(sql);
-		} else throw new DeleteTopfException();
+			if(stmt.executeQuery("SELECT * FROM VERBINDUNG_KASSE_KOSTENSTELLENNUMMER WHERE KASSE_ID = "+KASSE_ID+";").next()) {
+				stmt.executeUpdate("DELETE FROM VERBINDUNG_KASSE_KOSTENSTELLENNUMMER WHERE KASSE_ID = "+KASSE_ID+";");
+			}
+		} else throw new DeleteKasseException();
 		stmt.close();	
 	}
-	
+
 	/**
 	 * This method loads the requested "Kasse" from database.
 	 * 
@@ -973,104 +1060,20 @@ public class SQLManager {
 	}
 	
 	/**
-	 * This method saves the modified attribute from a "Kasse" to database.
-	 * 
-	 * @author Joel Wolf
-	 * @param KASSE_ID
-	 * @param attribut the modified attribute from the "Kasse"
-	 * @param newData the new value from the attribute
-	 * @throws SQLException
-	 */
-	public void modifyKasse(int KASSE_ID, String attribut, String newData) throws SQLException {
-		
-		Statement stmt = c.createStatement();
-		String sql="";
-		if(!attribut.equals("kostenstellennummer")) {
-			sql = "UPDATE Kasse SET " + attribut + " = '" + newData + "' WHERE KASSE_ID = " + KASSE_ID + ";";
-		} else {
-			sql = "UPDATE VERBINDUNG_Kasse_KOSTENSTELLENNUMMER SET " + attribut + " = '" + newData + "' WHERE KASSE_ID = " + KASSE_ID + ";";
-		}
-		stmt.executeUpdate(sql);
-		stmt.close();
-	}
-	
-	/**
-	 * This method inserts a new "Kasse" into database.
-	 * 
-	 * @author Joel Wolf
-	 * @param KASSE_ID
-	 * @param name the name of the "Kasse"
-	 * @param soll "soll"-value of the "Kasse"
-	 * @param ist "ist"-value of the "Kasse"
-	 * @throws SQLException
-	 */
-	public void createKasse( String name, double soll, double ist, int typ, long ksnummer) throws SQLException {
-		
-		Statement stmt = c.createStatement();
-		String sql = "INSERT INTO Kasse ( name, soll, ist, typ) VALUES ("
-				+ "'" + name + "', " + soll + ",  " + ist + " , "+typ+");";		
-		stmt.executeUpdate(sql);
-		if (typ==2) {
-			sql="SELECT KASSE_ID FROM KASSE WHERE KASSE_ID = (SELECT MAX(KASSE_ID) FROM KASSE);";
-			int id =stmt.executeQuery(sql).getInt(1);
-			sql="INSERT INTO VERBINDUNG_KASSE_KOSTENSTELLENNUMMER (KASSE_ID, kostenstellennummer) VALUES ('"+id+"' , '"+ksnummer+"') ;";
-			stmt.executeUpdate(sql);
-		}
-		stmt.close();
-	}
-	
-	/**
-	 * This method deletes a "Kasse" from database.
-	 * 
-	 * @author Joel Wolf
-	 * @param KASSE_ID
-	 * @throws SQLException
-	 */
-	public void deleteKasse(int KASSE_ID) throws SQLException, DatabaseException {
-		//TODO: Nur loeschen wenn kein Topf in Kasse
-		Statement stmt = c.createStatement();
-		String sql = "SELECT* FROM TOPF WHERE KASSE_ID = "+KASSE_ID+";";
-		if(!stmt.executeQuery(sql).next()) {
-			sql = "DELETE FROM Kasse WHERE KASSE_ID = " + KASSE_ID + ";";
-			stmt.executeUpdate(sql);
-			if(stmt.executeQuery("SELECT * FROM VERBINDUNG_KASSE_KOSTENSTELLENNUMMER WHERE KASSE_ID = "+KASSE_ID+";").next()) {
-				stmt.executeUpdate("DELETE FROM VERBINDUNG_KASSE_KOSTENSTELLENNUMMER WHERE KASSE_ID = "+KASSE_ID+";");
-			}
-		} else throw new DeleteKasseException();
-		stmt.close();	
-	}
-	
-	/**
-	 * 
-	 * @author Nico Rychlik
-	 * @param i
-	 * @return true if i is 1 else false
-	 */
-	public boolean convertIntToBoolean (int i) {
-		if (i==1) return true;
-		else return false;
-	}
-	
-	/**
-	 * This method takes a list of all admins from database.
+	 * This method clears a "Bauteilwarenkorb" and puts it into database.
 	 * 
 	 * @author 
-	 * @return list of all admins
+	 * @param id
 	 * @throws SQLException
-	 * @throws DatabaseException
 	 */
-	public List<Person> getAllAdmins() throws SQLException, DatabaseException{
-		List<Person> result= new ArrayList<Person>();
+	public void clearBauteilwarenkorb (int id) throws SQLException {
 		Statement stmt = c.createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT Person_ID FROM Person WHERE rolle = 0;");
-		while (rs.next()) {
-				result.add(this.getPersonByID(rs.getInt(1)));
-		}
-		stmt.close();
-		rs.close();
-		return result;
+		String sql = "DELETE FROM Bauteilwarenkorb WHERE PERSON_ID = " + id + ";";
+		stmt.executeUpdate(sql);
+		this.modifyPerson(id, "bauteilschulden", "0.0");
+		stmt.close();	
 	}
-	
+
 	/**
 	 * This method takes a "Bauteilwarenkorb" by ID from database.
 	 * 
@@ -1093,18 +1096,14 @@ public class SQLManager {
 	}
 	
 	/**
-	 * This method clears a "Bauteilwarenkorb" and puts it into database.
 	 * 
-	 * @author 
-	 * @param id
-	 * @throws SQLException
+	 * @author Nico Rychlik
+	 * @param i
+	 * @return true if i is 1 else false
 	 */
-	public void clearBauteilwarenkorb (int id) throws SQLException {
-		Statement stmt = c.createStatement();
-		String sql = "DELETE FROM Bauteilwarenkorb WHERE PERSON_ID = " + id + ";";
-		stmt.executeUpdate(sql);
-		this.modifyPerson(id, "bauteilschulden", "0.0");
-		stmt.close();	
+	public boolean convertIntToBoolean (int i) {
+		if (i==1) return true;
+		else return false;
 	}
 	
 }

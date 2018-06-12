@@ -53,16 +53,14 @@ public class MainGUI extends Application {
 					try {
 						new GUIPersonenverwaltung(tb1,Personenverwaltung.getInstance().getPersonByID(nutzerID)).open();
 					} catch (DatabaseException | SQLException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+						AlertBox.display("Fehler", e1.getMessage());;
 					}
 				if(newTab.equals(tb2)) new GUIFertigungsverwaltung(tb2).open();
 				if(newTab.equals(tb3))
 					try {
 						new GUIFinanzverwaltung(tb3, admin, Personenverwaltung.getInstance().getPersonByID(nutzerID)).open();
 					} catch (DatabaseException | SQLException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+						AlertBox.display("Fehler", e1.getMessage());
 					}
 				if(newTab.equals(tb4))
 					try {
@@ -94,8 +92,7 @@ public class MainGUI extends Application {
 			primaryStage.centerOnScreen();
 			primaryStage.show();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			AlertBox.display("Fehler", e.getMessage());
 		}
 	  }
 

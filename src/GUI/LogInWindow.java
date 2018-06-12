@@ -78,27 +78,16 @@ public class LogInWindow extends Application {
         		
         		String nutzer=nutzerTextFeld.getText();
         		String pw=passTextFeld.getText();
-        		//Test
-        		//System.out.println(nutzerTextFeld.getText() + "  " + passTextFeld.getText());
-        		
-        		
-        		//TODO: Exceptions -> NotaValidString fuer Benutzername
-        		
-        		
-        		//Moeglichkeit dem Nutzer anzuzeigen, dass entweder Nutzername oder 
-        		//Passwort falsch ist.
-       
+     
         		
         		//Bei Betaetigen des Knopfes oeffnet sich die Tab Instanz
         		
         			try {
 						if(LogIn.getInstance().login(nutzer, pw)) new MainGUI(Personenverwaltung.getInstance().checkadmin(nutzer),Personenverwaltung.getInstance().getIDByNutzername(nutzer)).start(primaryStage);
-						else actiontarget.setText(new LoginException().getMessage());;//TODO LoginException.getMessage nutzen
+						else actiontarget.setText(new LoginException().getMessage());;
 					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
 						actiontarget.setText(e1.getMessage()); // <-- Diesen String nutzen
 					} catch (Exception e2) {
-						// TODO Auto-generated catch block
 						actiontarget.setText(e2.getMessage());
 					} 
 				

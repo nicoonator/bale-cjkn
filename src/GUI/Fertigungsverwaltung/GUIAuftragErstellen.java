@@ -178,9 +178,9 @@ public class GUIAuftragErstellen {
 							comboBoxAdmins.setPromptText("Admin auswaehlen");
 						}
 					} catch (SQLException e) {
-						//TODO
+						AlertBox.display("Fehler", e.getMessage());
 					} catch (DatabaseException e) {
-						//TODO
+						AlertBox.display("Fehler", e.getMessage());
 					}
 				}
 			});
@@ -214,8 +214,7 @@ public class GUIAuftragErstellen {
 						
 						
 					} catch (SQLException | DatabaseException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+						AlertBox.display("Fehler", e1.getMessage());
 					}
 					
 					
@@ -268,8 +267,7 @@ public class GUIAuftragErstellen {
 					resultAuftrag.add(a);
 				}
 			} catch (DatabaseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				AlertBox.display("Fehler", e.getMessage());
 			}
 			return resultAuftrag;
 		}
@@ -285,8 +283,7 @@ public class GUIAuftragErstellen {
 					result.add(p);
 				}
 			} catch (DatabaseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				AlertBox.display("Fehler", e.getMessage());
 			}
 			return result;
 		}

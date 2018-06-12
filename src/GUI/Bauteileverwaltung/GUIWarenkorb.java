@@ -121,10 +121,11 @@ public class GUIWarenkorb {
 		
 		TextField anzahlInput = new TextField();
 		GridPane.setConstraints(anzahlInput, 1, 1);
+		anzahlInput.setDisable(true);
 		
 		Button takeOut = new Button("Herausnehmen");
 		GridPane.setConstraints(takeOut, 1, 2);
-		
+		takeOut.setDisable(true);
 		
 		grid.getChildren().addAll(bauteilLabel, bauteilnameLabel, anzahlLabel, anzahlInput, takeOut);
 
@@ -149,11 +150,12 @@ public class GUIWarenkorb {
 		
 		TextField anzahl2Input = new TextField();
 		GridPane.setConstraints(anzahl2Input, 1, 1);
+		anzahl2Input.setDisable(true);
 		
 		Button takeBack = new Button("Zuruecklegen");
 		GridPane.setConstraints(takeBack, 1, 2);
-		
-		
+		takeBack.setDisable(true);
+
 		grid2.getChildren().addAll(bauteil2Label, bauteil2nameLabel, anzahl2Label, anzahl2Input, takeBack);
 		
 		// End of Center
@@ -196,13 +198,11 @@ public class GUIWarenkorb {
 		bot.setAlignment(Pos.BOTTOM_CENTER);
 		bot.setSpacing(10);
 		bot.setPadding(new Insets(10,10,10,20));
-		//TODO:
 		Label schulden =new Label();
 		try {
 			schulden.setText("Aktuelle Schulden in Euro: "+String.valueOf(Personenverwaltung.getInstance().getPersonByID(nutzer.getPERSON_ID()).getBauteilschulden()));
 		} catch (DatabaseException | SQLException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
+			AlertBox.display("Fehler", e2.getMessage());
 		}
 		
 		bot.getChildren().addAll(schulden);
@@ -221,6 +221,10 @@ public class GUIWarenkorb {
 		//Handling fuer Klicks auf Tabelleneintrag
 		bauteillager.setOnMouseClicked(e -> {
 			if(!(bauteillager.getSelectionModel().isEmpty())) {
+				takeBack.setDisable(false);
+				takeOut.setDisable(false);
+				anzahlInput.setDisable(false);
+				anzahl2Input.setDisable(false);
 				Bauteil tempBauteil = bauteillager.getSelectionModel().getSelectedItem();
 				bp.setCenter(grid);
 				bauteilnameLabel.setText(tempBauteil.getName());
@@ -231,6 +235,10 @@ public class GUIWarenkorb {
 		//Handling fuer Klicks auf Tabelleneintrag
 		warenkorb.setOnMouseClicked(e -> {
 			if(!(warenkorb.getSelectionModel().isEmpty())) {
+				takeBack.setDisable(false);
+				takeOut.setDisable(false);
+				anzahlInput.setDisable(false);
+				anzahl2Input.setDisable(false);
 				Bauteilwarenkorbelement tempBauteilelement = warenkorb.getSelectionModel().getSelectedItem();
 				bp.setCenter(grid2);
 				bauteil2nameLabel.setText(tempBauteilelement.getName());
@@ -241,18 +249,24 @@ public class GUIWarenkorb {
 		//Hinzufuegen von Items in den Personen Warenkorb
 		takeOut.setOnMouseClicked(e -> {
 			if(Validation.IntegerInputValidation(anzahlInput)) {
-				Bauteil tempBauteil = bauteillager.getSelectionModel().getSelectedItem();
-				try {
-					Bauteileverwaltung.getInstance().removeBauteil(bauteillager.getSelectionModel().getSelectedItem().getID(), Integer.parseInt(anzahlInput.getText()), nutzer.getPERSON_ID());
-					bauteillager.setItems(getBauteile());
-					warenkorb.setItems(getBauteilewarenkorb());
-					schulden.setText("Aktuelle Schulden in Euro: "+Double.toString(Personenverwaltung.getInstance().getPersonByID(nutzer.getPERSON_ID()).getBauteilschulden()) +" Euro");
-				} catch (NumberFormatException | DatabaseException | SQLException e1) {
-					AlertBox.display("Fehler", e1.getMessage());
-				} finally {	
-					bauteillager.getSelectionModel().select(tempBauteil);
-					
+				if((bauteillager.getSelectionModel().getSelectedItem() == null)){
+					AlertBox.display("Fehler", "Kein Bauteil einer Tabelle ausgewaehlt!");
 				}
+				else{
+					Bauteil tempBauteil = bauteillager.getSelectionModel().getSelectedItem();
+					try {
+						Bauteileverwaltung.getInstance().removeBauteil(bauteillager.getSelectionModel().getSelectedItem().getID(), Integer.parseInt(anzahlInput.getText()), nutzer.getPERSON_ID());
+						bauteillager.setItems(getBauteile());
+						warenkorb.setItems(getBauteilewarenkorb());
+						schulden.setText("Aktuelle Schulden in Euro: "+Double.toString(Personenverwaltung.getInstance().getPersonByID(nutzer.getPERSON_ID()).getBauteilschulden()) +" Euro");
+					} catch (NumberFormatException | DatabaseException | SQLException e1) {
+						AlertBox.display("Fehler", e1.getMessage());
+					} finally {	
+						bauteillager.getSelectionModel().select(tempBauteil);
+						
+					}
+				}
+				
 			}
 		});
 		
@@ -260,17 +274,22 @@ public class GUIWarenkorb {
 		//Hinzufuegen von Items aus dem Personen Warenkorb ins Lager
 		takeBack.setOnMouseClicked(e -> {
 			if(Validation.IntegerInputValidation(anzahl2Input)) {
-				Bauteilwarenkorbelement tempWarenkorbelement = warenkorb.getSelectionModel().getSelectedItem();
-				try {
-					Bauteileverwaltung.getInstance().addBauteil(warenkorb.getSelectionModel().getSelectedItem().getBauteil().getID(), Integer.parseInt(anzahl2Input.getText()), nutzer.getPERSON_ID());
-					warenkorb.setItems(getBauteilewarenkorb());
-					bauteillager.setItems(getBauteile());
-					schulden.setText("Aktuelle Schulden in Euro: "+Double.toString(Personenverwaltung.getInstance().getPersonByID(nutzer.getPERSON_ID()).getBauteilschulden()) +" Euro");
-				} catch (NumberFormatException | DatabaseException | SQLException e1) {
-					AlertBox.display("Fehler", e1.getMessage());
-				} finally {	
-					warenkorb.getSelectionModel().select(tempWarenkorbelement);
+				if((warenkorb.getSelectionModel().getSelectedItem() == null)){
+					AlertBox.display("Fehler", "Kein Bauteil einer Tabelle ausgewaehlt!");
+				}else{
+					Bauteilwarenkorbelement tempWarenkorbelement = warenkorb.getSelectionModel().getSelectedItem();
+					try {
+						Bauteileverwaltung.getInstance().addBauteil(warenkorb.getSelectionModel().getSelectedItem().getBauteil().getID(), Integer.parseInt(anzahl2Input.getText()), nutzer.getPERSON_ID());
+						warenkorb.setItems(getBauteilewarenkorb());
+						bauteillager.setItems(getBauteile());
+						schulden.setText("Aktuelle Schulden in Euro: "+Double.toString(Personenverwaltung.getInstance().getPersonByID(nutzer.getPERSON_ID()).getBauteilschulden()) +" Euro");
+					} catch (NumberFormatException | DatabaseException | SQLException e1) {
+						AlertBox.display("Fehler", e1.getMessage());
+					} finally {	
+						warenkorb.getSelectionModel().select(tempWarenkorbelement);
+					}
 				}
+				
 			}
 		});
 		

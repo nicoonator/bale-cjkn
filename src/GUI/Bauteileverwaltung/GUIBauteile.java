@@ -41,8 +41,7 @@ public class GUIBauteile {
 		try {
 			return Bauteileverwaltung.getInstance().getAllKategorie();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			AlertBox.display("Fehler", e.getMessage());
 			return null;
 		}
 	}
@@ -116,18 +115,21 @@ public class GUIBauteile {
 		GridPane.setConstraints(btnameLabel, 0, 0);
 		
 		TextField btnameInput = new TextField();
+		btnameInput.setDisable(true);
 		GridPane.setConstraints(btnameInput, 1, 0);
 		
 		Label linkLabel = new Label("Link: ");
 		GridPane.setConstraints(linkLabel, 0, 1);
 		
 		TextField linkInput = new TextField();
+		linkInput.setDisable(true);
 		GridPane.setConstraints(linkInput, 1, 1);
 		
 		Label preisLabel = new Label("Preis: ");
 		GridPane.setConstraints(preisLabel, 0, 2);
 		
 		TextField preisInput = new TextField();
+		preisInput.setDisable(true);
 		GridPane.setConstraints(preisInput, 1, 2);
 		preisInput.setDisable(true);
 		
@@ -135,30 +137,35 @@ public class GUIBauteile {
 		GridPane.setConstraints(gelagertLabel, 0, 3);
 		
 		TextField gelagertInput = new TextField();
+		gelagertInput.setDisable(true);
 		GridPane.setConstraints(gelagertInput, 1, 3);
 		
 		Label geplantLabel = new Label("geplant: ");
 		GridPane.setConstraints(geplantLabel, 0, 4);
 		
 		TextField geplantInput = new TextField();
+		geplantInput.setDisable(true);
 		GridPane.setConstraints(geplantInput, 1, 4);
 		
 		Label bestelltLabel = new Label("bestellt: ");
 		GridPane.setConstraints(bestelltLabel, 0, 5);
 		
 		TextField bestelltInput = new TextField();
+		bestelltInput.setDisable(true);
 		GridPane.setConstraints(bestelltInput, 1, 5);
 		
 		Label ortLabel = new Label("Ort: ");
 		GridPane.setConstraints(ortLabel, 0, 6);
 		
 		TextField ortInput = new TextField();
+		ortInput.setDisable(true);
 		GridPane.setConstraints(ortInput, 1, 6);
 		
 		Label kategorieLabel = new Label("Kategorie");
 		GridPane.setConstraints(kategorieLabel, 0, 7);
 		
 		ComboBox<Kategorie> comboBoxKategorie = new ComboBox<>();
+		comboBoxKategorie.setDisable(true);
 		comboBoxKategorie.setPromptText("Kategorie");
 		comboBoxKategorie.getItems().addAll(kategorien);
 		
@@ -201,12 +208,13 @@ public class GUIBauteile {
 					Bauteileverwaltung.getInstance().modifyBauteil(tempBauteil.getID(), "ort", ortInput.getText());
 					Bauteileverwaltung.getInstance().modifyBauteil(tempBauteil.getID(), "KATEGORIE_ID", String.valueOf(comboBoxKategorie.getSelectionModel().getSelectedItem().getID()));
 					bauteillager.setItems(GUIWarenkorb.getBauteile());
+					AlertBox.display("Erfolg!", "Bauteil bearbeitet!");
 				}
 			} catch (SQLException e1) {
 			AlertBox.display("Fehler", e1.getMessage());
 			} finally {
 				bauteillager.getSelectionModel().select(tempBauteil);
-				AlertBox.display("Erfolg!", "Bauteil bearbeitet!");
+				
 			}
 			
 		});
@@ -224,7 +232,7 @@ public class GUIBauteile {
 			} finally {
 				modify.setDisable(true);
 				delete.setDisable(true);
-				//TODO Button Clearen
+				open();
 			}
 			
 		});
@@ -239,20 +247,29 @@ public class GUIBauteile {
 				bp.setCenter(grid);
 				btnameInput.setText(tempBauteil.getName());
 				btnameInput.setStyle(null);
+				btnameInput.setDisable(false);
 				linkInput.setText(tempBauteil.getLink());
 				linkInput.setStyle(null);
+				linkInput.setDisable(false);
 				preisInput.setText(String.valueOf(tempBauteil.getPreis()));
 				preisInput.setStyle(null);
+				preisInput.setDisable(false);
 				gelagertInput.setText(Integer.toString(tempBauteil.getGelagert()));
 				gelagertInput.setStyle(null);
+				gelagertInput.setDisable(false);
 				geplantInput.setText(Integer.toString(tempBauteil.getGeplant()));
 				geplantInput.setStyle(null);
+				geplantInput.setDisable(false);
 				bestelltInput.setText(Integer.toString(tempBauteil.getBestellt()));
 				bestelltInput.setStyle(null);
+				bestelltInput.setDisable(false);
 				ortInput.setText(tempBauteil.getOrt());
 				ortInput.setStyle(null);
+				ortInput.setDisable(false);
 				comboBoxKategorie.getSelectionModel().select(this.indexOf(tempBauteil.getKategorie_ID()));
+				comboBoxKategorie.setDisable(false);
 			}
+			
 		});
 
 		tab.setContent(bp);
