@@ -32,7 +32,7 @@ import javafx.scene.layout.HBox;
 
 
 
-//TODO EINE PERSON DARF SICH NICHT LOESCHEN KOENNEN!!!!!!!
+
 public class GUIPersonenverwaltung {
 	
 	Tab tab;
