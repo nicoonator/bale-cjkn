@@ -272,24 +272,30 @@ public class GUIPersonenverwaltung {
 		});
 		
 		//TODO PERSON DARF SICH NICHT SELBST LOESCHEN
+		
 		//Person loeschen
 		delete.setOnMouseClicked(e -> {
 			Person tempPerson = table.getSelectionModel().getSelectedItem();
 			try {
-				Personenverwaltung.getInstance().deletePerson(tempPerson.getPERSON_ID());
-				table.setItems(getPersonen());
-				vornameInput.clear();
-				nachnameInput.clear();
-				strasseInput.clear();
-				PLZInput.clear();
-				EMailInput.clear();
-				nutzernameInput.clear();
-				passwortInput.clear();
-				hausnummerInput.clear();
-				modify.setDisable(true);
-				delete.setDisable(true);
-				
-				AlertBox.display("Erfolg!", "Person geloescht!");
+				if(table.getSelectionModel().getSelectedItem().getPERSON_ID() != nutzer.getPERSON_ID() )
+				{
+					Personenverwaltung.getInstance().deletePerson(tempPerson.getPERSON_ID());
+					table.setItems(getPersonen());
+					vornameInput.clear();
+					nachnameInput.clear();
+					strasseInput.clear();
+					PLZInput.clear();
+					EMailInput.clear();
+					nutzernameInput.clear();
+					passwortInput.clear();
+					hausnummerInput.clear();
+					modify.setDisable(true);
+					delete.setDisable(true);
+					AlertBox.display("Erfolg!", "Person geloescht!");
+				}
+				else{
+					AlertBox.display("Fehler", "Person darf sich nicht selbst loeschen!");
+				}				
 			} catch (SQLException | DatabaseException e1) {
 				AlertBox.display("Fehler", e1.getMessage());
 			}

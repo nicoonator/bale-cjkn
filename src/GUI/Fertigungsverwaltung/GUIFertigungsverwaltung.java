@@ -261,7 +261,6 @@ public class GUIFertigungsverwaltung {
 				Fertigungsverwaltung.getInstance().modifyAuftrag(tempAuftragMod.getAUFTRAG_ID(), "prognostizierte_kosten" , prognoKosten.getText());
 				Fertigungsverwaltung.getInstance().modifyAuftrag(tempAuftragMod.getAUFTRAG_ID(), "reelle_kosten" , reelleKosten.getText());
 				
-				//TODO Timestamps nach Veraenderung des Status sofort aendern
 				
 				if(gefertigt.isSelected() != tempAuftragMod.isGefertigt()) {
 					if(tempAuftragMod.isGefertigt() == true) {
@@ -489,8 +488,7 @@ public class GUIFertigungsverwaltung {
 				resultAuftrag.add(a);
 			}
 		} catch (DatabaseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			AlertBox.display("Fehler", e.getMessage());
 		}
 		return resultAuftrag;
 	}
@@ -516,8 +514,7 @@ public class GUIFertigungsverwaltung {
 				if(a.getART().equals("3D-Druck"))resultAuftrag.add(a);
 			}
 		} catch (DatabaseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			AlertBox.display("Fehler", e.getMessage());
 		}
 		return resultAuftrag;
 	}

@@ -87,7 +87,6 @@ public class GUICreateKasse {
 						window.close();
 					}
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
 					AlertBox.display("Fehler", e1.getMessage());
 				}
 				});

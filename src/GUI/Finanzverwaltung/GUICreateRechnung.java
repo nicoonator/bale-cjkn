@@ -234,7 +234,6 @@ public class GUICreateRechnung {
 				if(t.getKasse().getTyp()==bezahlart)result.add(t);
 			}
 		} catch (DatabaseException | SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return result;
@@ -250,8 +249,7 @@ public class GUICreateRechnung {
 				i++;
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			AlertBox.display("Fehler", e.getMessage());
 		}
 		return -1;
 	}

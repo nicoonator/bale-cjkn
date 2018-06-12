@@ -365,8 +365,7 @@ public class GUIRechnungen {
 				resultAuftrag.add(r);
 			}
 		} catch (DatabaseException | SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			AlertBox.display("Fehler", e.getMessage());
 		}
 		return resultAuftrag;
 	}

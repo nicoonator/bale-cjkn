@@ -41,8 +41,7 @@ public class GUIBauteile {
 		try {
 			return Bauteileverwaltung.getInstance().getAllKategorie();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			AlertBox.display("Fehler", e.getMessage());
 			return null;
 		}
 	}
@@ -224,7 +223,7 @@ public class GUIBauteile {
 			} finally {
 				modify.setDisable(true);
 				delete.setDisable(true);
-				//TODO Button Clearen
+				open();
 			}
 			
 		});

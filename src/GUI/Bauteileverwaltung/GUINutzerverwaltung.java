@@ -111,8 +111,7 @@ public class GUINutzerverwaltung {
 				Bauteileverwaltung.getInstance().ClearBauteilwarenkorb(tempPerson.getPERSON_ID());
 				table.setItems(getPersonenOhneNutzer());
 			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				AlertBox.display("Fehler", e1.getMessage());
 			}
 			finally {
 				table.getSelectionModel().select(tempPerson);
@@ -144,9 +143,7 @@ public class GUINutzerverwaltung {
 				result.remove(p);
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			System.out.println("HUHU");
-			e.printStackTrace();
+			AlertBox.display("Fehler", e.getMessage());
 		}
 		return result;
 	}
