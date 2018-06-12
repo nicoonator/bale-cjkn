@@ -27,6 +27,8 @@ public class GUICreatePerson {
 		grid.setVgap(8);
 		grid.setHgap(10);
 		
+		
+		//TODO TELEFONNUMMER
 		Label vornameLabel = new Label("Vorname: ");
 		GridPane.setConstraints(vornameLabel, 0, 0);
 		

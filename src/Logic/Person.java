@@ -21,6 +21,8 @@ public abstract class Person {
 	 * @param bauteilwarenkorb
 	 * @param admin
 	 */
+	
+	//TODO TELEFONNUMMER
 	public Person(int pERSON_ID, String vorname, String nachname, String strasse, String hausnr, int pLZ, String email,
 			Date zuerst_erstellt, Date zuletzt_geaendert, String nutzername, String passwort, double bauteilschulden,
 			List<Bauteil> bauteilwarenkorb, boolean admin) {

@@ -73,6 +73,8 @@ public class SQLManager {
 	 * @throws SQLException
 	 * @throws NutzernameVorhandenException 
 	 */
+	
+	//TODO TELEFONNUMMER
 	public void createPerson (String vname, String nname, String strasse, String hausnummer, int PLZ, String email, String nutzername, String passwort, int rolle) throws SQLException, NutzernameVorhandenException{
 		Statement stmt = c.createStatement();
 		ResultSet rs = stmt.executeQuery("SELECT * FROM Person WHERE nutzername = '"+nutzername+"';");
@@ -144,6 +146,8 @@ public class SQLManager {
 	 * @return returns all Persons currently in Database as a List<Person>
 	 * @throws SQLException
 	 */
+	
+	//TODO TELEFONNUMMER
 	public List<Person> getAllPersons() throws SQLException {
 		List<Person> result= new ArrayList<Person>();
 		Statement stmt = c.createStatement();
@@ -200,6 +204,8 @@ public class SQLManager {
 	 * @throws SQLException
 	 * @throws PersonNichtInDBException 
 	 */
+	
+	//TODO TELEFONNUMMER
 	public Person getPersonByID (int ID) throws SQLException, PersonNichtInDBException {
 		Person result = null;
 		Statement stmt = c.createStatement();

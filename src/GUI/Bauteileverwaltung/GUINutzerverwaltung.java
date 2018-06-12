@@ -55,24 +55,20 @@ public class GUINutzerverwaltung {
 		TableColumn<Person, String> nachnameColumn = new TableColumn<>("Nachname");
 		nachnameColumn.setMinWidth(100);
 		nachnameColumn.setCellValueFactory(new PropertyValueFactory<>("nachname"));
-
-		TableColumn<Person, Date> erstelltColumn = new TableColumn<>("Erstellt");
-		//erstelltColumn.setMinWidth(150);
-		erstelltColumn.setCellValueFactory(new PropertyValueFactory<>("zuerst_erstellt"));
-
-		TableColumn<Person, Date> geaendertColumn = new TableColumn<>("Zuletzt geaendert");
-		//erstelltColumn.setMinWidth(150);
-		geaendertColumn.setCellValueFactory(new PropertyValueFactory<>("zuletzt_geaendert"));
-
+		
 		TableColumn<Person, Boolean> rolleColumn = new TableColumn<>("Admin?");
 		//rolleColumn.setMinWidth(50);
 		rolleColumn.setCellValueFactory(new PropertyValueFactory<>("admin"));
 
+		
+		TableColumn<Person, Double> schuldenColumn = new TableColumn<>("Schulden");
+		schuldenColumn.setCellValueFactory(new PropertyValueFactory<>("bauteilschulden"));
+		
 		table = new TableView<>();
 
 		table.setItems(this.getPersonenOhneNutzer());
 
-		table.getColumns().addAll(vornameColumn, nachnameColumn, erstelltColumn, geaendertColumn, rolleColumn);
+		table.getColumns().addAll(vornameColumn, nachnameColumn, rolleColumn, schuldenColumn);
 
 		table.setPrefWidth(620);
 		bp.setLeft(table);
@@ -116,6 +112,7 @@ public class GUINutzerverwaltung {
 			finally {
 				table.getSelectionModel().select(tempPerson);
 				AlertBox.display("Erfolg!", "Schulden zurueckgesetzt!");
+				open();
 			}
 		});
 		

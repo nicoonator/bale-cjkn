@@ -249,7 +249,7 @@ public class GUIWarenkorb {
 		//Hinzufuegen von Items in den Personen Warenkorb
 		takeOut.setOnMouseClicked(e -> {
 			if(Validation.IntegerInputValidation(anzahlInput)) {
-				if(bauteillager.getSelectionModel().getSelectedItem() == null || warenkorb.getSelectionModel().getSelectedItem() == null){
+				if((bauteillager.getSelectionModel().getSelectedItem() == null)){
 					AlertBox.display("Fehler", "Kein Bauteil einer Tabelle ausgewaehlt!");
 				}
 				else{
@@ -274,17 +274,22 @@ public class GUIWarenkorb {
 		//Hinzufuegen von Items aus dem Personen Warenkorb ins Lager
 		takeBack.setOnMouseClicked(e -> {
 			if(Validation.IntegerInputValidation(anzahl2Input)) {
-				Bauteilwarenkorbelement tempWarenkorbelement = warenkorb.getSelectionModel().getSelectedItem();
-				try {
-					Bauteileverwaltung.getInstance().addBauteil(warenkorb.getSelectionModel().getSelectedItem().getBauteil().getID(), Integer.parseInt(anzahl2Input.getText()), nutzer.getPERSON_ID());
-					warenkorb.setItems(getBauteilewarenkorb());
-					bauteillager.setItems(getBauteile());
-					schulden.setText("Aktuelle Schulden in Euro: "+Double.toString(Personenverwaltung.getInstance().getPersonByID(nutzer.getPERSON_ID()).getBauteilschulden()) +" Euro");
-				} catch (NumberFormatException | DatabaseException | SQLException e1) {
-					AlertBox.display("Fehler", e1.getMessage());
-				} finally {	
-					warenkorb.getSelectionModel().select(tempWarenkorbelement);
+				if((warenkorb.getSelectionModel().getSelectedItem() == null)){
+					AlertBox.display("Fehler", "Kein Bauteil einer Tabelle ausgewaehlt!");
+				}else{
+					Bauteilwarenkorbelement tempWarenkorbelement = warenkorb.getSelectionModel().getSelectedItem();
+					try {
+						Bauteileverwaltung.getInstance().addBauteil(warenkorb.getSelectionModel().getSelectedItem().getBauteil().getID(), Integer.parseInt(anzahl2Input.getText()), nutzer.getPERSON_ID());
+						warenkorb.setItems(getBauteilewarenkorb());
+						bauteillager.setItems(getBauteile());
+						schulden.setText("Aktuelle Schulden in Euro: "+Double.toString(Personenverwaltung.getInstance().getPersonByID(nutzer.getPERSON_ID()).getBauteilschulden()) +" Euro");
+					} catch (NumberFormatException | DatabaseException | SQLException e1) {
+						AlertBox.display("Fehler", e1.getMessage());
+					} finally {	
+						warenkorb.getSelectionModel().select(tempWarenkorbelement);
+					}
 				}
+				
 			}
 		});
 		

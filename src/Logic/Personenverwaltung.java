@@ -8,6 +8,8 @@ import Exceptions.DatabaseException;
 
 public class Personenverwaltung {
 	
+	
+	
 	private static Personenverwaltung instance;
 	
 	/**
@@ -38,6 +40,8 @@ public class Personenverwaltung {
 	 * @throws DatabaseException
 	 * @throws SQLException
 	 */
+	
+	//TODO TELEFONNUMMER
 	public void createPerson(String vorname, String nachname, String strasse, 
 			String hausnr, int PLZ, String email, String nutzername, String passwort, int rolle) throws DatabaseException, SQLException {
 		

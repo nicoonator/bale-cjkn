@@ -110,6 +110,8 @@ public class GUIPersonenverwaltung {
 		
 		// Start of Center
 		
+		//TODO TELEFONNUMMER
+		
 		GridPane grid = new GridPane();
 		grid.setPadding(new Insets(10,10,10,10));
 		grid.setVgap(8);
