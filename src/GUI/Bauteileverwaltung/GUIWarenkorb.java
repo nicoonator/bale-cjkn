@@ -121,10 +121,11 @@ public class GUIWarenkorb {
 		
 		TextField anzahlInput = new TextField();
 		GridPane.setConstraints(anzahlInput, 1, 1);
+		anzahlInput.setDisable(true);
 		
 		Button takeOut = new Button("Herausnehmen");
 		GridPane.setConstraints(takeOut, 1, 2);
-		
+		takeOut.setDisable(true);
 		
 		grid.getChildren().addAll(bauteilLabel, bauteilnameLabel, anzahlLabel, anzahlInput, takeOut);
 
@@ -149,11 +150,12 @@ public class GUIWarenkorb {
 		
 		TextField anzahl2Input = new TextField();
 		GridPane.setConstraints(anzahl2Input, 1, 1);
+		anzahl2Input.setDisable(true);
 		
 		Button takeBack = new Button("Zuruecklegen");
 		GridPane.setConstraints(takeBack, 1, 2);
-		
-		
+		takeBack.setDisable(true);
+
 		grid2.getChildren().addAll(bauteil2Label, bauteil2nameLabel, anzahl2Label, anzahl2Input, takeBack);
 		
 		// End of Center
@@ -219,6 +221,10 @@ public class GUIWarenkorb {
 		//Handling fuer Klicks auf Tabelleneintrag
 		bauteillager.setOnMouseClicked(e -> {
 			if(!(bauteillager.getSelectionModel().isEmpty())) {
+				takeBack.setDisable(false);
+				takeOut.setDisable(false);
+				anzahlInput.setDisable(false);
+				anzahl2Input.setDisable(false);
 				Bauteil tempBauteil = bauteillager.getSelectionModel().getSelectedItem();
 				bp.setCenter(grid);
 				bauteilnameLabel.setText(tempBauteil.getName());
@@ -229,6 +235,10 @@ public class GUIWarenkorb {
 		//Handling fuer Klicks auf Tabelleneintrag
 		warenkorb.setOnMouseClicked(e -> {
 			if(!(warenkorb.getSelectionModel().isEmpty())) {
+				takeBack.setDisable(false);
+				takeOut.setDisable(false);
+				anzahlInput.setDisable(false);
+				anzahl2Input.setDisable(false);
 				Bauteilwarenkorbelement tempBauteilelement = warenkorb.getSelectionModel().getSelectedItem();
 				bp.setCenter(grid2);
 				bauteil2nameLabel.setText(tempBauteilelement.getName());
