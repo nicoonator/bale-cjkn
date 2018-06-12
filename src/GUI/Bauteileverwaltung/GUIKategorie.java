@@ -91,6 +91,7 @@ public class GUIKategorie {
 		grid.setHgap(10);
 		
 		TextField tfKatName = new TextField();
+		tfKatName.setDisable(true);
 		GridPane.setConstraints(tfKatName, 1, 0);
 		
 		Label katName = new Label("Name: ");
@@ -155,6 +156,7 @@ public class GUIKategorie {
 		//Handling fuer Klick auf Tabelleneintrag
 		table.setOnMouseClicked(e -> {
 			if(!(table.getSelectionModel().isEmpty())) {
+				tfKatName.setDisable(false);
 				delete.setDisable(false);
 				modify.setDisable(false);
 				Kategorie tempKategorie = table.getSelectionModel().getSelectedItem();

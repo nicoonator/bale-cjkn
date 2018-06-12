@@ -174,6 +174,9 @@ public class GUIToepfe {
 				sollInput.clear();
 				istInput.setDisable(true);
 				istInput.clear();
+				comboBoxKassen.getSelectionModel().select(null);
+				comboBoxKassen.setPromptText("Kasse auswaehlen");
+				comboBoxKassen.setDisable(true);
 				AlertBox.display("Erfolg!", "Topf geloescht!");
 			}
 			

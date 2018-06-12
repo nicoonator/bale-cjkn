@@ -242,18 +242,24 @@ public class GUIWarenkorb {
 		//Hinzufuegen von Items in den Personen Warenkorb
 		takeOut.setOnMouseClicked(e -> {
 			if(Validation.IntegerInputValidation(anzahlInput)) {
-				Bauteil tempBauteil = bauteillager.getSelectionModel().getSelectedItem();
-				try {
-					Bauteileverwaltung.getInstance().removeBauteil(bauteillager.getSelectionModel().getSelectedItem().getID(), Integer.parseInt(anzahlInput.getText()), nutzer.getPERSON_ID());
-					bauteillager.setItems(getBauteile());
-					warenkorb.setItems(getBauteilewarenkorb());
-					schulden.setText("Aktuelle Schulden in Euro: "+Double.toString(Personenverwaltung.getInstance().getPersonByID(nutzer.getPERSON_ID()).getBauteilschulden()) +" Euro");
-				} catch (NumberFormatException | DatabaseException | SQLException e1) {
-					AlertBox.display("Fehler", e1.getMessage());
-				} finally {	
-					bauteillager.getSelectionModel().select(tempBauteil);
-					
+				if(bauteillager.getSelectionModel().getSelectedItem() == null || warenkorb.getSelectionModel().getSelectedItem() == null){
+					AlertBox.display("Fehler", "Kein Bauteil einer Tabelle ausgewaehlt!");
 				}
+				else{
+					Bauteil tempBauteil = bauteillager.getSelectionModel().getSelectedItem();
+					try {
+						Bauteileverwaltung.getInstance().removeBauteil(bauteillager.getSelectionModel().getSelectedItem().getID(), Integer.parseInt(anzahlInput.getText()), nutzer.getPERSON_ID());
+						bauteillager.setItems(getBauteile());
+						warenkorb.setItems(getBauteilewarenkorb());
+						schulden.setText("Aktuelle Schulden in Euro: "+Double.toString(Personenverwaltung.getInstance().getPersonByID(nutzer.getPERSON_ID()).getBauteilschulden()) +" Euro");
+					} catch (NumberFormatException | DatabaseException | SQLException e1) {
+						AlertBox.display("Fehler", e1.getMessage());
+					} finally {	
+						bauteillager.getSelectionModel().select(tempBauteil);
+						
+					}
+				}
+				
 			}
 		});
 		

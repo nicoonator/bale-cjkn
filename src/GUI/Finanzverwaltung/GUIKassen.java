@@ -152,12 +152,14 @@ public class GUIKassen {
 						Finanzverwaltung.getInstance().modifyKasse(tempKasse.getKASSE_ID(), "soll", sollInput.getText());
 						Finanzverwaltung.getInstance().modifyKasse(tempKasse.getKASSE_ID(), "ist", istInput.getText());
 						Finanzverwaltung.getInstance().modifyKasse(tempKasse.getKASSE_ID(), "kostenstellennummer", ksInput.getText());
+						AlertBox.display("Erfolg!", "Kasse bearbeitet!");
 					}
 				} else {
 					if(Validation.StringInputValidation(btnameInput)&&Validation.DoubleInputValidation(sollInput)&&Validation.DoubleInputValidation(istInput)) {
 						Finanzverwaltung.getInstance().modifyKasse(tempKasse.getKASSE_ID(), "name", btnameInput.getText());
 						Finanzverwaltung.getInstance().modifyKasse(tempKasse.getKASSE_ID(), "soll", sollInput.getText());
 						Finanzverwaltung.getInstance().modifyKasse(tempKasse.getKASSE_ID(), "ist", istInput.getText());
+						AlertBox.display("Erfolg!", "Kasse bearbeitet!");
 					}
 				}
 					kassenTable.setItems(getKassen());
@@ -165,7 +167,7 @@ public class GUIKassen {
 			AlertBox.display("Fehler", e1.getMessage());
 			} finally {
 				kassenTable.getSelectionModel().select(tempKasse);
-				AlertBox.display("Erfolg!", "Kasse bearbeitet!");
+				
 			}
 		});
 		
