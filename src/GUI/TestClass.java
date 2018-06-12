@@ -3,9 +3,9 @@ package GUI;
 import DataAccess.SQLManager;
 
 public class TestClass {
-/*
+
 	public static void main(String[] args) {
-		try {
+		//try {
 		//	Date testdate =new Date();
 		//	testdate.setTime(1526836286L*1000L);
 		//	System.out.println(testdate.toString());
@@ -37,6 +37,9 @@ public class TestClass {
 		catch (Exception e) {
 			//e.printStackTrace();
 		}
+		*/
 	}
-*/
+
+	
+	
 }

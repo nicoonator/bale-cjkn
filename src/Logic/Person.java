@@ -22,10 +22,9 @@ public abstract class Person {
 	 * @param admin
 	 */
 	
-	//TODO TELEFONNUMMER
 	public Person(int pERSON_ID, String vorname, String nachname, String strasse, String hausnr, int pLZ, String email,
 			Date zuerst_erstellt, Date zuletzt_geaendert, String nutzername, String passwort, double bauteilschulden,
-			List<Bauteil> bauteilwarenkorb, boolean admin) {
+			List<Bauteil> bauteilwarenkorb, boolean admin, String telefonnummer) {
 		super();
 		PERSON_ID = pERSON_ID;
 		this.vorname = vorname;
@@ -41,6 +40,7 @@ public abstract class Person {
 		this.bauteilschulden = bauteilschulden;
 		this.bauteilwarenkorb = bauteilwarenkorb;
 		this.admin = admin;
+		this.telefonnummer=telefonnummer;
 	}
 	private final int PERSON_ID;
 	private String vorname;
@@ -56,6 +56,7 @@ public abstract class Person {
 	private double bauteilschulden = 0;
 	private List<Bauteil> bauteilwarenkorb;
 	private final boolean admin;
+	private String telefonnummer;
 	
 	@Override
 	public String toString() {
@@ -211,5 +212,19 @@ public abstract class Person {
 	 */
 	public boolean isAdmin() {
 		return admin;
+	}
+
+	/**
+	 * @return the telefonnummer
+	 */
+	public String getTelefonnummer() {
+		return telefonnummer;
+	}
+
+	/**
+	 * @param telefonnummer the telefonnummer to set
+	 */
+	public void setTelefonnummer(String telefonnummer) {
+		this.telefonnummer = telefonnummer;
 	}
 }

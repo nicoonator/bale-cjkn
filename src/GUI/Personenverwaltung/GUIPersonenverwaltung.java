@@ -110,8 +110,6 @@ public class GUIPersonenverwaltung {
 		
 		// Start of Center
 		
-		//TODO TELEFONNUMMER
-		
 		GridPane grid = new GridPane();
 		grid.setPadding(new Insets(10,10,10,10));
 		grid.setVgap(8);
@@ -157,50 +155,58 @@ public class GUIPersonenverwaltung {
 		PLZInput.setDisable(true);
 		GridPane.setConstraints(PLZInput, 1, 4);
 		
+		Label telefonLabel = new Label("Telefonnummer: ");
+		GridPane.setConstraints(telefonLabel, 0, 5);
+		
+		TextField telefonInput = new TextField();
+		telefonInput.setEditable(false);
+		telefonInput.setDisable(true);
+		GridPane.setConstraints(telefonInput, 1, 5);
+		
 		Label EMailLabel = new Label("E-Mail: ");
-		GridPane.setConstraints(EMailLabel, 0, 5);
+		GridPane.setConstraints(EMailLabel, 0, 6);
 		
 		TextField EMailInput = new TextField();
 		EMailInput.setEditable(false);
 		EMailInput.setDisable(true);
-		GridPane.setConstraints(EMailInput, 1, 5);
+		GridPane.setConstraints(EMailInput, 1, 6);
 		
 		Label nutzernameLabel = new Label("Nutzername: ");
-		GridPane.setConstraints(nutzernameLabel, 0, 6);
+		GridPane.setConstraints(nutzernameLabel, 0, 7);
 		
 		TextField nutzernameInput = new TextField();
 		nutzernameInput.setEditable(false);
 		nutzernameInput.setDisable(true);
-		GridPane.setConstraints(nutzernameInput, 1, 6);
+		GridPane.setConstraints(nutzernameInput, 1, 7);
 		
 		// passwort ohne whitespace vorne oder hinten!
 		
 		Label oldpasswortLabel = new Label("Altes Passwort: ");
-		GridPane.setConstraints(oldpasswortLabel, 0, 12);
+		GridPane.setConstraints(oldpasswortLabel, 0, 13);
 		
 		PasswordField oldpasswortconfirmInput = new PasswordField();
 		oldpasswortconfirmInput.setEditable(false);
 		oldpasswortconfirmInput.setDisable(true);
-		GridPane.setConstraints(oldpasswortconfirmInput, 1, 12);
+		GridPane.setConstraints(oldpasswortconfirmInput, 1, 13);
 		
 		Label passwortLabel = new Label("Neues Passwort: ");
-		GridPane.setConstraints(passwortLabel, 0, 13);
+		GridPane.setConstraints(passwortLabel, 0, 14);
 		
 		PasswordField passwortInput = new PasswordField();
 		passwortInput.setEditable(false);
 		passwortInput.setDisable(true);
-		GridPane.setConstraints(passwortInput, 1, 13);
+		GridPane.setConstraints(passwortInput, 1, 14);
 		
 		Label passwortconfirmLabel = new Label("Neues Passwort bestaetigen: ");
-		GridPane.setConstraints(passwortconfirmLabel, 0, 14);
+		GridPane.setConstraints(passwortconfirmLabel, 0, 15);
 		
 		PasswordField passwortconfirmInput = new PasswordField();
 		passwortconfirmInput.setEditable(false);
 		passwortconfirmInput.setDisable(true);
-		GridPane.setConstraints(passwortconfirmInput, 1, 14);
+		GridPane.setConstraints(passwortconfirmInput, 1, 15);
 		
 		grid.getChildren().addAll(vornameLabel, vornameInput, nachnameLabel, nachnameInput, strasseLabel, strasseInput, hausnummerLabel, hausnummerInput, 
-				PLZLabel, PLZInput, EMailLabel, EMailInput, nutzernameLabel, nutzernameInput,oldpasswortLabel,oldpasswortconfirmInput ,passwortLabel, passwortInput, passwortconfirmLabel, passwortconfirmInput);
+				PLZLabel, PLZInput, telefonInput, telefonLabel, EMailLabel, EMailInput, nutzernameLabel, nutzernameInput,oldpasswortLabel,oldpasswortconfirmInput ,passwortLabel, passwortInput, passwortconfirmLabel, passwortconfirmInput);
 		
 		bp.setCenter(grid);
 		
@@ -231,7 +237,7 @@ public class GUIPersonenverwaltung {
 			try {
 				if((oldpasswortconfirmInput.getText()==null || oldpasswortconfirmInput.getText().trim().isEmpty()) &&(passwortInput.getText()==null || passwortInput.getText().trim().isEmpty())&&(passwortconfirmInput.getText()==null || passwortconfirmInput.getText().trim().isEmpty())) {
 					//Wenn kein passwort geandert werden soll
-					if(Validation.IntegerInputValidation(PLZInput) && Validation.nutzernameInputValidation(nutzernameInput) && Validation.StringInputValidation(vornameInput) && Validation.StringInputValidation(nachnameInput) && Validation.HausNrInputValidation(hausnummerInput) && Validation.StringInputValidation(strasseInput) && Validation.mailInputValidation(EMailInput)){
+					if(Validation.IntegerInputValidation(PLZInput) && Validation.nutzernameInputValidation(nutzernameInput) && Validation.StringInputValidation(vornameInput) && Validation.StringInputValidation(nachnameInput) && Validation.HausNrInputValidation(hausnummerInput) && Validation.StringInputValidation(strasseInput) && Validation.mailInputValidation(EMailInput) && Validation.IntegerInputValidation(telefonInput)){
 						Personenverwaltung.getInstance().modifyPerson(tempPerson.getPERSON_ID(), "vorname", vornameInput.getText().trim());
 						Personenverwaltung.getInstance().modifyPerson(tempPerson.getPERSON_ID(), "nachname", nachnameInput.getText().trim());
 						Personenverwaltung.getInstance().modifyPerson(tempPerson.getPERSON_ID(), "strasse", strasseInput.getText().trim());
@@ -239,12 +245,13 @@ public class GUIPersonenverwaltung {
 						Personenverwaltung.getInstance().modifyPerson(tempPerson.getPERSON_ID(), "nutzername", nutzernameInput.getText().trim());
 						Personenverwaltung.getInstance().modifyPerson(tempPerson.getPERSON_ID(), "hausnr", hausnummerInput.getText().trim());
 						Personenverwaltung.getInstance().modifyPerson(tempPerson.getPERSON_ID(), "PLZ", PLZInput.getText().trim());
+						Personenverwaltung.getInstance().modifyPerson(tempPerson.getPERSON_ID(), "telefonnummer", telefonInput.getText().trim());
 						AlertBox.display("Erfolg!", "Person bearbeitet!");
 					}		
 				}
 				else {
 					//Wenn passwort geandert werden soll
-					if(Validation.changePasswordInputValidation(oldpasswortconfirmInput, passwortInput, passwortconfirmInput, tempPerson) && Validation.IntegerInputValidation(PLZInput) && Validation.nutzernameInputValidation(nutzernameInput) && Validation.StringInputValidation(vornameInput) && Validation.StringInputValidation(nachnameInput) && Validation.HausNrInputValidation(hausnummerInput) && Validation.mailInputValidation(EMailInput) && Validation.StringInputValidation(strasseInput)){
+					if(Validation.changePasswordInputValidation(oldpasswortconfirmInput, passwortInput, passwortconfirmInput, tempPerson) && Validation.IntegerInputValidation(PLZInput) && Validation.nutzernameInputValidation(nutzernameInput) && Validation.StringInputValidation(vornameInput) && Validation.StringInputValidation(nachnameInput) && Validation.HausNrInputValidation(hausnummerInput) && Validation.mailInputValidation(EMailInput) && Validation.StringInputValidation(strasseInput) && Validation.IntegerInputValidation(telefonInput)){
 						Personenverwaltung.getInstance().modifyPerson(tempPerson.getPERSON_ID(), "passwort", passwortInput.getText().trim());
 						Personenverwaltung.getInstance().modifyPerson(tempPerson.getPERSON_ID(), "vorname", vornameInput.getText().trim());
 						Personenverwaltung.getInstance().modifyPerson(tempPerson.getPERSON_ID(), "nachname", nachnameInput.getText().trim());
@@ -253,6 +260,7 @@ public class GUIPersonenverwaltung {
 						Personenverwaltung.getInstance().modifyPerson(tempPerson.getPERSON_ID(), "nutzername", nutzernameInput.getText().trim());
 						Personenverwaltung.getInstance().modifyPerson(tempPerson.getPERSON_ID(), "hausnr", hausnummerInput.getText().trim());
 						Personenverwaltung.getInstance().modifyPerson(tempPerson.getPERSON_ID(), "PLZ", PLZInput.getText().trim());
+						Personenverwaltung.getInstance().modifyPerson(tempPerson.getPERSON_ID(), "telefonnummer", telefonInput.getText().trim());
 						oldpasswortconfirmInput.clear();
 						passwortconfirmInput.clear();
 						passwortInput.clear();
@@ -288,6 +296,7 @@ public class GUIPersonenverwaltung {
 					strasseInput.clear();
 					PLZInput.clear();
 					EMailInput.clear();
+					telefonInput.clear();
 					nutzernameInput.clear();
 					passwortInput.clear();
 					hausnummerInput.clear();
@@ -333,6 +342,10 @@ public class GUIPersonenverwaltung {
 				PLZInput.setText(Integer.toString(tempPerson.getPLZ()));
 				PLZInput.setDisable(false);
 				PLZInput.setEditable(true);
+				telefonInput.setStyle(null);
+				telefonInput.setText(tempPerson.getTelefonnummer());
+				telefonInput.setDisable(false);
+				telefonInput.setEditable(true);
 				EMailInput.setStyle(null);
 				EMailInput.setText(tempPerson.getEmail());
 				EMailInput.setDisable(false);

@@ -25,9 +25,9 @@ public class Mitglied extends Person {
 	 */
 	public Mitglied(int pERSON_ID, String vorname, String nachname, String strasse, String hausnr, int pLZ, String email,
 			Date zuerst_erstellt, Date zuletzt_geaendert, String nutzername, String passwort, double bauteilschulden,
-			List<Bauteil> bauteilwarenkorb, boolean admin) {
+			List<Bauteil> bauteilwarenkorb, boolean admin, String telefonnummer) {
 		super(pERSON_ID, vorname, nachname, strasse, hausnr, pLZ, email, zuerst_erstellt, zuletzt_geaendert, nutzername,
-				passwort, bauteilschulden, bauteilwarenkorb, admin);
+				passwort, bauteilschulden, bauteilwarenkorb, admin, telefonnummer);
 		
 	}
 	

@@ -41,11 +41,10 @@ public class Personenverwaltung {
 	 * @throws SQLException
 	 */
 	
-	//TODO TELEFONNUMMER
 	public void createPerson(String vorname, String nachname, String strasse, 
-			String hausnr, int PLZ, String email, String nutzername, String passwort, int rolle) throws DatabaseException, SQLException {
+			String hausnr, int PLZ, String email, String nutzername, String passwort, int rolle, long telefonnummer) throws DatabaseException, SQLException {
 		
-		SQLManager.getInstance().createPerson(vorname, nachname, strasse, hausnr, PLZ, email, nutzername, passwort, rolle);
+		SQLManager.getInstance().createPerson(vorname, nachname, strasse, hausnr, PLZ, email, nutzername, passwort, rolle, telefonnummer);
 	}
 	
 	/**
