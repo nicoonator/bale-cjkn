@@ -3,7 +3,7 @@ package GUI;
 import DataAccess.SQLManager;
 
 public class TestClass {
-
+/*
 	public static void main(String[] args) {
 		try {
 		//	Date testdate =new Date();
@@ -32,11 +32,11 @@ public class TestClass {
 					SQLManager.getInstance().createPerson("TestLehrstuhlmitglied "+i , "TestLehrstuhlmitglied "+i, "TestLehrstuhlmitglied "+i, "12", 57072, "lehrstuhl@uni.com", "TestLehrstuhlmitglied"+i, "TestLehrstuhlmitglied", 2);
 				}
 			}
-		*/
+		
 		}
 		catch (Exception e) {
 			//e.printStackTrace();
 		}
 	}
-
+*/
 }
