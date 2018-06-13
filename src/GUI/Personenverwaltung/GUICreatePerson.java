@@ -102,7 +102,7 @@ public class GUICreatePerson {
                 "Lehrstuhlperson"
         );
         comboBox.setPromptText("Rolle der Person");
-        GridPane.setConstraints(comboBox, 0, 9);
+        GridPane.setConstraints(comboBox, 0, 10);
 		
 		grid.getChildren().addAll(vornameLabel, vornameInput, nachnameLabel, nachnameInput, strasseLabel, telefonLabel, strasseInput, hausnummerLabel, hausnummerInput, 
 				PLZLabel, PLZInput,telefonInput, EMailLabel, EMailInput, nutzernameLabel, nutzernameInput, passwortLabel, passwortInput,passwortconfirmInput, passwortconfirmLabel, comboBox, btnErstellen ,btnClose);
