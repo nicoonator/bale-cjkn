@@ -178,6 +178,7 @@ public class GUIKassen {
 			try {
 				Finanzverwaltung.getInstance().deleteKasse(tempKasse.getKASSE_ID());
 				kassenTable.setItems(GUIKassen.getKassen());
+				AlertBox.display("Erfolg!", "Kasse geloescht!");
 			} catch (SQLException | DatabaseException e1) {
 				AlertBox.display("Fehler", e1.getMessage());
 			} finally {
@@ -193,7 +194,6 @@ public class GUIKassen {
 				typInput.clear();
 				ksInput.setDisable(true);
 				ksInput.clear();
-				AlertBox.display("Erfolg!", "Kasse geloescht!");
 			}
 			
 		});
