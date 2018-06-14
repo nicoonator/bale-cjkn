@@ -125,12 +125,12 @@ public class GUIKategorie {
 			try {
 				if(Validation.StringInputValidation(tfKatName)) {
 					Bauteileverwaltung.getInstance().renameKategorie(tempKategorie.getID(), tfKatName.getText());
+					AlertBox.display("Erfolg!", "Kategorie umbenannt!");
 					table.setItems(getKategorien());
 				}
 			} catch (SQLException | DatabaseException e1) {
 			AlertBox.display("Fehler", e1.getMessage());
 			} finally {
-				AlertBox.display("Erfolg!", "Kategorie umbenannt!");
 				table.getSelectionModel().select(tempKategorie);
 			}
 			

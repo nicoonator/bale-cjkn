@@ -335,13 +335,13 @@ public class GUIFertigungsverwaltung {
 
 				
 			
-				
+				AlertBox.display("Erfolg!", "Auftrag bearbeitet!");
 				auftragTable.setItems(getAuftraege());
 			} catch (SQLException | DatabaseException e1) {
 				AlertBox.display("Fehler", e1.getMessage());
 			}
 			finally {
-				AlertBox.display("Erfolg!", "Auftrag bearbeitet!");
+
 				auftragTable.getSelectionModel().select(tempAuftragMod);
 			}
 			}
