@@ -163,6 +163,7 @@ public class GUIToepfe {
 			try {
 				Finanzverwaltung.getInstance().deleteTopf(tempTopf.getTOPF_ID());
 				toepfeTable.setItems(GUIToepfe.getToepfe());
+				AlertBox.display("Erfolg!", "Topf geloescht!");
 			} catch (SQLException | DatabaseException e1) {
 				AlertBox.display("Fehler", e1.getMessage());
 			} finally {
@@ -177,7 +178,6 @@ public class GUIToepfe {
 				comboBoxKassen.getSelectionModel().select(null);
 				comboBoxKassen.setPromptText("Kasse auswaehlen");
 				comboBoxKassen.setDisable(true);
-				AlertBox.display("Erfolg!", "Topf geloescht!");
 			}
 			
 		});

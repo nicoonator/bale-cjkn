@@ -269,6 +269,29 @@ public class Validation {
 		
 		return result;
 	}
+
+
+	/**
+	 * @param telefonInput
+	 * @return
+	 */
+	public static boolean LongInputValidation(TextField tf) {
+		boolean result=false;
+		if (!(tf.getText()==null || tf.getText().trim().isEmpty())) {
+			try {
+				Long.parseLong(tf.getText());
+				result = true;
+			} catch (NumberFormatException e) {
+				AlertBox.display("Fehler", "Es wurde eine Zahl erwartet!");
+			}
+		}
+		else AlertBox.display("Fehler", "Kein Textfeld darf leer sein!");
+
+		if (!result) tf.setStyle("-fx-text-fill: red;");
+		else tf.setStyle(null);
+		
+		return result;
+	}
 	
 	
 }
