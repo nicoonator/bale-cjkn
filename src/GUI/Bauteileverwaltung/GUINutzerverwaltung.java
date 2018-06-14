@@ -105,13 +105,13 @@ public class GUINutzerverwaltung {
 		btn.setOnMouseClicked(e -> {
 			try {
 				Bauteileverwaltung.getInstance().ClearBauteilwarenkorb(tempPerson.getPERSON_ID());
+				AlertBox.display("Erfolg!", "Schulden zurueckgesetzt!");
 				table.setItems(getPersonenOhneNutzer());
 			} catch (SQLException e1) {
 				AlertBox.display("Fehler", e1.getMessage());
 			}
 			finally {
 				table.getSelectionModel().select(tempPerson);
-				AlertBox.display("Erfolg!", "Schulden zurueckgesetzt!");
 				open();
 			}
 		});
