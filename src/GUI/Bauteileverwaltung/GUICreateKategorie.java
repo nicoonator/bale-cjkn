@@ -42,7 +42,7 @@
  		Button btn = new Button("Erstellen");
  		GridPane.setConstraints(btn, 1, 1);
  		
- 		Button btnClose = new Button ("Schließen");
+ 		Button btnClose = new Button ("Schliessen");
  		GridPane.setConstraints(btnClose, 1, 1,1,1,HPos.RIGHT,null);
  		
  		
