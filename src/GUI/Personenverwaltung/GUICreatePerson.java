@@ -111,7 +111,7 @@ public class GUICreatePerson {
 		//Person erstellen
 		btnErstellen.setOnMouseClicked(e -> {
 			
-			if(Validation.passwordInputValidation(passwortInput, passwortconfirmInput) && Validation.IntegerInputValidation(PLZInput) && Validation.nutzernameInputValidation(nutzernameInput) && Validation.StringInputValidation(vornameInput) && Validation.StringInputValidation(nachnameInput) && Validation.HausNrInputValidation(hausnummerInput) && Validation.StringInputValidation(strasseInput) && Validation.IntegerInputValidation(telefonInput) && Validation.ComboBoxValidationString(comboBox)){
+			if(Validation.passwordInputValidation(passwortInput, passwortconfirmInput) && Validation.IntegerInputValidation(PLZInput) && Validation.nutzernameInputValidation(nutzernameInput) && Validation.StringInputValidation(vornameInput) && Validation.StringInputValidation(nachnameInput) && Validation.HausNrInputValidation(hausnummerInput) && Validation.StringInputValidation(strasseInput) && Validation.LongInputValidation(telefonInput) && Validation.ComboBoxValidationString(comboBox)){
 					
 				try{
 				
